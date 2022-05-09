@@ -169,12 +169,6 @@ class UserSignUpSerializer(serializers.Serializer):
     password_confirmation = serializers.CharField(
         min_length=8, max_length=64, required=True
     )
-    name = serializers.CharField(min_length=2, max_length=45, required=True)
-    last_name = serializers.CharField(min_length=2, max_length=45)
-    second_last_name = serializers.CharField(
-        min_length=0, max_length=45, allow_blank=True, required=False
-    )
-    role = serializers.CharField(required=True, max_length=24)
 
     def validate(self, data):
         """Validación de contraseña."""
@@ -194,23 +188,8 @@ class UserSignUpSerializer(serializers.Serializer):
     def create(self, data):
         """Handle user and profile creation"""
         data.pop("password_confirmation")
-        request = self.context.get("request")
-        role = data.pop("role")
-        role_obj = UserProfileRole.objects.get(role=role)
         user = User.objects.create_user(**data)
-        UserProfile.objects.create(
-            user=user,
-            role=role_obj,
-        )
         # Registra el registro
-        userProfile = UserProfile.objects.get(user=user)
-        role = UserProfileRole.objects.get(pk=userProfile.role)
-        # manda email para verificación
-        # transaction.on_commit(
-        #     lambda: send_verify_account_email.delay(
-        #         user_pk=user.pk, full_path_domain=login_url
-        #     )
-        # )
 
         return user
 

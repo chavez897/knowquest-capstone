@@ -40,7 +40,7 @@ services:
     volumes:
       - local_db_data:/var/lib/postgresql/data
     ports:
-      - "5432:3306"
+      - "5432:5432"
     networks:
       knowquest_network:
         aliases:

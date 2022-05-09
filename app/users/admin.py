@@ -16,15 +16,13 @@ class CustomUserAdmin(UserAdmin):
         "id",
         "email",
         "username",
-        "name",
         "is_active",
         "is_verified",
-        "last_name",
     )
     list_filter = ("is_superuser",)
     list_editable = (
         "is_active",
         "is_verified",
     )
-    search_fields = ("username", "name", "last_name", "email")
+    search_fields = ("username", "email")
 

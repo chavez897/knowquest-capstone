@@ -19,10 +19,8 @@ from users.serializers.users import UserModelSerializer
 
 
 class UserViewSet(
-    mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
-    mixins.ListModelMixin,
     viewsets.GenericViewSet,
 ):
     queryset = User.objects.all()
