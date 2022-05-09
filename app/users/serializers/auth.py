@@ -59,12 +59,6 @@ class UserLoginTokenPairSerializer(TokenObtainSerializer):
 
 class PasswordRecoveryEmail(serializers.Serializer):
     email = serializers.EmailField(required=True)
-    shop_id = serializers.IntegerField(required=False)
-    is_client = serializers.BooleanField(required=True)
-    redirect_url = serializers.CharField(
-        min_length=1,
-        max_length=255,
-    )
 
     @staticmethod
     def gen_verification_token(user):
@@ -80,15 +74,10 @@ class PasswordRecoveryEmail(serializers.Serializer):
         return token
 
     def validate(self, data):
-        # TODO: Implementar lógica para clientes multitienda
         """if the email has an associated account send the recovery email."""
         email = data["email"]
-        user = User.objects.filter(email=email).exclude(
-            userprofile__role__role="client"
-        )
-        if user.exists():
-            print('existe')
-        else:
+        user = User.objects.filter(email=email)
+        if not user.exists():
             raise serializers.ValidationError({"Error": "El Usuario no existe"})
         return data
 
@@ -144,10 +133,6 @@ class PasswordRecovery(serializers.Serializer):
         user.set_password(self.validated_data["password"])
         user.save()
 
-        # Send the token to blacklist
-        # token = SlidingToken(self.validated_data['token'], verify=False)
-        # token.blacklist()
-
         return user
 
 
@@ -178,6 +163,11 @@ class UserSignUpSerializer(serializers.Serializer):
         if password != password_confirmation:
             raise serializers.ValidationError(
                 {"password_confirmation": "Las contraseñas no coinciden"}
+            )
+        
+        if "gmail.com" in data["email"]:
+            raise serializers.ValidationError(
+                {"email": "domain error"}
             )
 
         # Password valid or raise exception
@@ -219,13 +209,10 @@ class AccountVerificationSerializer(serializers.Serializer):
         """Update the user's verified active and status."""
         payload = self.context["payload"]
         request = self.context.get("request")
-        redirect_url = request.headers["Referer"]
         user = User.objects.get(username=payload["user"])
         user.is_verified = True
         user.is_active = True
         user.save()
-        userProfile = UserProfile.objects.get(user=user)
-        role = UserProfileRole.objects.get(pk=userProfile.role)
 
 
 class ChangePasswordSerializer(serializers.Serializer):
