@@ -1,0 +1,5 @@
+inventory-front/node_modules
+inventory-front/build
+.dockerignore
+React-Dockerfile
+React-Dockerfile.prod
