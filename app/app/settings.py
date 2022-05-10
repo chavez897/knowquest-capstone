@@ -32,6 +32,15 @@ ALLOWED_HOSTS = [
 
 SITE_ID = 1
 
+# SMTP Mail service with decouple
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "knowquestcapstone@gmail.com"
+EMAIL_HOST_PASSWORD = "admin2022"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 # Application definition
 

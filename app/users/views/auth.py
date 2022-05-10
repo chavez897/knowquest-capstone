@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+from django.core.mail import EmailMultiAlternatives
 
 from users.serializers.auth import (
     AccountVerificationSerializer,
@@ -53,6 +54,13 @@ class UserAuthViewSet(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         data = UserModelSerializer(user).data
+        msg = EmailMultiAlternatives(
+            subject="Email Verifaction",
+            body="Congrats",
+            from_email="Knowquest <knowquest@gmail.com>",
+            to=["rodrichavezm@gmail.com"],
+        )
+        msg.send()
         return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=["post"])
@@ -77,17 +85,16 @@ class UserAuthViewSet(viewsets.GenericViewSet):
         # Check old password
         if not user.check_password(serializer.data.get("old_password")):
             return Response(
-                {"old_password": ["Contraseña incorrecta."]},
+                {"old_password": ["Incorrect Password"]},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         # set_password also hashes the password that the user will get
         user.set_password(serializer.data.get("new_password"))
         user.save()
-        data = {"message": "Felicidades, ahora puedes iniciar sesión"}
+        data = {"message": "Password changed"}
 
         return Response(data, status=status.HTTP_200_OK)
-
 
     @action(detail=False, methods=["post"], url_path="recover-password-email")
     def recover_password_email(self, request, *args, **kwargs):

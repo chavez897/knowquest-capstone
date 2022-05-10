@@ -4,7 +4,7 @@ from users.models.study_area import StudyArea
 
 class StudyAreaModelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Schools
+        model = StudyArea
         fields = (
             "id",
             "name",
