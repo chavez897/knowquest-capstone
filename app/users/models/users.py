@@ -44,6 +44,30 @@ class User(CustomAbstractUser):
         help_text="Set to true when the user have verified its email address.",
     )
 
+    role = models.ForeignKey(
+        verbose_name="User Role",
+        on_delete=models.CASCADE,
+        to="users.UserRole",
+        default="regular",
+    )
+
+    school = models.ForeignKey(
+        verbose_name="School",
+        on_delete=models.CASCADE,
+        to="users.Schools",
+        blank=True,
+        null=True,
+    )
+
+    study_area = models.ForeignKey(
+        verbose_name="study area",
+        on_delete=models.CASCADE,
+        to="users.StudyArea",
+        blank=True,
+        null=True,
+    )
+
+
     class Meta:
         verbose_name = "User"
         verbose_name_plural = "Users"
