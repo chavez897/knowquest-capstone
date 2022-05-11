@@ -85,7 +85,7 @@ class PasswordRecoveryEmail(serializers.Serializer):
         #     subject="Forgot Password",
         #     body="Create new password",
         #     from_email="Knowquest <knowquest@gmail.com>",
-        #     to=["rodrichavezm@gmail.com"],
+        #     to=[email],
         # )
         # msg.send()
         return data
@@ -224,9 +224,9 @@ class UserSignUpSerializer(serializers.Serializer):
         print(token)
         # msg = EmailMultiAlternatives(
         #     subject="Email Verifaction",
-        #     body="Congrats",
+        #     body=token,
         #     from_email="Knowquest <knowquest@gmail.com>",
-        #     to=["rodrichavezm@gmail.com"],
+        #     to=[user.email],
         # )
         # msg.send()
 
