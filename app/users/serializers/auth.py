@@ -9,6 +9,10 @@ from django.contrib.auth import (
 )
 from django.db import transaction
 from django.utils import timezone
+from users.models.academic_domains import AcademicDomains
+from users.models.study_area import StudyArea
+from users.models.roles import UserRole
+from users.models.schools import Schools
 
 import jwt
 from rest_framework import exceptions, serializers
@@ -159,6 +163,9 @@ class UserSignUpSerializer(serializers.Serializer):
     password_confirmation = serializers.CharField(
         min_length=8, max_length=64, required=True
     )
+    role = serializers.CharField(min_length=1, max_length=64, required=True)
+    school = serializers.IntegerField(allow_null=True)
+    study_area = serializers.IntegerField(allow_null=True)
 
     def validate(self, data):
         """Validación de contraseña."""
@@ -170,10 +177,25 @@ class UserSignUpSerializer(serializers.Serializer):
                 {"password_confirmation": "Las contraseñas no coinciden"}
             )
         
-        if "gmail.com" in data["email"]:
-            raise serializers.ValidationError(
-                {"email": "domain error"}
-            )
+        if not UserRole.objects.filter(role=data["role"]).exists():
+            raise serializers.ValidationError({"Error": "Invalid Role"})
+
+        if data["school"] is not None and not Schools.objects.filter(id=data["school"]).exists():
+            raise serializers.ValidationError({"Error": "Invalid School"})
+        
+        if data["study_area"] is not None and not StudyArea.objects.filter(id=data["study_area"]).exists():
+            raise serializers.ValidationError({"Error": "Invalid Study Area"})
+
+        if data["role"] in ["faculty member", "student"]:
+            if data["study_area"] is None:
+                raise serializers.ValidationError({"Error": "Invalid Study Area"})
+            if data["school"] is None:
+                raise serializers.ValidationError({"Error": "Invalid School"})
+            email_domain = data["email"].split("@")[1]
+            if not AcademicDomains.objects.filter(domain=email_domain):
+                raise serializers.ValidationError(
+                    {"email": "domain error"}
+                )
 
         # Password valid or raise exception
         password_validation.validate_password(password)
@@ -183,7 +205,15 @@ class UserSignUpSerializer(serializers.Serializer):
     def create(self, data):
         """Handle user and profile creation"""
         data.pop("password_confirmation")
-        user = User.objects.create_user(**data)
+        role = data.pop("role")
+        school = data.pop("school")
+        area = data.pop("study_area")
+        user = User.objects.create_user(
+            role_id = role,
+            school_id = school,
+            study_area_id = area,
+            **data
+        )
         exp_date = timezone.now() + timedelta(days=settings.JWT_TOKEN_EXP_DAYS)
         payload = {
             "user": user.username,
