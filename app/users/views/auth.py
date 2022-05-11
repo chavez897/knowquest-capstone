@@ -54,13 +54,6 @@ class UserAuthViewSet(viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         data = UserModelSerializer(user).data
-        msg = EmailMultiAlternatives(
-            subject="Email Verifaction",
-            body="Congrats",
-            from_email="Knowquest <knowquest@gmail.com>",
-            to=["rodrichavezm@gmail.com"],
-        )
-        msg.send()
         return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=["post"])
@@ -71,7 +64,7 @@ class UserAuthViewSet(viewsets.GenericViewSet):
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        data = {"message": "Felicidades, ahora puedes iniciar sesión"}
+        data = {"message": "User verified"}
         return Response(data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["put"])

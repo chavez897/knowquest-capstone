@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth import (
     authenticate,
     password_validation,
@@ -15,6 +16,7 @@ from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt import settings as jwt_settings
 from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
+
 
 from users.models import (
     User
@@ -51,7 +53,7 @@ class UserLoginTokenPairSerializer(TokenObtainSerializer):
 
         if not user.is_active or not user.is_verified:
             raise exceptions.AuthenticationFailed(
-                "La cuenta no ha sido activada o verificada aún"
+                "User has not verified the account"
             )
         refresh = self.get_view_token(user, request)
         return {"refresh": str(refresh), "access": str(refresh.access_token)}
@@ -60,10 +62,13 @@ class UserLoginTokenPairSerializer(TokenObtainSerializer):
 class PasswordRecoveryEmail(serializers.Serializer):
     email = serializers.EmailField(required=True)
 
-    @staticmethod
-    def gen_verification_token(user):
-        """Create JWT token that the user can use to verify its account."""
+    def validate(self, data):
+        """if the email has an associated account send the recovery email."""
+        email = data["email"]
+        if not User.objects.filter(email=email).exists():
+            raise serializers.ValidationError({"Error": "Invalid User"})
         exp_date = timezone.now() + timedelta(days=settings.JWT_TOKEN_EXP_DAYS)
+        user = User.objects.get(email=email)
         payload = {
             "jti": jwt_settings.api_settings.JTI_CLAIM,
             "user": user.username,
@@ -71,14 +76,14 @@ class PasswordRecoveryEmail(serializers.Serializer):
             "token_type": "password_recovery",
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
-        return token
-
-    def validate(self, data):
-        """if the email has an associated account send the recovery email."""
-        email = data["email"]
-        user = User.objects.filter(email=email)
-        if not user.exists():
-            raise serializers.ValidationError({"Error": "El Usuario no existe"})
+        print(token)
+        # msg = EmailMultiAlternatives(
+        #     subject="Forgot Password",
+        #     body="Create new password",
+        #     from_email="Knowquest <knowquest@gmail.com>",
+        #     to=["rodrichavezm@gmail.com"],
+        # )
+        # msg.send()
         return data
 
 
@@ -94,12 +99,12 @@ class PasswordRecovery(serializers.Serializer):
         try:
             payload = jwt.decode(data, settings.SECRET_KEY, algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
-            raise serializers.ValidationError("Link de verificación ha expirado")
+            raise serializers.ValidationError("Link expired")
         except jwt.exceptions.PyJWTError:
-            raise serializers.ValidationError("Token inválido")
+            raise serializers.ValidationError("Invalid Token")
 
         if payload["token_type"] != "password_recovery":
-            raise serializers.ValidationError({"token_type": "Token inválido"})
+            raise serializers.ValidationError({"token_type": "Invalid Token"})
 
         self.context["payload"] = payload
 
@@ -113,7 +118,7 @@ class PasswordRecovery(serializers.Serializer):
 
         if password != password_confirmation:
             raise serializers.ValidationError(
-                {"password_confirmation": "Las contraseñas no coinciden"}
+                {"password_confirmation": "Passwords does not match"}
             )
 
         # Password valid or raise exception
@@ -124,7 +129,7 @@ class PasswordRecovery(serializers.Serializer):
         try:
             User.objects.get(username=self.context["payload"]["user"])
         except User.DoesNotExist:
-            raise serializers.ValidationError({"user": "Usuario no encontrado"})
+            raise serializers.ValidationError({"user": "Invalid User"})
 
         return data
 
@@ -179,7 +184,21 @@ class UserSignUpSerializer(serializers.Serializer):
         """Handle user and profile creation"""
         data.pop("password_confirmation")
         user = User.objects.create_user(**data)
-        # Registra el registro
+        exp_date = timezone.now() + timedelta(days=settings.JWT_TOKEN_EXP_DAYS)
+        payload = {
+            "user": user.username,
+            "exp": int(exp_date.timestamp()),
+            "token_type": "email_confirmation",
+        }
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+        print(token)
+        # msg = EmailMultiAlternatives(
+        #     subject="Email Verifaction",
+        #     body="Congrats",
+        #     from_email="Knowquest <knowquest@gmail.com>",
+        #     to=["rodrichavezm@gmail.com"],
+        # )
+        # msg.send()
 
         return user
 
@@ -194,19 +213,18 @@ class AccountVerificationSerializer(serializers.Serializer):
         try:
             payload = jwt.decode(data, settings.SECRET_KEY, algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
-            raise serializers.ValidationError("Link de verificación ha expirado")
+            raise serializers.ValidationError("Link has expired")
         except jwt.exceptions.PyJWTError:
-            raise serializers.ValidationError("Token inválido")
+            raise serializers.ValidationError("Invalid Token")
 
         if payload["token_type"] != "email_confirmation":
-            raise serializers.ValidationError({"token_type": "Token inválido"})
+            raise serializers.ValidationError({"token_type": "Invalid Token"})
 
         self.context["payload"] = payload
 
         return data
 
     def save(self, **kwargs):
-        """Update the user's verified active and status."""
         payload = self.context["payload"]
         request = self.context.get("request")
         user = User.objects.get(username=payload["user"])
