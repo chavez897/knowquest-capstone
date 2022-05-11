@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { HomeScreen } from "../components/home/HomeScreen";
 
 import { NavBar } from "../components/ui/NavBar";
+import { Footer } from "../components/ui/Footer";
 
 export const SystemRouter = () => {
   return (
@@ -15,6 +16,7 @@ export const SystemRouter = () => {
         <Redirect to="/home" />
       </Switch>
     </div>
+    <Footer />
   </div>
   );
 };
