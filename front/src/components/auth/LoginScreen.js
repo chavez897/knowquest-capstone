@@ -87,22 +87,22 @@ export const LoginScreen = () => {
                       />
                     </div>
                   </div>
-                  <div className="row mt-3">
+                  <div className="md:row mt-3">
                     <div className="mx-auto">
                       <button
-                        className="btn btn-primary btn-lg btn-block col-3"
+                        className="mx-1 btn btn-primary btn-lg btn-block col-12 col-md-3"
                         type="submit"
                       >
                         Login
                       </button>
                       <div
-                        className="mx-3 btn btn-primary btn-lg btn-block col-3"
+                        className="mx-1 mt-2 mt-md-0 btn btn-primary btn-lg btn-block col-12 col-md-3"
                         onClick={register}
                       >
                         Register
                       </div>
                       <div
-                        className="d-inline col-4 btn text-primary"
+                        className="mx-1 d-inline col-12 btn text-primary col-md-4"
                         onClick={forgot}
                       >
                         Forgot yout Password?
