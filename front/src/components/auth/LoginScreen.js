@@ -53,7 +53,7 @@ export const LoginScreen = () => {
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-12 col-md-8">
             <div className="card shadow-2-strong">
-              <div className="card-body p-5 text-center">
+              <div className="card-body p-5">
                 <form
                   className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
                   onSubmit={handleLogin}
