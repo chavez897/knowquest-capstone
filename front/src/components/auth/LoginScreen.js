@@ -87,7 +87,7 @@ export const LoginScreen = () => {
                       />
                     </div>
                   </div>
-                  <div className="md:row mt-3">
+                  <div className="md:row mt-3 text-center">
                     <div className="mx-auto">
                       <button
                         className="mx-1 btn btn-primary btn-lg btn-block col-12 col-md-3"

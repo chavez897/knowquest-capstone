@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "../../hooks/useForm";
+import { axiosInstance } from "../../plugins/axios";
 import Swal from "sweetalert2";
 
 export const RegisterScreen = () => {
@@ -14,15 +15,26 @@ export const RegisterScreen = () => {
 
   const { email, password, role, area, school, confirm } = formValues;
 
+  const [schools, setSchools] = useState([]);
+  const [areas, setAreas] = useState([]);
+  const [roles, setRoles] = useState(["student", "regular", "faculty member"]);
+
+  useEffect(() => {
+    axiosInstance.get("/schools/").then((res) => {
+      setSchools(res.data.results);
+    });
+    axiosInstance.get("/study-area/").then((res) => {
+      setAreas(res.data.results);
+    });
+  }, []);
+
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log("register");
-  };
-  const register = () => {
-    console.log("register");
+    console.log(role);
   };
   const forgot = () => {
-    console.log("forgot");
+    console.log(schools);
+    console.log(areas);
   };
 
   return (
@@ -47,46 +59,60 @@ export const RegisterScreen = () => {
                         value={role}
                         onChange={handleInputChange}
                       >
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
+                        <option></option>
+                        {roles.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
-                  <div className="form-group row mt-3">
-                    <label className="col-sm-4 col-form-label">
-                      Select Area of study
-                    </label>
-                    <div className="col-sm-7">
-                      <select
-                        className="form-control"
-                        name="area"
-                        value={area}
-                        onChange={handleInputChange}
-                      >
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                      </select>
+                  {(role === "student" || role === "faculty member") && (
+                    <div className="form-group row mt-3">
+                      <label className="col-sm-4 col-form-label">
+                        Select Area of study
+                      </label>
+                      <div className="col-sm-7">
+                        <select
+                          className="form-control"
+                          name="area"
+                          value={area}
+                          onChange={handleInputChange}
+                        >
+                          <option></option>
+                          {areas.map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
-                  </div>
-                  <div className="form-group row mt-3">
-                    <label className="col-sm-4 col-form-label">
-                      Select your current school
-                    </label>
-                    <div className="col-sm-7">
-                      <select
-                        className="form-control"
-                        name="school"
-                        value={school}
-                        onChange={handleInputChange}
-                      >
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                      </select>
+                  )}
+                  {(role === "student" || role === "faculty member") && (
+                    <div className="form-group row mt-3">
+                      <label className="col-sm-4 col-form-label">
+                        Select your current school
+                      </label>
+                      <div className="col-sm-7">
+                        <select
+                          className="form-control"
+                          name="school"
+                          value={school}
+                          onChange={handleInputChange}
+                        >
+                          <option></option>
+                          {schools.map((option) => (
+                            <option key={option.id} value={option.id}>
+                              {option.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
-                  </div>
+                  )}
+
                   <div className="form-group row mt-3">
                     <label className="col-sm-4 col-form-label">
                       E-Mail Address
@@ -148,7 +174,7 @@ export const RegisterScreen = () => {
                     </div>
                   </div>
                   <div className="md:row mt-3">
-                    <div className="mx-auto">
+                    <div className="mx-auto text-center">
                       <button
                         className="mx-1 btn btn-primary btn-lg btn-block col-12 col-md-4"
                         type="submit"
