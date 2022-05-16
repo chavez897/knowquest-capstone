@@ -5,7 +5,7 @@ import { Announcenment } from "../ui/Announcement";
 import { IndexSignUp } from "../ui/IndexSignUp";
 
 export const HomeScreen = () => {
-  const title = "test"
+  const title = "test 2"
   const description = "easdf"
   return (
     <div className="container-fluid">
