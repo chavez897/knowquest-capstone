@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { getUserData } from "../../actions/user";
 import { useForm } from "../../hooks/useForm";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -95,12 +96,11 @@ export const LoginScreen = () => {
                       >
                         Login
                       </button>
-                      <div
-                        className="mx-1 mt-2 mt-md-0 btn btn-primary btn-lg btn-block col-12 col-md-3"
-                        onClick={register}
-                      >
-                        Register
-                      </div>
+                      <Link to="/auth/register">
+                        <div className="mx-1 mt-2 mt-md-0 btn btn-primary btn-lg btn-block col-12 col-md-3">
+                          Register
+                        </div>
+                      </Link>
                       <div
                         className="mx-1 d-inline col-12 btn text-primary col-md-4"
                         onClick={forgot}

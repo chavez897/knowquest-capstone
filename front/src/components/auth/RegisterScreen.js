@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { axiosInstance } from "../../plugins/axios";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 export const RegisterScreen = () => {
-  const [formValues, handleInputChange] = useForm({
+  const [formValues, handleInputChange, reset] = useForm({
     email: "",
     password: "",
     role: "",
@@ -30,7 +31,50 @@ export const RegisterScreen = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(role);
+    let requestSchool = null;
+    let requestArea = null;
+    if (role === "student" || role === "faculty member") {
+      requestSchool = school;
+      requestArea = area;
+    }
+    Swal.fire({
+      title: "Loading...",
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+    const username = email.split("@")[0] + Math.floor(Math.random() * 100);
+    axiosInstance
+      .post("/auth/signup/", {
+        email: email,
+        username: username,
+        password: password,
+        password_confirmation: confirm,
+        role: role,
+        school: requestSchool,
+        studyArea: requestArea,
+      })
+      .then((res) => {
+        Swal.close();
+        Swal.fire({
+          title: "Succesful",
+          text: "Please verify your email account.",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+        reset();
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Error",
+          text:
+            error.response.data.errors[0].field +
+            ": " +
+            error.response.data.errors[0].message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      });
   };
   const forgot = () => {
     console.log(schools);
@@ -181,12 +225,11 @@ export const RegisterScreen = () => {
                       >
                         Register
                       </button>
-                      <div
-                        className="mx-1 d-inline col-12 btn text-primary"
-                        onClick={forgot}
-                      >
-                        Already have an account?
-                      </div>
+                      <Link to="/auth/login">
+                        <div className="mx-1 d-inline col-12 btn text-primary">
+                          Already have an account?
+                        </div>
+                      </Link>
                     </div>
                   </div>
                 </form>
