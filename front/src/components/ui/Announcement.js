@@ -19,11 +19,11 @@ export const Announcenment = () => {
         </div>
         <div className="col-lg-4" style={{ backgroundColor: "#f93" }}>
           <h3 className="py-3 text-center">KnowQuest Explained</h3>
-          <div class="embed-responsive embed-responsive-16by9 justify-content-center d-flex mb-5">
+          <div className="embed-responsive embed-responsive-16by9 justify-content-center d-flex mb-5">
             <iframe
-              class="embed-responsive-item"
+              className="embed-responsive-item"
               src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
-              allowfullscreen
+              allowFullScreen
             ></iframe>
           </div>
         </div>
