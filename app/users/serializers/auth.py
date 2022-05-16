@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth import (
     authenticate,
     password_validation,
@@ -8,6 +9,10 @@ from django.contrib.auth import (
 )
 from django.db import transaction
 from django.utils import timezone
+from users.models.academic_domains import AcademicDomains
+from users.models.study_area import StudyArea
+from users.models.roles import UserRole
+from users.models.schools import Schools
 
 import jwt
 from rest_framework import exceptions, serializers
@@ -15,6 +20,7 @@ from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt import settings as jwt_settings
 from rest_framework_simplejwt.serializers import TokenObtainSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
+
 
 from users.models import (
     User
@@ -51,7 +57,7 @@ class UserLoginTokenPairSerializer(TokenObtainSerializer):
 
         if not user.is_active or not user.is_verified:
             raise exceptions.AuthenticationFailed(
-                "La cuenta no ha sido activada o verificada aún"
+                "User has not verified the account"
             )
         refresh = self.get_view_token(user, request)
         return {"refresh": str(refresh), "access": str(refresh.access_token)}
@@ -59,17 +65,14 @@ class UserLoginTokenPairSerializer(TokenObtainSerializer):
 
 class PasswordRecoveryEmail(serializers.Serializer):
     email = serializers.EmailField(required=True)
-    shop_id = serializers.IntegerField(required=False)
-    is_client = serializers.BooleanField(required=True)
-    redirect_url = serializers.CharField(
-        min_length=1,
-        max_length=255,
-    )
 
-    @staticmethod
-    def gen_verification_token(user):
-        """Create JWT token that the user can use to verify its account."""
+    def validate(self, data):
+        """if the email has an associated account send the recovery email."""
+        email = data["email"]
+        if not User.objects.filter(email=email).exists():
+            raise serializers.ValidationError({"Error": "Invalid User"})
         exp_date = timezone.now() + timedelta(days=settings.JWT_TOKEN_EXP_DAYS)
+        user = User.objects.get(email=email)
         payload = {
             "jti": jwt_settings.api_settings.JTI_CLAIM,
             "user": user.username,
@@ -77,19 +80,14 @@ class PasswordRecoveryEmail(serializers.Serializer):
             "token_type": "password_recovery",
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
-        return token
-
-    def validate(self, data):
-        # TODO: Implementar lógica para clientes multitienda
-        """if the email has an associated account send the recovery email."""
-        email = data["email"]
-        user = User.objects.filter(email=email).exclude(
-            userprofile__role__role="client"
-        )
-        if user.exists():
-            print('existe')
-        else:
-            raise serializers.ValidationError({"Error": "El Usuario no existe"})
+        print(token)
+        # msg = EmailMultiAlternatives(
+        #     subject="Forgot Password",
+        #     body="Create new password",
+        #     from_email="Knowquest <knowquest@gmail.com>",
+        #     to=[email],
+        # )
+        # msg.send()
         return data
 
 
@@ -105,12 +103,12 @@ class PasswordRecovery(serializers.Serializer):
         try:
             payload = jwt.decode(data, settings.SECRET_KEY, algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
-            raise serializers.ValidationError("Link de verificación ha expirado")
+            raise serializers.ValidationError("Link expired")
         except jwt.exceptions.PyJWTError:
-            raise serializers.ValidationError("Token inválido")
+            raise serializers.ValidationError("Invalid Token")
 
         if payload["token_type"] != "password_recovery":
-            raise serializers.ValidationError({"token_type": "Token inválido"})
+            raise serializers.ValidationError({"token_type": "Invalid Token"})
 
         self.context["payload"] = payload
 
@@ -124,7 +122,7 @@ class PasswordRecovery(serializers.Serializer):
 
         if password != password_confirmation:
             raise serializers.ValidationError(
-                {"password_confirmation": "Las contraseñas no coinciden"}
+                {"password_confirmation": "Passwords does not match"}
             )
 
         # Password valid or raise exception
@@ -135,7 +133,7 @@ class PasswordRecovery(serializers.Serializer):
         try:
             User.objects.get(username=self.context["payload"]["user"])
         except User.DoesNotExist:
-            raise serializers.ValidationError({"user": "Usuario no encontrado"})
+            raise serializers.ValidationError({"user": "Invalid User"})
 
         return data
 
@@ -143,10 +141,6 @@ class PasswordRecovery(serializers.Serializer):
         user = User.objects.get(username=self.context["payload"]["user"])
         user.set_password(self.validated_data["password"])
         user.save()
-
-        # Send the token to blacklist
-        # token = SlidingToken(self.validated_data['token'], verify=False)
-        # token.blacklist()
 
         return user
 
@@ -169,12 +163,9 @@ class UserSignUpSerializer(serializers.Serializer):
     password_confirmation = serializers.CharField(
         min_length=8, max_length=64, required=True
     )
-    name = serializers.CharField(min_length=2, max_length=45, required=True)
-    last_name = serializers.CharField(min_length=2, max_length=45)
-    second_last_name = serializers.CharField(
-        min_length=0, max_length=45, allow_blank=True, required=False
-    )
-    role = serializers.CharField(required=True, max_length=24)
+    role = serializers.CharField(min_length=1, max_length=64, required=True)
+    school = serializers.IntegerField(allow_null=True)
+    study_area = serializers.IntegerField(allow_null=True)
 
     def validate(self, data):
         """Validación de contraseña."""
@@ -185,6 +176,26 @@ class UserSignUpSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 {"password_confirmation": "Las contraseñas no coinciden"}
             )
+        
+        if not UserRole.objects.filter(role=data["role"]).exists():
+            raise serializers.ValidationError({"Error": "Invalid Role"})
+
+        if data["school"] is not None and not Schools.objects.filter(id=data["school"]).exists():
+            raise serializers.ValidationError({"Error": "Invalid School"})
+        
+        if data["study_area"] is not None and not StudyArea.objects.filter(id=data["study_area"]).exists():
+            raise serializers.ValidationError({"Error": "Invalid Study Area"})
+
+        if data["role"] in ["faculty member", "student"]:
+            if data["study_area"] is None:
+                raise serializers.ValidationError({"Error": "Invalid Study Area"})
+            if data["school"] is None:
+                raise serializers.ValidationError({"Error": "Invalid School"})
+            email_domain = data["email"].split("@")[1]
+            if not AcademicDomains.objects.filter(domain=email_domain):
+                raise serializers.ValidationError(
+                    {"email": "domain error"}
+                )
 
         # Password valid or raise exception
         password_validation.validate_password(password)
@@ -194,23 +205,30 @@ class UserSignUpSerializer(serializers.Serializer):
     def create(self, data):
         """Handle user and profile creation"""
         data.pop("password_confirmation")
-        request = self.context.get("request")
         role = data.pop("role")
-        role_obj = UserProfileRole.objects.get(role=role)
-        user = User.objects.create_user(**data)
-        UserProfile.objects.create(
-            user=user,
-            role=role_obj,
+        school = data.pop("school")
+        area = data.pop("study_area")
+        user = User.objects.create_user(
+            role_id = role,
+            school_id = school,
+            study_area_id = area,
+            **data
         )
-        # Registra el registro
-        userProfile = UserProfile.objects.get(user=user)
-        role = UserProfileRole.objects.get(pk=userProfile.role)
-        # manda email para verificación
-        # transaction.on_commit(
-        #     lambda: send_verify_account_email.delay(
-        #         user_pk=user.pk, full_path_domain=login_url
-        #     )
+        exp_date = timezone.now() + timedelta(days=settings.JWT_TOKEN_EXP_DAYS)
+        payload = {
+            "user": user.username,
+            "exp": int(exp_date.timestamp()),
+            "token_type": "email_confirmation",
+        }
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+        print(token)
+        # msg = EmailMultiAlternatives(
+        #     subject="Email Verifaction",
+        #     body=token,
+        #     from_email="Knowquest <knowquest@gmail.com>",
+        #     to=[user.email],
         # )
+        # msg.send()
 
         return user
 
@@ -225,28 +243,24 @@ class AccountVerificationSerializer(serializers.Serializer):
         try:
             payload = jwt.decode(data, settings.SECRET_KEY, algorithms=["HS256"])
         except jwt.ExpiredSignatureError:
-            raise serializers.ValidationError("Link de verificación ha expirado")
+            raise serializers.ValidationError("Link has expired")
         except jwt.exceptions.PyJWTError:
-            raise serializers.ValidationError("Token inválido")
+            raise serializers.ValidationError("Invalid Token")
 
         if payload["token_type"] != "email_confirmation":
-            raise serializers.ValidationError({"token_type": "Token inválido"})
+            raise serializers.ValidationError({"token_type": "Invalid Token"})
 
         self.context["payload"] = payload
 
         return data
 
     def save(self, **kwargs):
-        """Update the user's verified active and status."""
         payload = self.context["payload"]
         request = self.context.get("request")
-        redirect_url = request.headers["Referer"]
         user = User.objects.get(username=payload["user"])
         user.is_verified = True
         user.is_active = True
         user.save()
-        userProfile = UserProfile.objects.get(user=user)
-        role = UserProfileRole.objects.get(pk=userProfile.role)
 
 
 class ChangePasswordSerializer(serializers.Serializer):
