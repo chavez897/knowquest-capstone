@@ -9,3 +9,9 @@ docker-compose run --rm app python manage.py migrate
 docker-compose run --rm app python manage.py createsuperuser (it will ask data to create your first user)
 
 docker-compose up
+
+If running in windows kill react container
+
+npm install
+
+npm start
