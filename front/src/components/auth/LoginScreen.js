@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { getUserData } from "../../actions/user";
 import { useForm } from "../../hooks/useForm";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -41,45 +42,79 @@ export const LoginScreen = () => {
         });
       });
   };
+  const register = () => {
+    console.log("register");
+  };
+  const forgot = () => {
+    console.log("forgot");
+  };
   return (
-  <section className="vh-100 bg-info">
-    <div className="container py-5 h-100">
-      <div className="row d-flex justify-content-center align-items-center h-100">
-        <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div className="card shadow-2-strong">
-            <div className="card-body p-5 text-center">
+    <section className="vh-75">
+      <div className="container py-5 h-100">
+        <div className="row d-flex justify-content-center align-items-center h-100">
+          <div className="col-12 col-md-8">
+            <div className="card shadow-2-strong">
+              <div className="card-body p-5">
+                <form
+                  className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+                  onSubmit={handleLogin}
+                >
+                  <div className="form-group row">
+                    <label className="col-sm-3 col-form-label">
+                      E-Mail Address
+                    </label>
+                    <div className="col-sm-7">
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Email"
+                        name="email"
+                        value={email}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
 
-              <h3 className="mb-5">Sign in</h3>
-              <form
-                className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-                onSubmit={handleLogin}
-              >
-                <div className="form-outline mb-4">
-                  <input type="email" id="typeEmailX-2" className="form-control form-control-lg" 
-                    name="email"
-                    value={email}
-                    onChange={handleInputChange} 
-                  />
-                  <label className="form-label">Email</label>
-                </div>
-
-                <div className="form-outline mb-4">
-                  <input type="password" id="typePasswordX-2" className="form-control form-control-lg"
-                    name="password"
-                    value={password}
-                    onChange={handleInputChange} 
-                  />
-                  <label className="form-label">Password</label>
-                </div>
-
-                <button className="btn btn-primary btn-lg btn-block" type="submit">Login</button>
-              </form>
-
+                  <div className="form-group row mt-3">
+                    <label className="col-sm-3 col-form-label">Password</label>
+                    <div className="col-sm-7">
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Password"
+                        name="password"
+                        value={password}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="md:row mt-3 text-center">
+                    <div className="mx-auto">
+                      <button
+                        className="mx-1 btn btn-primary btn-lg btn-block col-12 col-md-3"
+                        type="submit"
+                      >
+                        Login
+                      </button>
+                      <Link to="/auth/register">
+                        <div className="mx-1 mt-2 mt-md-0 btn btn-primary btn-lg btn-block col-12 col-md-3">
+                          Register
+                        </div>
+                      </Link>
+                      <div
+                        className="mx-1 d-inline col-12 btn text-primary col-md-4"
+                        onClick={forgot}
+                      >
+                        Forgot yout Password?
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
   );
 };

@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+  Route,
+} from "react-router-dom";
 
+import { NavBar } from "../components/ui/NavBar";
+import { Footer } from "../components/ui/Footer";
+import { HomeScreen } from "../components/home/HomeScreen";
 import { AuthRouter } from "./AuthRouter";
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
@@ -9,7 +17,6 @@ import { loginAction } from "../actions/auth";
 import { SystemRouter } from "./SystemRouter";
 import { getUserData } from "../actions/user";
 import { LoadingScreen } from "../components/ui/LoadingScreen";
-
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -20,13 +27,14 @@ export const AppRouter = () => {
     const refresh = localStorage.getItem("refresh");
     if (access !== null && access !== undefined) {
       dispatch(loginAction(access, refresh));
-      dispatch(getUserData()).then(() => {
-        setChecking(false);
-      })
-      .catch(() => {
-        console.log('catch')
-        setChecking(false);
-      });
+      dispatch(getUserData())
+        .then(() => {
+          setChecking(false);
+        })
+        .catch(() => {
+          console.log("catch");
+          setChecking(false);
+        });
     } else {
       setChecking(false);
     }
@@ -38,6 +46,7 @@ export const AppRouter = () => {
 
   return (
     <div>
+      <NavBar />
       <Router>
         <div>
           <Switch>
@@ -47,16 +56,19 @@ export const AppRouter = () => {
               component={AuthRouter}
             />
 
-            <PrivateRoute
+            {/* <PrivateRoute
               path="/"
               component={SystemRouter}
               isAuthenticated={!!user.username}
-            />
+            /> */}
 
-            <Redirect to="/auth/login" />
+            <Route exact path="/home" component={HomeScreen} />
+
+            <Redirect to="/home" />
           </Switch>
         </div>
       </Router>
+      <Footer />
     </div>
   );
 };

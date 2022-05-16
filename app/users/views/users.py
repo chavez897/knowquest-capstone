@@ -1,13 +1,3 @@
-"""
-Application name:               users.py
-Author/Programmer:              Rodrigo Chavez Mercado
-Date application created:       April 1st, 2022
-
-This view allows to perform insert, select, search, update and delete
-operations in the users table. All of these operations are only allowed 
-for logged in users.
-"""
-
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -19,10 +9,8 @@ from users.serializers.users import UserModelSerializer
 
 
 class UserViewSet(
-    mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
-    mixins.ListModelMixin,
     viewsets.GenericViewSet,
 ):
     queryset = User.objects.all()
