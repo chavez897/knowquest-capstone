@@ -1,13 +1,12 @@
 import React from "react";
-import logo from "./logo192.jpeg";
 
-export const Card = ({title, description}) => {
+export const Card = ({src, title, description}) => {
   return (
-    <div className="card mt-2 mb-2 hover-shadow">
-      <img src={logo} className="card-img-top" alt="" style={{height:"20vh"}} />
+    <div className="card py-3 hover-shadow">
+      <img src={src} className="card-img-top mx-auto d-block" alt="" style={{height:"10vh", width:"10vh"}} />
       <div className="card-body">
         <h5 className="card-title text-center">{title}</h5>
-        <p className="card-text">
+        <p className="card-text text-center">
         {description}
         </p>
       </div>

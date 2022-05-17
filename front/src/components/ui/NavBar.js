@@ -1,17 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { logout } from "../../actions/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export const NavBar = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const handleLogout = () => {
     dispatch(logout());
   };
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light px-3">
-      <div className="container">
-        <a className="navbar-brand " href="#">
+      <div className="container-fluid">
+        <a className="navbar-brand " href="/home">
           <b style={{ color: "#333999" }}>
             Know<span style={{ color: "#f93" }}>Quest</span>
           </b>
@@ -32,13 +33,13 @@ export const NavBar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
+              <a className="nav-link active" aria-current="page" href="/home">
                 Home
               </a>
             </li>
             <li className="nav-item dropdown">
               <a
-                className="nav-link dropdown-toggle"
+                className="nav-link dropdown-toggle active"
                 href="#"
                 id="navbarDropdown"
                 role="button"
@@ -49,57 +50,65 @@ export const NavBar = () => {
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item active" href="#">
                     Textbook
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item active" href="#">
                     School
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item active" href="#">
                     Class
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item active" href="#">
                     Online Learning
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item active" href="#">
                     Resource
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item active" href="#">
                     Wekipedia
                   </a>
                 </li>
               </ul>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link active" href="#">
                 Search
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link active" href="#">
                 Partners
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link active" href="#">
                 Contests
               </a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link btn" onClick={handleLogout}>
-                Logout
-              </a>
-            </li>
+            {user.username ? (
+                <li className="nav-item">
+                  <a className="nav-link active" onClick={handleLogout} href="#">
+                    Logout [{user.username}]
+                  </a>
+                </li>
+            ) : (
+              <li className="nav-item">
+                <a className="nav-link active" href="/auth/login">
+                  Login
+                </a>
+              </li>
+            )}
           </ul>
         </div>
       </div>

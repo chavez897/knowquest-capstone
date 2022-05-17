@@ -1,8 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 export const IndexSignUp = () => {
+  const user = useSelector((state) => state.user);
   return (
-    <div className="container-fluid" style={{ backgroundColor: "#333999" }}>
+    <div className="row" style={{ backgroundColor: "#333999" }}>
       <div className="row px-5">
         <div className="col-lg-6">
           <h3 className="text-white py-3">
@@ -14,25 +16,35 @@ export const IndexSignUp = () => {
             Anonymous. The following question is in response to the current
             pandemic: Do you prefer to learn Online or In Class?
           </p>
-          <div className="text-white py-3">
+          <div className="text-white py-2">
             <input type="radio" value="Online" name="btn" /> Online Learning
+          </div>
+          <div className="text-white mb-5">
             <input type="radio" value="Inclass" name="btn" /> Inclass Learning
           </div>
-          <button
-            type="button"
+          <a
+            role="button"
             className="btn btn-warning text-white"
             style={{ width: "30vh" }}
           >
             Submit
-          </button>
+          </a>
           <div className="text-white py-3">
-            <p>
-              You must be <span>logged in</span>to answer questions
-            </p>
+            {user.username ? (
+              <div>
+                <p>Hi {user.username}, you can submit your response now!</p>
+              </div>
+            ) : (
+              <div>
+                <p>
+                  You must be <a href="/auth/login">logged in</a> to answer
+                  questions
+                </p>
+              </div>
+            )}
           </div>
         </div>
-        <div className="col-lg-2"></div>
-        <div className="col-lg-4 bg-light">
+        <div className="col-lg-4 bg-light offset-lg-2">
           <h3 className="py-3 text-center">Sign up Today</h3>
           <p>
             Just sign up with your school email. We will send you a confirmation
@@ -41,22 +53,24 @@ export const IndexSignUp = () => {
             a minute and we do not collect any other personal information.
           </p>
           <div className="py-3 d-flex justify-content-center">
-            <button
-              type="button"
+            <a
+              role="button"
               className="btn btn-warning text-white"
               style={{ width: "30vh" }}
+              href="/auth/login"
             >
               Login
-            </button>
+            </a>
           </div>
           <div className="py-3 d-flex justify-content-center">
-            <button
-              type="button"
+            <a
+              role="button"
               className="btn btn-warning text-white"
               style={{ width: "30vh" }}
+              href="/auth/register"
             >
               Register
-            </button>
+            </a>
           </div>
         </div>
       </div>
