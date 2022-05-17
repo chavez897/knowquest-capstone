@@ -2,14 +2,16 @@ import React from "react";
 
 export const Announcenment = () => {
   return (
-    <div className="container-fluid" style={{ backgroundColor: "#333999" }}>
+    <div className="row" style={{ backgroundColor: "#333999" }}>
       <div className="row px-5">
         <div className="col-lg-8">
           <h3 className="text-white py-3">Announcement</h3>
           <div
-            className="mb-3 bg-light py-3"
-            style={{ overflow: "scroll", height: "20vh" }}
+            className="bg-light mb-5"
+            style={{ overflow: "scroll", height: "30vh" }}
           >
+            <p>Announcenment \n</p>
+            <p>Announcenment \n</p>
             <p>Announcenment \n</p>
             <p>Announcenment \n</p>
             <p>Announcenment \n</p>
@@ -18,11 +20,11 @@ export const Announcenment = () => {
           </div>
         </div>
         <div className="col-lg-4" style={{ backgroundColor: "#f93" }}>
-          <h3 className="py-3 text-center">KnowQuest Explained</h3>
-          <div className="embed-responsive embed-responsive-16by9 justify-content-center d-flex mb-5">
+          <div className="row"><h3 className="py-3 text-center">KnowQuest Explained</h3></div>
+          <div className="row embed-responsive embed-responsive-16by9 justify-content-center d-flex">
             <iframe
               className="embed-responsive-item"
-              src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
+              src="https://knowquest.net/images/KnowQuest2020.mp4"
               allowFullScreen
             ></iframe>
           </div>
