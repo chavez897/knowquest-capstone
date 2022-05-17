@@ -10,3 +10,4 @@ argon2-cffi==20.1.0  # https://github.com/hynek/argon2_cffi
 django-allauth==0.44.0  # https://github.com/pennersr/django-allauth
 drf-friendly-errors-2==0.14.3  # https://pypi.org/project/drf-friendly-errors-2/
 django-environ==0.4.5  # https://github.com/joke2k/django-environ
+Pillow==8.1.2  # https://github.com/python-pillow/Pillow
