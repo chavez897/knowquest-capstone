@@ -17,6 +17,7 @@ import { loginAction } from "../actions/auth";
 import { SystemRouter } from "./SystemRouter";
 import { getUserData } from "../actions/user";
 import { LoadingScreen } from "../components/ui/LoadingScreen";
+import { PartnersScreen } from "../components/partners/PartnersScreen";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -63,6 +64,7 @@ export const AppRouter = () => {
             /> */}
 
             <Route exact path="/home" component={HomeScreen} />
+            <Route exact path="/partners" component={PartnersScreen} />
 
             <Redirect to="/home" />
           </Switch>
