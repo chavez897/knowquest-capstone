@@ -129,5 +129,8 @@ dmypy.json
 .pyre/
 
 /.envs
+
 docker-compose.yml
 front/package-lock.json
+app/media
+

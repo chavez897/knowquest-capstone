@@ -5,4 +5,7 @@ export const types = {
   saveTokens: "[Tokens] Save",
   deleteTokens: "[Tokens] Delete",
   refreshTokens: "[Tokens] Refresh",
+
+  savePartners: "[Partners] Save",
+  deletePartners: "[Partners] Delete"
 };
