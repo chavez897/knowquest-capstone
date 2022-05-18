@@ -65,6 +65,7 @@ export const RegisterScreen = () => {
         reset();
       })
       .catch((error) => {
+        Swal.close();
         Swal.fire({
           title: "Error",
           text:

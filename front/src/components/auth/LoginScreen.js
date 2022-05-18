@@ -101,12 +101,14 @@ export const LoginScreen = () => {
                           Register
                         </div>
                       </Link>
-                      <div
-                        className="mx-1 d-inline col-12 btn text-primary col-md-4"
-                        onClick={forgot}
-                      >
-                        Forgot yout Password?
-                      </div>
+                      <Link to="/auth/forgot-password">
+                        <div
+                          className="mx-1 d-inline col-12 btn text-primary col-md-4"
+                          onClick={forgot}
+                        >
+                          Forgot yout Password?
+                        </div>
+                      </Link>
                     </div>
                   </div>
                 </form>
