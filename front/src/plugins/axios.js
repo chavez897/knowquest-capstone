@@ -4,7 +4,7 @@ import { logout, refresh } from "../actions/auth";
 import { store } from "../store/store";
 
 export const axiosInstance = axios.create({
-  baseURL: `http://127.0.0.1:8000`,
+  baseURL: `http://127.0.0.1:8000/api`,
 });
 
 // Token Refresh

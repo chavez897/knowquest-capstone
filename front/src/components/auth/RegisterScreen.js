@@ -18,7 +18,7 @@ export const RegisterScreen = () => {
 
   const [schools, setSchools] = useState([]);
   const [areas, setAreas] = useState([]);
-  const [roles, setRoles] = useState(["student", "regular", "faculty member"]);
+  const [roles] = useState(["student", "regular", "faculty member"]);
 
   useEffect(() => {
     axiosInstance.get("/schools/").then((res) => {
@@ -49,7 +49,7 @@ export const RegisterScreen = () => {
         email: email,
         username: username,
         password: password,
-        password_confirmation: confirm,
+        passwordConfirmation: confirm,
         role: role,
         school: requestSchool,
         studyArea: requestArea,
@@ -65,6 +65,7 @@ export const RegisterScreen = () => {
         reset();
       })
       .catch((error) => {
+        Swal.close();
         Swal.fire({
           title: "Error",
           text:
@@ -75,10 +76,6 @@ export const RegisterScreen = () => {
           confirmButtonText: "Ok",
         });
       });
-  };
-  const forgot = () => {
-    console.log(schools);
-    console.log(areas);
   };
 
   return (
