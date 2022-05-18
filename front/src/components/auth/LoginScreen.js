@@ -42,12 +42,6 @@ export const LoginScreen = () => {
         });
       });
   };
-  const register = () => {
-    console.log("register");
-  };
-  const forgot = () => {
-    console.log("forgot");
-  };
   return (
     <section className="vh-75">
       <div className="container py-5 h-100">
@@ -104,7 +98,6 @@ export const LoginScreen = () => {
                       <Link to="/auth/forgot-password">
                         <div
                           className="mx-1 d-inline col-12 btn text-primary col-md-4"
-                          onClick={forgot}
                         >
                           Forgot yout Password?
                         </div>
