@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { login } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 import { getUserData } from "../../actions/user";
 import { useForm } from "../../hooks/useForm";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import queryString from "query-string";
+import { axiosInstance } from "../../plugins/axios";
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -15,6 +18,45 @@ export const LoginScreen = () => {
   });
 
   const { email, password } = formValues;
+
+  const location = useLocation();
+  const { token = "" } = queryString.parse(location.search);
+
+  useEffect(() => {
+    if (token.length > 0) {
+      Swal.fire({
+        title: "Loading...",
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      axiosInstance
+        .post("/auth/verify/", {
+          token: token,
+        })
+        .then((res) => {
+          Swal.close();
+          Swal.fire({
+            title: "Succesful",
+            text: "You can login with your new account",
+            icon: "success",
+            confirmButtonText: "Ok",
+          });
+        })
+        .catch((error) => {
+          Swal.close();
+          Swal.fire({
+            title: "Error",
+            text:
+              error.response.data.errors[0].field +
+              ": " +
+              error.response.data.errors[0].message,
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        });
+    }
+  }, [token]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -96,9 +138,7 @@ export const LoginScreen = () => {
                         </div>
                       </Link>
                       <Link to="/auth/forgot-password">
-                        <div
-                          className="mx-1 d-inline col-12 btn text-primary col-md-4"
-                        >
+                        <div className="mx-1 d-inline col-12 btn text-primary col-md-4">
                           Forgot yout Password?
                         </div>
                       </Link>
