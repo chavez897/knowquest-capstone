@@ -22,8 +22,10 @@ export const getUserDataAction = (res) => ({
   payload: {
     id: res.id,
     username: res.username,
-    name: res.name,
-    lastName: res.lastName,
+    role: res.role,
+    school: res.school,
+    studyArea: res.studyArea,
+    email: res.email,
   },
 });
 

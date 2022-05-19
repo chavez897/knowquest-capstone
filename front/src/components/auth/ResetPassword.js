@@ -22,7 +22,7 @@ export const ResetPasswordScreen = () => {
     if (token.length <= 0) {
         history.push('/auth/login')
     }
-  }, [token]);
+  }, [token, history]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

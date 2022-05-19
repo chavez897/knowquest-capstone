@@ -6,8 +6,10 @@ export const userReducer = (state = {}, action) => {
       return {
         id: action.payload.id,
         username: action.payload.username,
-        name: action.payload.name,
-        lastName: action.payload.lastName,
+        role: action.payload.role,
+        school: action.payload.school,
+        studyArea: action.payload.studyArea,
+        email: action.payload.email
       };
     case types.deleteUser:
       return {};

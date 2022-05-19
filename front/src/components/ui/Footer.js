@@ -1,6 +1,10 @@
 import React from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFacebook, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebook,
+  faLinkedin,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 
 const getCurrentYear = () => {
   return new Date().getFullYear();
@@ -16,18 +20,18 @@ const ColoredLine = ({ color }) => (
   />
 );
 
-const twitter = <FontAwesomeIcon icon={faTwitter} />
-const facebook = <FontAwesomeIcon icon={faFacebook} />
-const linkedin = <FontAwesomeIcon icon={faLinkedin} />
+const twitter = <FontAwesomeIcon icon={faTwitter} />;
+const facebook = <FontAwesomeIcon icon={faFacebook} />;
+const linkedin = <FontAwesomeIcon icon={faLinkedin} />;
 
 export const Footer = () => {
-    return (
+  return (
     <div className="bg-dark d-flex justify-content-center align-items-center text-white">
       <div className="container mt-5 mb-5">
         <div className="row">
           <div className="col-lg-6">
             <div className="row">
-              <h2 href="/home">
+              <h2 className="pointer">
                 <b style={{ color: "white" }}>
                   Know<span style={{ color: "#f93" }}>Quest</span>
                 </b>
@@ -37,34 +41,54 @@ export const Footer = () => {
               <h6>The world's first academic feedback platform</h6>
             </div>
             <div className="row mt-2">
-                <div className="col-sm-1"><a href="#">{twitter}</a></div>
-                <div className="col-sm-1"><a href="#">{facebook}</a></div>
-                <div className="col-sm-1"><a href="#">{linkedin}</a></div>
+              <div className="col-sm-1 pointer">
+                <div>{twitter}</div>
+              </div>
+              <div className="col-sm-1 pointer">
+                <div>{facebook}</div>
+              </div>
+              <div className="col-sm-1 pointer">
+                <div>{linkedin}</div>
+              </div>
             </div>
           </div>
           <div className="col-lg-6">
             <div className="row">
-              <div className="col"><h5><b>Menu</b></h5></div>
+              <div className="col ">
+                <h5>
+                  <b>Menu</b>
+                </h5>
+              </div>
             </div>
             <div className="row mt-1">
               <div className="col">
-                <a href="/home" style={{ color: "white" }}>Home</a>
+                <div className="pointer" style={{ color: "white" }}>
+                  Home
+                </div>
               </div>
               <div className="col">
-              <a href="#" style={{ color: "white" }}>F.A.Q.</a>
+                <div className="pointer" style={{ color: "white" }}>
+                  F.A.Q.
+                </div>
               </div>
             </div>
             <div className="row mt-2">
               <div className="col">
-              <a href="#" style={{ color: "white" }}>About</a>
+                <div className="pointer" style={{ color: "white" }}>
+                  About
+                </div>
               </div>
               <div className="col">
-              <a href="#" style={{ color: "white" }}>Reccommendations</a>
+                <div className="pointer" style={{ color: "white" }}>
+                  Reccommendations
+                </div>
               </div>
             </div>
             <div className="row py-2">
               <div className="col">
-              <a href="#" style={{ color: "white" }}>Keep Contact</a>
+                <div className="pointer" style={{ color: "white" }}>
+                  Keep Contact
+                </div>
               </div>
             </div>
           </div>
@@ -76,14 +100,14 @@ export const Footer = () => {
           <div className="col-lg-6">
             copyright {getCurrentYear()} @ KnowQuest.Inc
           </div>
-          <div className="col-lg-2">
-            <a href="#" style={{ color: "white" }}>Copyrights</a>
+          <div className="col-lg-2 pointer">
+            <div style={{ color: "white" }}>Copyrights</div>
           </div>
-          <div className="col-lg-2">
-            <a href="#" style={{ color: "white" }}>Term of use</a>
+          <div className="col-lg-2 pointer">
+            <div style={{ color: "white" }}>Term of use</div>
           </div>
-          <div className="col-lg-2">
-            <a href="#" style={{ color: "white" }}>Privacy policy</a>
+          <div className="col-lg-2 pointer">
+            <div style={{ color: "white" }}>Privacy policy</div>
           </div>
         </div>
       </div>
