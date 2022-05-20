@@ -45,33 +45,57 @@ export const IndexSignUp = () => {
           </div>
         </div>
         <div className="col-lg-4 bg-light offset-lg-2">
-          <h3 className="py-3 text-center">Sign up Today</h3>
-          <p>
-            Just sign up with your school email. We will send you a confirmation
-            email so check your inbox and junk folder. Then just click the link
-            in the confirmation email to setup your profile. It takes less than
-            a minute and we do not collect any other personal information.
-          </p>
-          <div className="py-3 d-flex justify-content-center">
-            <a
-              role="button"
-              className="btn btn-warning text-white"
-              style={{ width: "30vh" }}
-              href="/auth/login"
-            >
-              Login
-            </a>
-          </div>
-          <div className="py-3 d-flex justify-content-center">
-            <a
-              role="button"
-              className="btn btn-warning text-white"
-              style={{ width: "30vh" }}
-              href="/auth/register"
-            >
-              Register
-            </a>
-          </div>
+          {user.username ? (
+            <div>
+              <h4 className="py-5 text-center">Refer A Student or Professor</h4>
+              <p>
+                Refer your fellow students and professors for additional chances
+                to win in our contests! As long as they are an active user, you
+                get extra contest entries!
+              </p>
+              <div className="py-5 d-flex justify-content-center">
+                <a
+                  role="button"
+                  className="btn btn-warning text-white"
+                  style={{ width: "30vh" }}
+                  href="#"
+                >
+                  Start Refering
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <h3 className="py-3 text-center">Sign up Today</h3>
+              <p>
+                Just sign up with your school email. We will send you a
+                confirmation email so check your inbox and junk folder. Then
+                just click the link in the confirmation email to setup your
+                profile. It takes less than a minute and we do not collect any
+                other personal information.
+              </p>
+              <div className="py-3 d-flex justify-content-center">
+                <a
+                  role="button"
+                  className="btn btn-warning text-white"
+                  style={{ width: "30vh" }}
+                  href="/auth/login"
+                >
+                  Login
+                </a>
+              </div>
+              <div className="py-3 d-flex justify-content-center">
+                <a
+                  role="button"
+                  className="btn btn-warning text-white"
+                  style={{ width: "30vh" }}
+                  href="/auth/register"
+                >
+                  Register
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
