@@ -83,7 +83,9 @@ export const NavBar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <div className="nav-link active pointer">Contests</div>
+              <Link to="/contests">
+                <div className="nav-link active pointer">Contests</div>
+              </Link>
             </li>
             {user.email ? (
               <>

@@ -62,7 +62,8 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "users.apps.UsersConfig",
-    "partners.apps.PartnersConfig"
+    "partners.apps.PartnersConfig",
+    "contests.apps.ContestsConfig"
 ]
 
 MIGRATION_MODULES = {"sites": "contrib.sites.migrations"}

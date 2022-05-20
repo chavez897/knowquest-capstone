@@ -1,3 +1,4 @@
+from posixpath import basename
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
@@ -12,6 +13,7 @@ from users.views.auth import (
 from users.views.schools import SchoolsViewSet
 from users.views.study_area import StudyAreaViewSet
 from partners.views.partners import PartnersViewSet
+from contests.views.contests import ContestsViewSet
 
 
 
@@ -22,6 +24,7 @@ router.register("users", UserViewSet)
 router.register("schools", SchoolsViewSet)
 router.register("study-area", StudyAreaViewSet)
 router.register("partners", PartnersViewSet, basename="partners")
+router.register("contests", ContestsViewSet, basename="contests")
 
 urlpatterns = [
     path('admin/', admin.site.urls),

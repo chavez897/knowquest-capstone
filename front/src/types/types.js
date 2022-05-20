@@ -7,5 +7,8 @@ export const types = {
   refreshTokens: "[Tokens] Refresh",
 
   savePartners: "[Partners] Save",
-  deletePartners: "[Partners] Delete"
+  deletePartners: "[Partners] Delete",
+
+  saveContests: "[Contests] Save",
+  deleteContests: "[Contests] Delete"
 };
