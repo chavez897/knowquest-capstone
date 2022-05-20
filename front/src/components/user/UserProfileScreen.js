@@ -2,19 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { axiosInstance } from "../../plugins/axios";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/auth";
 
-export const RegisterScreen = () => {
+export const UserProfileScreen = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const user = useSelector((state) => state.user);
+
   const [formValues, handleInputChange, reset] = useForm({
-    email: "",
-    password: "",
-    role: "",
-    area: "",
-    school: "",
-    confirm: "",
+    oldPassword: "",
+    newPassword: "",
   });
 
-  const { email, password, role, area, school, confirm } = formValues;
+  const { oldPassword, newPassword } = formValues;
 
   const [schools, setSchools] = useState([]);
   const [areas, setAreas] = useState([]);
@@ -31,38 +33,28 @@ export const RegisterScreen = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    let requestSchool = null;
-    let requestArea = null;
-    if (role === "student" || role === "faculty member") {
-      requestSchool = school;
-      requestArea = area;
-    }
     Swal.fire({
       title: "Loading...",
       didOpen: () => {
         Swal.showLoading();
       },
     });
-    const username = email.split("@")[0] + Math.floor(Math.random() * 100);
     axiosInstance
-      .post("/auth/signup/", {
-        email: email,
-        username: username,
-        password: password,
-        passwordConfirmation: confirm,
-        role: role,
-        school: requestSchool,
-        studyArea: requestArea,
+      .put("/auth/update_password/", {
+        oldPassword: oldPassword,
+        newPassword: newPassword,
       })
       .then((res) => {
+        reset();
         Swal.close();
         Swal.fire({
           title: "Succesful",
-          text: "Please verify your email account.",
+          text: "You will have to log in with your new password.",
           icon: "success",
           confirmButtonText: "Ok",
         });
-        reset();
+        dispatch(logout());
+        history.push("/auth/login");
       })
       .catch((error) => {
         Swal.close();
@@ -97,8 +89,8 @@ export const RegisterScreen = () => {
                       <select
                         className="form-control"
                         name="role"
-                        value={role}
-                        onChange={handleInputChange}
+                        value={user.role}
+                        disabled={true}
                       >
                         <option></option>
                         {roles.map((option) => (
@@ -109,7 +101,8 @@ export const RegisterScreen = () => {
                       </select>
                     </div>
                   </div>
-                  {(role === "student" || role === "faculty member") && (
+                  {(user.role === "student" ||
+                    user.role === "faculty member") && (
                     <div className="form-group row mt-3">
                       <label className="col-sm-4 col-form-label">
                         Select Area of study
@@ -118,8 +111,8 @@ export const RegisterScreen = () => {
                         <select
                           className="form-control"
                           name="area"
-                          value={area}
-                          onChange={handleInputChange}
+                          value={user.studyArea}
+                          disabled={true}
                         >
                           <option></option>
                           {areas.map((option) => (
@@ -131,7 +124,8 @@ export const RegisterScreen = () => {
                       </div>
                     </div>
                   )}
-                  {(role === "student" || role === "faculty member") && (
+                  {(user.role === "student" ||
+                    user.role === "faculty member") && (
                     <div className="form-group row mt-3">
                       <label className="col-sm-4 col-form-label">
                         Select your current school
@@ -140,8 +134,8 @@ export const RegisterScreen = () => {
                         <select
                           className="form-control"
                           name="school"
-                          value={school}
-                          onChange={handleInputChange}
+                          value={user.school}
+                          disabled={true}
                         >
                           <option></option>
                           {schools.map((option) => (
@@ -164,8 +158,8 @@ export const RegisterScreen = () => {
                         className="form-control"
                         placeholder="Email"
                         name="email"
-                        value={email}
-                        onChange={handleInputChange}
+                        value={user.email}
+                        disabled={true}
                       />
                     </div>
                   </div>
@@ -177,8 +171,8 @@ export const RegisterScreen = () => {
                         type="password"
                         className="form-control"
                         placeholder="Password"
-                        name="password"
-                        value={password}
+                        name="oldPassword"
+                        value={oldPassword}
                         onChange={handleInputChange}
                       />
                     </div>
@@ -192,26 +186,10 @@ export const RegisterScreen = () => {
                         type="password"
                         className="form-control"
                         placeholder="Confirm Password"
-                        name="confirm"
-                        value={confirm}
+                        name="newPassword"
+                        value={newPassword}
                         onChange={handleInputChange}
                       />
-                    </div>
-                  </div>
-                  <div className="form-check row mt-3">
-                    <div className="col-10">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="defaultCheck1"
-                      />
-                      <label
-                        className="form-check-label text-left"
-                        forhtml="defaultCheck1"
-                      >
-                        I accept the Terms of Use and Privacy Policy
-                      </label>
                     </div>
                   </div>
                   <div className="md:row mt-3">
@@ -220,13 +198,8 @@ export const RegisterScreen = () => {
                         className="mx-1 btn btn-primary btn-lg btn-block col-12 col-md-4"
                         type="submit"
                       >
-                        Register
+                        Update Password
                       </button>
-                      <Link to="/auth/login">
-                        <div className="mx-1 d-inline col-12 btn text-primary">
-                          Already have an account?
-                        </div>
-                      </Link>
                     </div>
                   </div>
                 </form>

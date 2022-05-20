@@ -23,6 +23,7 @@ export const Announcenment = () => {
           <div className="row"><h3 className="py-3 text-center">KnowQuest Explained</h3></div>
           <div className="row embed-responsive embed-responsive-16by9 justify-content-center d-flex">
             <iframe
+              title="VideoDemo"
               className="embed-responsive-item"
               src="https://knowquest.net/images/KnowQuest2020.mp4"
               allowFullScreen

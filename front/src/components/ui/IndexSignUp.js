@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export const IndexSignUp = () => {
@@ -22,13 +23,13 @@ export const IndexSignUp = () => {
           <div className="text-white mb-5">
             <input type="radio" value="Inclass" name="btn" /> Inclass Learning
           </div>
-          <a
+          <div
             role="button"
             className="btn btn-warning text-white"
             style={{ width: "30vh" }}
           >
             Submit
-          </a>
+          </div>
           <div className="text-white py-3">
             {user.username ? (
               <div>
@@ -37,7 +38,7 @@ export const IndexSignUp = () => {
             ) : (
               <div>
                 <p>
-                  You must be <a href="/auth/login">logged in</a> to answer
+                  You must be <Link to="/auth/login">logged in</Link> to answer
                   questions
                 </p>
               </div>

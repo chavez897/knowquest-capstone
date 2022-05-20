@@ -1,47 +1,53 @@
 import React, { useEffect } from "react";
-import { login } from "../../actions/auth";
-import { useDispatch } from "react-redux";
-import { getUserData } from "../../actions/user";
 import { useForm } from "../../hooks/useForm";
+import { axiosInstance } from "../../plugins/axios";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
-import { axiosInstance } from "../../plugins/axios";
+import { useHistory } from "react-router-dom";
 
-export const LoginScreen = () => {
-  const dispatch = useDispatch();
-
-  const [formValues, handleInputChange] = useForm({
-    email: "",
+export const ResetPasswordScreen = () => {
+  const history = useHistory();
+  const [formValues, handleInputChange, reset] = useForm({
     password: "",
+    confirm: "",
   });
 
-  const { email, password } = formValues;
+  const { password, confirm } = formValues;
 
   const location = useLocation();
   const { token = "" } = queryString.parse(location.search);
 
   useEffect(() => {
-    if (token.length > 0) {
-      Swal.fire({
+    if (token.length <= 0) {
+        history.push('/auth/login')
+    }
+  }, [token, history]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    Swal.fire({
         title: "Loading...",
         didOpen: () => {
           Swal.showLoading();
         },
       });
       axiosInstance
-        .post("/auth/verify/", {
-          token: token,
+        .post("/auth/recover-password/", {
+          password: password,
+          passwordConfirmation: confirm,
+          token: token
         })
         .then((res) => {
           Swal.close();
           Swal.fire({
             title: "Succesful",
-            text: "You can login with your new account",
+            text: "You can login with your new password",
             icon: "success",
             confirmButtonText: "Ok",
           });
+          reset();
+          history.push('/auth/login')
         })
         .catch((error) => {
           Swal.close();
@@ -55,34 +61,6 @@ export const LoginScreen = () => {
             confirmButtonText: "Ok",
           });
         });
-    }
-  }, [token]);
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    Swal.fire({
-      title: "Loading...",
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
-    dispatch(login(email, password))
-      .then(() => {
-        dispatch(getUserData()).then(() => {
-          Swal.close();
-        });
-      })
-      .catch((error) => {
-        Swal.close();
-        const message =
-          error.length <= 0 ? "Error please try again" : error[0].message;
-        Swal.fire({
-          title: "Error",
-          text: message,
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
-      });
   };
   return (
     <section className="vh-75">
@@ -93,26 +71,10 @@ export const LoginScreen = () => {
               <div className="card-body p-5">
                 <form
                   className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-                  onSubmit={handleLogin}
+                  onSubmit={handleSubmit}
                 >
-                  <div className="form-group row">
-                    <label className="col-sm-3 col-form-label">
-                      E-Mail Address
-                    </label>
-                    <div className="col-sm-7">
-                      <input
-                        type="email"
-                        className="form-control"
-                        placeholder="Email"
-                        name="email"
-                        value={email}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-
                   <div className="form-group row mt-3">
-                    <label className="col-sm-3 col-form-label">Password</label>
+                    <label className="col-sm-4 col-form-label">Password</label>
                     <div className="col-sm-7">
                       <input
                         type="password"
@@ -124,24 +86,29 @@ export const LoginScreen = () => {
                       />
                     </div>
                   </div>
+                  <div className="form-group row mt-3">
+                    <label className="col-sm-4 col-form-label">
+                      Confirm Password
+                    </label>
+                    <div className="col-sm-7">
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Confirm Password"
+                        name="confirm"
+                        value={confirm}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
                   <div className="md:row mt-3 text-center">
                     <div className="mx-auto">
                       <button
-                        className="mx-1 btn btn-primary btn-lg btn-block col-12 col-md-3"
+                        className="mx-1 btn btn-primary btn-lg btn-block col-12 col-md-6"
                         type="submit"
                       >
-                        Login
+                        Reset Password
                       </button>
-                      <Link to="/auth/register">
-                        <div className="mx-1 mt-2 mt-md-0 btn btn-primary btn-lg btn-block col-12 col-md-3">
-                          Register
-                        </div>
-                      </Link>
-                      <Link to="/auth/forgot-password">
-                        <div className="mx-1 d-inline col-12 btn text-primary col-md-4">
-                          Forgot yout Password?
-                        </div>
-                      </Link>
                     </div>
                   </div>
                 </form>

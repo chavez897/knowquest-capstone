@@ -12,11 +12,13 @@ export const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light px-3">
       <div className="container-fluid">
-        <a className="navbar-brand " href="/home">
-          <b style={{ color: "#333999" }}>
-            Know<span style={{ color: "#f93" }}>Quest</span>
-          </b>
-        </a>
+        <Link to="/home">
+          <div className="navbar-brand">
+            <b style={{ color: "#333999" }}>
+              Know<span style={{ color: "#f93" }}>Quest</span>
+            </b>
+          </div>
+        </Link>
       </div>
       <div className="container-fluid">
         <button
@@ -33,80 +35,77 @@ export const NavBar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/home">
-                Home
-              </a>
+              <Link to="/home">
+                <div className="nav-link active" aria-current="page">
+                  Home
+                </div>
+              </Link>
             </li>
             <li className="nav-item dropdown">
-              <a
+              <div
                 className="nav-link dropdown-toggle active"
-                href="#"
                 id="navbarDropdown"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Rate
-              </a>
+              </div>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <a className="dropdown-item" href="#">
-                    Textbook
-                  </a>
+                  <div className="dropdown-item pointer">Textbook</div>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
-                    School
-                  </a>
+                  <div className="dropdown-item pointer">School</div>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
-                    Class
-                  </a>
+                  <div className="dropdown-item pointer">Class</div>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <div className="dropdown-item pointer">
                     Online Learning
-                  </a>
+                  </div>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
-                    Resource
-                  </a>
+                  <div className="dropdown-item pointer">Resource</div>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
-                    Wekipedia
-                  </a>
+                  <div className="dropdown-item pointer">Wekipedia</div>
                 </li>
               </ul>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" href="#">
-                Search
-              </a>
+              <div className="nav-link active pointer">Search</div>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" href="/partners">
-                Partners
-              </a>
+              <Link to="/partners">
+                <div className="nav-link active">Partners</div>
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" href="#">
-                Contests
-              </a>
+              <div className="nav-link active pointer">Contests</div>
             </li>
-            {user.username ? (
+            {user.email ? (
+              <>
                 <li className="nav-item">
-                  <a className="nav-link active" onClick={handleLogout} href="#">
-                    Logout [{user.username}]
-                  </a>
+                  <Link to="/user/profile">
+                    <div className="nav-link active pointer">{user.email}</div>
+                  </Link>
                 </li>
+                <li className="nav-item">
+                  <div
+                    className="nav-link active pointer"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </div>
+                </li>
+              </>
             ) : (
               <li className="nav-item">
-                <a className="nav-link active" href="/auth/login">
-                  Login
-                </a>
+                <Link to="/auth/login">
+                  <div className="nav-link active">Login</div>
+                </Link>
               </li>
             )}
           </ul>

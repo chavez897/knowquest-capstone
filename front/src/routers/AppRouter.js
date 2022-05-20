@@ -14,7 +14,7 @@ import { AuthRouter } from "./AuthRouter";
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
 import { loginAction } from "../actions/auth";
-import { SystemRouter } from "./SystemRouter";
+import { UserRouter } from "./UserRouter";
 import { getUserData } from "../actions/user";
 import { LoadingScreen } from "../components/ui/LoadingScreen";
 import { PartnersScreen } from "../components/partners/PartnersScreen";
@@ -47,8 +47,8 @@ export const AppRouter = () => {
 
   return (
     <div>
-      <NavBar />
       <Router>
+        <NavBar />
         <div>
           <Switch>
             <PublicRoute
@@ -57,11 +57,11 @@ export const AppRouter = () => {
               component={AuthRouter}
             />
 
-            {/* <PrivateRoute
-              path="/"
-              component={SystemRouter}
+            <PrivateRoute
+              path="/user"
+              component={UserRouter}
               isAuthenticated={!!user.username}
-            /> */}
+            />
 
             <Route exact path="/home" component={HomeScreen} />
             <Route exact path="/partners" component={PartnersScreen} />
@@ -69,8 +69,8 @@ export const AppRouter = () => {
             <Redirect to="/home" />
           </Switch>
         </div>
+        <Footer />
       </Router>
-      <Footer />
     </div>
   );
 };
