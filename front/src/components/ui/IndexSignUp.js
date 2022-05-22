@@ -59,7 +59,7 @@ export const IndexSignUp = () => {
                   role="button"
                   className="btn btn-warning text-white"
                   style={{ width: "30vh" }}
-                  href="#"
+                  href="/user/referral"
                 >
                   Start Refering
                 </a>

@@ -95,6 +95,11 @@ export const NavBar = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link to="/user/referral">
+                    <div className="nav-link active pointer">Referral</div>
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <div
                     className="nav-link active pointer"
                     onClick={handleLogout}
