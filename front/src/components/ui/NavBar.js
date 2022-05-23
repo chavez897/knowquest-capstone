@@ -53,24 +53,24 @@ export const NavBar = () => {
               </div>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <div className="dropdown-item active pointer">Textbook</div>
+                  <div className="dropdown-item pointer">Textbook</div>
                 </li>
                 <li>
-                  <div className="dropdown-item active pointer">School</div>
+                  <div className="dropdown-item pointer">School</div>
                 </li>
                 <li>
-                  <div className="dropdown-item active pointer">Class</div>
+                  <div className="dropdown-item pointer">Class</div>
                 </li>
                 <li>
-                  <div className="dropdown-item active pointer">
+                  <div className="dropdown-item pointer">
                     Online Learning
                   </div>
                 </li>
                 <li>
-                  <div className="dropdown-item active pointer">Resource</div>
+                  <div className="dropdown-item pointer">Resource</div>
                 </li>
                 <li>
-                  <div className="dropdown-item active pointer">Wekipedia</div>
+                  <div className="dropdown-item pointer">Wekipedia</div>
                 </li>
               </ul>
             </li>
@@ -83,13 +83,20 @@ export const NavBar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <div className="nav-link active pointer">Contests</div>
+              <Link to="/contests">
+                <div className="nav-link active pointer">Contests</div>
+              </Link>
             </li>
             {user.email ? (
               <>
                 <li className="nav-item">
                   <Link to="/user/profile">
                     <div className="nav-link active pointer">{user.email}</div>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/user/referral">
+                    <div className="nav-link active pointer">Referral</div>
                   </Link>
                 </li>
                 <li className="nav-item">
