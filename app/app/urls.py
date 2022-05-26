@@ -14,6 +14,7 @@ from users.views.schools import SchoolsViewSet
 from users.views.study_area import StudyAreaViewSet
 from partners.views.partners import PartnersViewSet
 from contests.views.contests import ContestsViewSet
+from books.views.books import BooksViewSet
 
 
 
@@ -25,6 +26,7 @@ router.register("schools", SchoolsViewSet)
 router.register("study-area", StudyAreaViewSet)
 router.register("partners", PartnersViewSet, basename="partners")
 router.register("contests", ContestsViewSet, basename="contests")
+router.register("books", BooksViewSet, basename="books")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
