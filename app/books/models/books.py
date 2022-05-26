@@ -5,7 +5,8 @@ class Books(models.Model):
 
     isbn = models.CharField(
         verbose_name="isbn",
-        max_length=13
+        max_length=13,
+        unique=True,
     )
 
     image = models.CharField(
