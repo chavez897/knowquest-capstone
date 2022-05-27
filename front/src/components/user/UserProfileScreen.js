@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Breadcrumb } from "../ui/Breadcrumb";
 import { useForm } from "../../hooks/useForm";
 import { axiosInstance } from "../../plugins/axios";
 import Swal from "sweetalert2";
@@ -73,6 +74,7 @@ export const UserProfileScreen = () => {
   return (
     <section className="vh-75">
       <div className="container py-5 h-100">
+        <Breadcrumb main="Profile" />
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-12 col-md-8">
             <div className="card shadow-2-strong">
