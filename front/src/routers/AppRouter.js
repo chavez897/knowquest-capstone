@@ -18,7 +18,8 @@ import { UserRouter } from "./UserRouter";
 import { getUserData } from "../actions/user";
 import { LoadingScreen } from "../components/ui/LoadingScreen";
 import { PartnersScreen } from "../components/partners/PartnersScreen";
-import { ContestsScreen } from "../components/contests/ContestsScreen"
+import { ContestsScreen } from "../components/contests/ContestsScreen";
+import { SearchScreen } from "../components/search/SearchScreen";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ export const AppRouter = () => {
             />
 
             <Route exact path="/home" component={HomeScreen} />
+            <Route exact path="/search" component={SearchScreen} />
             <Route exact path="/partners" component={PartnersScreen} />
             <Route exact path="/contests" component={ContestsScreen} />
 
