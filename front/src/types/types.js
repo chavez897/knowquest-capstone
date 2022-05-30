@@ -10,5 +10,8 @@ export const types = {
   deletePartners: "[Partners] Delete",
 
   saveContests: "[Contests] Save",
-  deleteContests: "[Contests] Delete"
+  deleteContests: "[Contests] Delete",
+
+  saveBooks: "[Books] Save",
+  deleteBooks: "[Books] Delete",
 };
