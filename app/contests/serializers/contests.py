@@ -9,11 +9,7 @@ class ContestsModelSerializer(serializers.ModelSerializer):
             "id",
             "logo",
             "name",
-            "offers",
-            "description",
-            "initial_limited_time",
-            "final_limited_time",
-            "locations"
+            "description"
         )
 
 

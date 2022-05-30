@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPartnersData } from "../../actions/partners";
+import { Breadcrumb } from "../ui/Breadcrumb";
 import { Card } from "../ui/Card";
 import { PartnersIntro } from "./PartnersIntro";
 
@@ -13,7 +14,8 @@ export const PartnersScreen = () => {
   const partners = useSelector((state) => state.partners);
   
   return (
-    <div className="container">
+    <div className="container py-5">
+      <Breadcrumb main="Partners" />
       <div className="row py-3">
         <PartnersIntro />
       </div>

@@ -15,9 +15,8 @@ from users.views.study_area import StudyAreaViewSet
 from partners.views.partners import PartnersViewSet
 from contests.views.contests import ContestsViewSet
 from books.views.books import BooksViewSet
+from announcements.views.announcements import AnnouncementsViewSet
 from books.views.books_ratings import BooksRatingsViewSet
-
-
 
 router = routers.DefaultRouter()
 router.register("auth", UserAuthViewSet, basename="auth")
@@ -28,6 +27,7 @@ router.register("study-area", StudyAreaViewSet)
 router.register("partners", PartnersViewSet, basename="partners")
 router.register("contests", ContestsViewSet, basename="contests")
 router.register("books", BooksViewSet, basename="books")
+router.register("announcements", AnnouncementsViewSet, basename="announcements")
 router.register("books-ratings", BooksRatingsViewSet, basename="books-ratings")
 
 urlpatterns = [
