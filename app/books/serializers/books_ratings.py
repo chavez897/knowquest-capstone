@@ -26,4 +26,5 @@ class BooksRatingsModelSerializer(serializers.ModelSerializer):
             "assigments_used",
             "use_again",
             "comments",
+            "user",
         )

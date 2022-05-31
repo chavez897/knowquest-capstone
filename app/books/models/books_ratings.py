@@ -89,6 +89,11 @@ class BooksRatings(models.Model):
         null=True,
     )
     
+    user = models.ForeignKey(
+        verbose_name="User",
+        to="users.User",
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         verbose_name = "book rating"
