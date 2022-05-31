@@ -95,6 +95,43 @@ class BooksRatings(models.Model):
         on_delete=models.CASCADE,
     )
 
+    subject = models.ForeignKey(
+        verbose_name="subject",
+        on_delete=models.CASCADE,
+        to="users.StudyArea",
+        blank=True,
+        null=True,
+    )
+
+    level = models.ForeignKey(
+        verbose_name="level",
+        on_delete=models.CASCADE,
+        to="ratings_catalogs.Level",
+        blank=True,
+        null=True,
+    )
+
+    cost = models.ForeignKey(
+        verbose_name="cost_range",
+        on_delete=models.CASCADE,
+        to="ratings_catalogs.Cost",
+        blank=True,
+        null=True,
+    )
+
+    semester = models.ForeignKey(
+        verbose_name="semester",
+        on_delete=models.CASCADE,
+        to="ratings_catalogs.Semester",
+        blank=True,
+        null=True,
+    )
+
+    year = models.IntegerField(
+        verbose_name="year",
+        default=2022
+    )
+
     class Meta:
         verbose_name = "book rating"
         verbose_name_plural = "book ratings"

@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "contests.apps.ContestsConfig",
     "books.apps.BooksConfig",
     "announcements.apps.AnnouncementsConfig",
+    "ratings_catalogs.apps.RatingsCatalogsConfig",
 ]
 
 MIGRATION_MODULES = {"sites": "contrib.sites.migrations"}

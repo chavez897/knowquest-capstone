@@ -1,8 +1,19 @@
 from rest_framework import serializers
 from books.models.books_ratings import BooksRatings
+from users.serializers.study_area import StudyAreaModelSerializer
+from ratings_catalogs.serializers.level import LevelModelSerializer
+from ratings_catalogs.serializers.cost import CostModelSerializer
+from ratings_catalogs.serializers.semester import SemesterModelSerializer
+from books.serializers.books import BooksModelSerializer
+
 
 
 class BooksRatingsModelSerializer(serializers.ModelSerializer):
+    subject_info = StudyAreaModelSerializer(read_only=True, source='subject')
+    level_info = LevelModelSerializer(read_only=True, source='school')
+    cost_info = CostModelSerializer(read_only=True, source='cost')
+    semester_info = SemesterModelSerializer(read_only=True, source='semester')
+    book_info = BooksModelSerializer(read_only=True, source='book')
     class Meta:
         model = BooksRatings
         fields = (
@@ -27,4 +38,24 @@ class BooksRatingsModelSerializer(serializers.ModelSerializer):
             "use_again",
             "comments",
             "user",
+            "subject",
+            "level",
+            "cost",
+            "year",
+            "semester",
+            "subject_info",
+            "level_info",
+            "cost_info",
+            "semester_info",
+            "book_info",
         )
+    
+
+
+class SearchBookRatingsSerializer(serializers.Serializer):
+    book_id = serializers.IntegerField(required=True, source='book__id')
+    book_image = serializers.CharField(required=True, source='book__image')
+    book_title = serializers.CharField(required=True, source='book__title')
+    book_description = serializers.CharField(required=True, source='book__description')
+    total = serializers.IntegerField(required=True, source='id__count')
+    rate_average = serializers.FloatField(required=True, source='overall__avg')
