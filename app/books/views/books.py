@@ -2,6 +2,9 @@ from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.http import Http404
+from rest_framework.permissions import IsAuthenticated
+
+from users.permissions.users import IsStudent, IsFacultyMember, IsAccountOwner, IsAdmin
 
 from books.models.books import Books
 from books.serializers.books import BooksModelSerializer
@@ -17,7 +20,10 @@ class BooksViewSet(
     serializer_class = BooksModelSerializer
 
     def get_permissions(self):
-        permissions = []
+        if self.action in ["create"]:
+            permissions = [IsAuthenticated, IsAccountOwner, IsStudent | IsFacultyMember | IsAdmin]
+        else:
+            permissions = []
         return (permission() for permission in permissions)
 
     @action(detail=False, methods=["GET"])
