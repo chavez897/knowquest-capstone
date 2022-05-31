@@ -6,6 +6,7 @@ class BooksRatingsModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = BooksRatings
         fields = (
+            "id",
             "book",
             "appropriateness",
             "efectiveness",
