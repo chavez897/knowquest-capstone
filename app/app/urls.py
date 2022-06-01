@@ -16,6 +16,11 @@ from partners.views.partners import PartnersViewSet
 from contests.views.contests import ContestsViewSet
 from books.views.books import BooksViewSet
 from announcements.views.announcements import AnnouncementsViewSet
+from books.views.books_ratings import BooksRatingsViewSet
+from ratings_catalogs.views.cost import CostViewSet
+from ratings_catalogs.views.level import LevelViewSet
+from ratings_catalogs.views.semester import SemesterViewSet
+
 
 router = routers.DefaultRouter()
 router.register("auth", UserAuthViewSet, basename="auth")
@@ -27,6 +32,10 @@ router.register("partners", PartnersViewSet, basename="partners")
 router.register("contests", ContestsViewSet, basename="contests")
 router.register("books", BooksViewSet, basename="books")
 router.register("announcements", AnnouncementsViewSet, basename="announcements")
+router.register("books-ratings", BooksRatingsViewSet, basename="books-ratings")
+router.register("cost", CostViewSet, basename="cost")
+router.register("level", LevelViewSet, basename="level")
+router.register("semester", SemesterViewSet, basename="semester")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
