@@ -10,7 +10,7 @@ from django.db.models import Count, Avg, Case, When
 from users.permissions.users import IsStudent, IsFacultyMember, IsAccountOwner, IsAdmin
 
 from books.models.books_ratings import BooksRatings
-from books.serializers.books_ratings import BooksRatingsModelSerializer, SearchBookRatingsSerializer, DetailBookRatingsSerializer
+from books.serializers.books_ratings import BooksRatingsModelSerializer, SearchBookRatingsSerializer, DetailBookRatingsSerializer, CommentsBookRatingsSerializer
 
 
 class BooksRatingsViewSet(
@@ -26,7 +26,7 @@ class BooksRatingsViewSet(
         filters.SearchFilter,
     ]
 
-    filter_fields = ["level", "subject", "book__id"]
+    filter_fields = ["level", "subject", "book_id"]
     search_fields = [
         'book__title',
     ]
@@ -50,6 +50,8 @@ class BooksRatingsViewSet(
                                                                                        has_manual_count=Count(Case(When(instructor_manual_provided=True, then=1))), has_slides_count=Count(Case(When(teaching_slides_provided=True, then=1))),
                                                                                        has_question_bank_count=Count(Case(When(question_bank_provided=True, then=1))), has_digital_resource_count=Count(Case(When(digital_resource_provided=True, then=1))),
                                                                                        has_assigments_count=Count(Case(When(assigments_provided=True, then=1))))
+        elif self.action in ["comments"]:
+            return BooksRatings.objects.filter(comments__isnull=False).exclude(comments__exact="").values("comments")
         return BooksRatings.objects.all().select_related("subject", "level", "cost", "semester", "book")
 
     def get_serializer_class(self):
@@ -57,6 +59,8 @@ class BooksRatingsViewSet(
             return SearchBookRatingsSerializer
         elif self.action in ["book"]:
             return DetailBookRatingsSerializer
+        elif self.action in ["comments"]:
+            return CommentsBookRatingsSerializer
         return BooksRatingsModelSerializer
 
     def create(self, request, *args, **kwargs):
@@ -114,11 +118,16 @@ class BooksRatingsViewSet(
             book["has_slides"] = book["has_slides_count"] > book["id__count"]/2
             book["has_assigments"] = book["has_assigments_count"] > book["id__count"]/2
             book["has_digital_resource"] = book["has_digital_resource_count"] > book["id__count"]/2
-        print(queryset)
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=["GET"])
+    def comments(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)

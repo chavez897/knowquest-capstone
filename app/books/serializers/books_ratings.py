@@ -79,3 +79,7 @@ class DetailBookRatingsSerializer(serializers.Serializer):
     has_slides = serializers.BooleanField(required=True)
     has_assigments = serializers.BooleanField(required=True)
     has_digital_resource = serializers.BooleanField(required=True)
+
+
+class CommentsBookRatingsSerializer(serializers.Serializer):
+    comments = serializers.CharField(required=True)
