@@ -21,3 +21,10 @@ a:focus {
 .pointer {
   cursor: pointer;
 }
+
+.inactivetab:hover {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
+}
