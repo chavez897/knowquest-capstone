@@ -8,7 +8,7 @@ export const CommentsTab = ({ comments }) => {
           </div>
           <div style={{ overflowY: "scroll", height: "20vh" }}>
             {comments.map((val) => (
-              <li className="pb-3 pt-2">{val}</li>
+              <li key={val.id} className="pb-3 pt-2">{val.comments}</li>
             ))}
           </div>
         </div>

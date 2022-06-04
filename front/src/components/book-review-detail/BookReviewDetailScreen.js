@@ -25,7 +25,7 @@ export const BookReviewDetailScreen = () => {
           </div>
           <ReviewTabsCard />
         </div>
-        <div className="col-12 col-md-4">
+        <div className="col-12 col-md-4 mt-5 mt-md-0">
           <BookFeaturesCard />
         </div>
       </div>
