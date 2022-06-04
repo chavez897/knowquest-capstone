@@ -8,9 +8,7 @@ export const ReviewTab = () => {
     { name: "VisualAids", value: 9.0 },
     { name: "Overall", value: 7.0 },
   ];
-  const ratingChanged = (newRating) => {
-    console.log(newRating);
-  };
+  const count_ratings = 4
   return (
     <>
       <div className="card">
@@ -24,16 +22,21 @@ export const ReviewTab = () => {
             </div>
           </div>
           <div className="row mt-5">
-            <div className="col-3">
-              <ReactStars
-                count={5}
-                value={2.5}
-                onChange={ratingChanged}
-                size={30}
-                activeColor="#ffd700"
-                edit={false}
-                isHalf={true}
-              />
+            <div className="col-3 mt-4">
+              <div className="fw-bold fs-1 mx-auto text-center col-12">
+                {values[4].value / 2}
+              </div>
+              <div className="d-flex justify-content-center col-12">
+                <ReactStars
+                  count={5}
+                  value={values[4].value / 2}
+                  size={30}
+                  activeColor="#ffd700"
+                  edit={false}
+                  isHalf={true}
+                />
+              </div>
+              <div className="text-center fw-lighter">({count_ratings} ratings)</div>
             </div>
             <div className="col-9">
               {values.map((val) => (

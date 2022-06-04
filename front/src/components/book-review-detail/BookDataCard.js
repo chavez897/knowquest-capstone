@@ -1,3 +1,5 @@
+import ReactStars from "react-rating-stars-component";
+
 export const BookDataCard = ({ authors, reviews, category }) => {
   return (
     <div className="card bg-muted text-white">
@@ -20,7 +22,16 @@ export const BookDataCard = ({ authors, reviews, category }) => {
               </div>
             </div>
             <div className="row pb-2">
-              <div>{reviews}</div>
+              <div>
+                <ReactStars
+                  count={5}
+                  value={reviews / 2}
+                  size={20}
+                  activeColor="#ffd700"
+                  edit={false}
+                  isHalf={true}
+                />
+              </div>
             </div>
           </div>
           <div className="col-12 col-md-4 text-dark">

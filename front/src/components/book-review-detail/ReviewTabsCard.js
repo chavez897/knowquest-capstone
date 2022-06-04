@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { CommentsTab } from "./CommentsTab";
+import { DescriptionTab } from "./DescriptionTab";
 import { ReviewTab } from "./ReviewsTab";
 
 export const ReviewTabsCard = () => {
@@ -46,7 +48,24 @@ export const ReviewTabsCard = () => {
           </div>
         )}
       </div>
-      <ReviewTab />
+      {activeTab === "r" && <ReviewTab />}
+      {activeTab === "d" && (
+        <DescriptionTab
+          title="SQL Cookbook"
+          description="A guide to SQL covers such topics as retrieving records, metadata queries, working with strings, data arithmetic, date manipulation, reporting and warehousing, and hierarchical queries."
+        />
+      )}
+      {activeTab === "c" && (
+        <CommentsTab
+          comments={[
+            "A guide to SQL covers such topics as retrieving records, metadata queries, working with strings, data arithmetic, date manipulation, reporting and warehousing, and hierarchical queries.",
+            "bad book",
+            "usefull",
+            "another",
+            "asdf",
+          ]}
+        />
+      )}
     </>
   );
 };
