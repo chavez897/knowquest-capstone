@@ -81,13 +81,13 @@ class PasswordRecoveryEmail(serializers.Serializer):
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
         print(token)
-        # msg = EmailMultiAlternatives(
-        #     subject="Forgot Password",
-        #     body="Create new password",
-        #     from_email="Knowquest <knowquest@gmail.com>",
-        #     to=[email],
-        # )
-        # msg.send()
+        msg = EmailMultiAlternatives(
+            subject="Forgot Password",
+            body="http://localhost:3000/auth/reset-password?token={}".format(token),
+            from_email="Knowquest <knowquest@gmail.com>",
+            to=[email],
+        )
+        msg.send()
         return data
 
 
@@ -222,13 +222,13 @@ class UserSignUpSerializer(serializers.Serializer):
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
         print(token)
-        # msg = EmailMultiAlternatives(
-        #     subject="Email Verifaction",
-        #     body=token,
-        #     from_email="Knowquest <knowquest@gmail.com>",
-        #     to=[user.email],
-        # )
-        # msg.send()
+        msg = EmailMultiAlternatives(
+            subject="Email Verifaction",
+            body="http://localhost:3000/auth/login?token={}".format(token),
+            from_email="Knowquest <knowquest@gmail.com>",
+            to=[user.email],
+        )
+        msg.send()
 
         return user
 

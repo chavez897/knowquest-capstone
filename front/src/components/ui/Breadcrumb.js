@@ -6,31 +6,31 @@ export const Breadcrumb = ({ main, secondary, link }) => {
     <div>
       {secondary ? (
         <nav aria-label="py-3 breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
               <Link to="/home">
-                <a>Home</a>
+                <div>Home</div>
               </Link>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">
+            <li className="breadcrumb-item active" aria-current="page">
               <Link to={link}>
-                <a>{main}</a>
+                <div>{main}</div>
               </Link>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">
+            <li className="breadcrumb-item active" aria-current="page">
               {secondary}
             </li>
           </ol>
         </nav>
       ) : (
         <nav aria-label="py-3 breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
               <Link to="/home">
-                <a>Home</a>
+                <div>Home</div>
               </Link>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">
+            <li className="breadcrumb-item active" aria-current="page">
               {main}
             </li>
           </ol>
