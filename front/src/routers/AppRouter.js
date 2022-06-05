@@ -20,6 +20,7 @@ import { LoadingScreen } from "../components/ui/LoadingScreen";
 import { PartnersScreen } from "../components/partners/PartnersScreen";
 import { ContestsScreen } from "../components/contests/ContestsScreen";
 import { SearchScreen } from "../components/search/SearchScreen";
+import { BookReviewDetailScreen } from "../components/book-review-detail/BookReviewDetailScreen";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ export const AppRouter = () => {
             <Route exact path="/search" component={SearchScreen} />
             <Route exact path="/partners" component={PartnersScreen} />
             <Route exact path="/contests" component={ContestsScreen} />
+            <Route exact path="/book-review-detail" component={BookReviewDetailScreen} />
 
             <Redirect to="/home" />
           </Switch>
