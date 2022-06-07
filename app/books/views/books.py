@@ -23,8 +23,8 @@ class BooksViewSet(
     serializer_class = BooksModelSerializer
 
     def get_permissions(self):
-        if self.action in ["create"]:
-            permissions = [IsAuthenticated, IsAccountOwner,
+        if self.action in ["create", "search"]:
+            permissions = [IsAuthenticated,
                            IsStudent | IsFacultyMember | IsAdmin]
         else:
             permissions = []
