@@ -251,3 +251,5 @@ SIMPLE_JWT = {
 MEDIA_ROOT = str(BASE_DIR / "media")
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"
+
+GOOGLE_BOOKS_API_KEY = env("api_key_books")
