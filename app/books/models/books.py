@@ -23,7 +23,9 @@ class Books(models.Model):
 
     description = models.CharField(
         verbose_name="description",
-        max_length=2000
+        max_length=2000,
+        blank=True,
+        null=True,
     )
 
     publisher = models.CharField(
