@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.db.models import Count, Avg, Case, When
+from django.http import Http404
 
 from users.permissions.users import IsStudent, IsFacultyMember, IsAccountOwner, IsAdmin
 
@@ -45,14 +46,15 @@ class BooksRatingsViewSet(
         elif self.action in ["mine"]:
             return BooksRatings.objects.filter(user__id=self.request.user.id).select_related("subject", "level", "cost", "semester", "book")
         elif self.action in ["book"]:
-            return BooksRatings.objects.all().select_related("book").values("book__id", "book__image", "book__title", "book__description", "book__authors"
+            return BooksRatings.objects.all().select_related("book").values("book__id", "book__image", "book__title", "book__description", "book__authors", "book__publish_date",
                                                                             ).annotate(Count("id"), Avg("overall"), Avg("appropriateness"), Avg("efectiveness"), Avg("value"), Avg("visual_aids"),
                                                                                        has_manual_count=Count(Case(When(instructor_manual_provided=True, then=1))), has_slides_count=Count(Case(When(teaching_slides_provided=True, then=1))),
                                                                                        has_question_bank_count=Count(Case(When(question_bank_provided=True, then=1))), has_digital_resource_count=Count(Case(When(digital_resource_provided=True, then=1))),
                                                                                        has_assigments_count=Count(Case(When(assigments_provided=True, then=1))))
         elif self.action in ["comments"]:
-            return BooksRatings.objects.filter(comments__isnull=False).exclude(comments__exact="").values("comments")
+            return BooksRatings.objects.filter(comments__isnull=False).exclude(comments__exact="").values("comments", "id")
         return BooksRatings.objects.all().select_related("subject", "level", "cost", "semester", "book")
+        
 
     def get_serializer_class(self):
         if self.action in ["search"]:
@@ -118,12 +120,9 @@ class BooksRatingsViewSet(
             book["has_slides"] = book["has_slides_count"] > book["id__count"]/2
             book["has_assigments"] = book["has_assigments_count"] > book["id__count"]/2
             book["has_digital_resource"] = book["has_digital_resource_count"] > book["id__count"]/2
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
+        if len(queryset) == 0:
+            raise Http404()
+        serializer = self.get_serializer(queryset[0])
         return Response(serializer.data)
 
     @action(detail=False, methods=["GET"])

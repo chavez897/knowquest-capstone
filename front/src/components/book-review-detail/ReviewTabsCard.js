@@ -3,7 +3,7 @@ import { CommentsTab } from "./CommentsTab";
 import { DescriptionTab } from "./DescriptionTab";
 import { ReviewTab } from "./ReviewsTab";
 
-export const ReviewTabsCard = () => {
+export const ReviewTabsCard = ({ comments = [] }) => {
   const [activeTab, setActiveTab] = useState("r");
   return (
     <>
@@ -58,42 +58,8 @@ export const ReviewTabsCard = () => {
         )}
       </div>
       {activeTab === "r" && <ReviewTab />}
-      {activeTab === "d" && (
-        <DescriptionTab
-          title="SQL Cookbook"
-          description="A guide to SQL covers such topics as retrieving records, metadata queries, working with strings, data arithmetic, date manipulation, reporting and warehousing, and hierarchical queries."
-        />
-      )}
-      {activeTab === "c" && (
-        <CommentsTab
-          comments={[
-            {
-              id: 1,
-              comments: "Great Book Modify!!!!!!!!",
-            },
-            {
-              id: 2,
-              comments: "Great Book Modify!!!!!!!!",
-            },
-            {
-              id: 3,
-              comments: "Great Book Modify!!!!!!!!",
-            },
-            {
-              id: 4,
-              comments: "Great Book Modify!!!!!!!!",
-            },
-            {
-              id: 5,
-              comments: "Great Book Modify!!!!!!!!",
-            },
-            {
-              id: 6,
-              comments: "Great Book Modify!!!!!!!!",
-            },
-          ]}
-        />
-      )}
+      {activeTab === "d" && <DescriptionTab />}
+      {activeTab === "c" && <CommentsTab comments={comments} />}
     </>
   );
 };

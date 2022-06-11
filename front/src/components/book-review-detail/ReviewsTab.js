@@ -1,14 +1,15 @@
 import ReactStars from "react-rating-stars-component";
+import { useSelector } from "react-redux";
 
 export const ReviewTab = () => {
+  const bookDetail = useSelector((state) => state.bookReviewDetail);
   const values = [
-    { name: "Appropriateness", value: 1 },
-    { name: "Efectiveness", value: 6 },
-    { name: "Value", value: 4 },
-    { name: "VisualAids", value: 8.0 },
-    { name: "Overall", value: 9.0 },
+    { name: "Appropriateness", value: bookDetail.appropriatenessAverage },
+    { name: "Efectiveness", value: bookDetail.efectivenessAverage },
+    { name: "Value", value: bookDetail.valueAverage },
+    { name: "VisualAids", value: bookDetail.visualAidsAverage },
+    { name: "Overall", value: bookDetail.overallAverage },
   ];
-  const count_ratings = 4
   return (
     <>
       <div className="card">
@@ -24,19 +25,19 @@ export const ReviewTab = () => {
           <div className="row mt-5">
             <div className="col-12 col-md-3 mt-4">
               <div className="fw-bold fs-1 mx-auto text-center col-12">
-                {values[4].value / 2}
+                {bookDetail.overallAverage / 2}
               </div>
               <div className="d-flex justify-content-center col-12">
                 <ReactStars
                   count={5}
-                  value={values[4].value / 2}
+                  value={bookDetail.overallAverage / 2}
                   size={30}
                   activeColor="#ffd700"
                   edit={false}
                   isHalf={true}
                 />
               </div>
-              <div className="text-center fw-lighter">({count_ratings} ratings)</div>
+              <div className="text-center fw-lighter">({bookDetail.total} ratings)</div>
             </div>
             <div className="col-12 col-md-9">
               {values.map((val) => (

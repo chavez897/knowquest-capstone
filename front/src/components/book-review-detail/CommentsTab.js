@@ -1,4 +1,4 @@
-export const CommentsTab = ({ comments }) => {
+export const CommentsTab = ({ comments = [] }) => {
   return (
     <>
       <div className="card">
