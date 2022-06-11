@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-export const BookFeaturesCard = () => {
+export const BookFeaturesCard = ({price}) => {
 
   const bookDetail = useSelector((state) => state.bookReviewDetail);
 
@@ -13,7 +13,7 @@ export const BookFeaturesCard = () => {
               <p className="fw-bold fs-2">Book Feature </p>
             </div>
             <div className="row my-2">
-              <div className="col-6 text-start fs-3 text-warning">$0</div>
+              <div className="col-12 text-start fs-3 text-warning">{price}</div>
             </div>
             <div className="row my-2">
               <div className="col-6 text-start fw-lighter">Publish Date:</div>
@@ -36,8 +36,8 @@ export const BookFeaturesCard = () => {
               <div className="col-6 text-end fw-lighter">{bookDetail.hasDigitalResource ? "Yes" : "No"}</div>
             </div>
             <div className="row my-2">
-              <div className="col-6 text-start fw-lighter">Has Question Bank:</div>
-              <div className="col-6 text-end fw-lighter">{bookDetail.hasQuestionBank ? "Yes" : "No"}</div>
+              <div className="col-8 text-start fw-lighter">Has Question Bank:</div>
+              <div className="col-4 text-end fw-lighter">{bookDetail.hasQuestionBank ? "Yes" : "No"}</div>
             </div>
           </div>
         </div>

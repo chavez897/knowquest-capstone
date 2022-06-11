@@ -44,7 +44,7 @@ class BooksRatingsViewSet(
         if self.action in ["search"]:
             return BooksRatings.objects.all().select_related("book").values("book__id", "book__image", "book__title", "book__description").annotate(Count("id"), Avg("overall"))
         elif self.action in ["mine"]:
-            return BooksRatings.objects.filter(user__id=self.request.user.id).select_related("subject", "level", "cost", "semester", "book")
+            return BooksRatings.objects.filter(user__id=self.request.user.id).select_related("subject", "level", "cost", "semester", "book").order_by("-id")
         elif self.action in ["book"]:
             return BooksRatings.objects.all().select_related("book").values("book__id", "book__image", "book__title", "book__description", "book__authors", "book__publish_date",
                                                                             ).annotate(Count("id"), Avg("overall"), Avg("appropriateness"), Avg("efectiveness"), Avg("value"), Avg("visual_aids"),
@@ -52,9 +52,10 @@ class BooksRatingsViewSet(
                                                                                        has_question_bank_count=Count(Case(When(question_bank_provided=True, then=1))), has_digital_resource_count=Count(Case(When(digital_resource_provided=True, then=1))),
                                                                                        has_assigments_count=Count(Case(When(assigments_provided=True, then=1))))
         elif self.action in ["comments"]:
-            return BooksRatings.objects.filter(comments__isnull=False).exclude(comments__exact="").values("comments", "id")
+            return BooksRatings.objects.filter(comments__isnull=False).exclude(comments__exact="").values("comments", "id").order_by("-id")
+        elif self.action in ["price"]:
+            return BooksRatings.objects.all().select_related("cost").values("book", "cost__name").annotate(Count("id")).order_by("-id")
         return BooksRatings.objects.all().select_related("subject", "level", "cost", "semester", "book")
-        
 
     def get_serializer_class(self):
         if self.action in ["search"]:
@@ -130,3 +131,16 @@ class BooksRatingsViewSet(
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, methods=["GET"])
+    def price(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        max = 0
+        cost_name = "Cost Not Available"
+        for val in queryset:
+            if val['id__count'] > max:
+                max = val['id__count']
+                cost_name = val["cost__name"]
+        return Response({
+            "cost": cost_name
+        })

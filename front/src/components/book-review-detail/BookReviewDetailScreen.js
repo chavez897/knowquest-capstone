@@ -16,6 +16,7 @@ export const BookReviewDetailScreen = () => {
   const { bookId = "" } = queryString.parse(location.search);
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
+  const [price, setPrice] = useState("");
 
   useEffect(() => {
     Swal.fire({
@@ -29,11 +30,15 @@ export const BookReviewDetailScreen = () => {
       setLoading(false);
     });
     axiosInstance
-        .get(`/books-ratings/comments/?book_id=${bookId}`)
-        .then((res) => {
-          setComments(res.data)
-
-        })
+      .get(`/books-ratings/comments/?book_id=${bookId}`)
+      .then((res) => {
+        setComments(res.data);
+      });
+    axiosInstance
+      .get(`/books-ratings/price/?book_id=${bookId}`)
+      .then((res) => {
+        setPrice(res.data.cost);
+      });
   }, [bookId]);
 
   const bookDetail = useSelector((state) => state.bookReviewDetail);
@@ -54,19 +59,16 @@ export const BookReviewDetailScreen = () => {
                 category="Book"
               />
               <div className="py-3">
-                <img
-                  src={bookDetail.bookImage}
-                  alt=""
-                />
+                <img src={bookDetail.bookImage} alt="" />
               </div>
-              <ReviewTabsCard comments={comments}/>
+              <ReviewTabsCard comments={comments} />
             </div>
             <div className="col-12 col-md-4 mt-5 mt-md-0">
-              <BookFeaturesCard />
+              <BookFeaturesCard price={price}/>
             </div>
           </div>
         </>
-      ): null}
+      ) : null}
     </div>
   );
 };
