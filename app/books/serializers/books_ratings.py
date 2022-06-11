@@ -68,6 +68,7 @@ class DetailBookRatingsSerializer(serializers.Serializer):
     book_title = serializers.CharField(required=True, source='book__title')
     book_description = serializers.CharField(required=True, source='book__description')
     book_authors = serializers.CharField(required=True, source='book__authors')
+    book_publish_date = serializers.DateField(required=True, source='book__publish_date')
     total = serializers.IntegerField(required=True, source='id__count')
     overall_average = serializers.FloatField(required=True, source='overall__avg')
     appropriateness_average = serializers.FloatField(required=True, source='appropriateness__avg')
@@ -82,4 +83,5 @@ class DetailBookRatingsSerializer(serializers.Serializer):
 
 
 class CommentsBookRatingsSerializer(serializers.Serializer):
+    id = serializers.IntegerField(required=True)
     comments = serializers.CharField(required=True)

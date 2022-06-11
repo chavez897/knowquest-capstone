@@ -14,4 +14,7 @@ export const types = {
 
   saveBooks: "[Books] Save",
   deleteBooks: "[Books] Delete",
+
+  getBookDeatil: "[Book Detail] Get",
+  deleteBookDetail: "[Book Detail] Delete",
 };
