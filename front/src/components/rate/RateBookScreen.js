@@ -2,18 +2,36 @@ import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../plugins/axios";
 import { AddBook } from "./AddBook";
 import { AddReview } from "./AddReview";
+import Swal from "sweetalert2";
 
 export const RateBookScreen = () => {
   const [inputText, setInputText] = useState("");
   const [searchText, setSearchText] = useState("");
   const [book, setBook] = useState("");
+  const [haveSearched, setHaveSearched] = useState(false);
   const [activeTab, setActiveTab] = useState("e");
 
   useEffect(() => {
     if (searchText !== "") {
-      axiosInstance.get(`/books/search/?isbn=${searchText}`).then((res) => {
-        setBook(res.data);
+      Swal.fire({
+        title: "Loading...",
+        didOpen: () => {
+          Swal.showLoading();
+        },
       });
+      axiosInstance
+        .get(`/books/search/?isbn=${searchText}`)
+        .then((res) => {
+          setBook(res.data);
+          setHaveSearched(true);
+          Swal.close();
+          setInputText("");
+        })
+        .catch(() => {
+          setHaveSearched(true);
+          Swal.close();
+          setInputText("");
+        });
     }
   }, [searchText]);
 
@@ -58,10 +76,11 @@ export const RateBookScreen = () => {
             </div>
           </div>
         </div>
-
-        <div className="col-12 col-md-8">
-          {book ? <AddReview book={book} /> : <AddBook />}
-        </div>
+        {haveSearched ? (
+          <div className="col-12 col-md-8">
+            {book ? <AddReview book={book}  setHaveSearched={setHaveSearched}/> : <AddBook setHaveSearched={setHaveSearched}/>}
+          </div>
+        ) : null}
       </div>
       <div className="row p-5"></div>
     </div>
