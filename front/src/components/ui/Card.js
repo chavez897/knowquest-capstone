@@ -2,7 +2,7 @@ import React from "react";
 
 export const Card = ({src, href, title, description, offer, initial_date, end_date, location}) => {
   return (
-    <div className="card py-3 hover-shadow bg-light">
+    <div className="card py-3 hover-shadow bg-light text-black">
       <img src={src} className="card-img-top mx-auto d-block" alt="" style={{height:"10vh", width:"10vh"}} />
       <div className="card-body">
         <a className="stretched-link" href={href}></a>

@@ -1,27 +1,43 @@
 import { React, useState, useEffect } from "react";
+import { useForm } from "../../hooks/useForm";
 import { Breadcrumb } from "../ui/Breadcrumb";
 import ReactPaginate from "react-paginate";
 import { axiosInstance } from "../../plugins/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const SearchScreen = () => {
   const [inputText, setInputText] = useState("");
   const [books, setBooks] = useState("");
 
+  const [formValues, handleFormInputChange, reset] = useForm({ context: "" });
+  const { context } = formValues;
+
   const inputHandler = (e) => {
     setInputText(e.target.value);
   };
-  
+
   const search = (e) => {
-    //setInputText("");
     e.preventDefault();
-    axiosInstance
-      .get(`/books-ratings/search/?search=${inputText}&page=${1}`)
-      .then((res) => {
-        setBooks(res.data.results);
+    if (context === "book") {
+      axiosInstance
+        .get(`/books-ratings/search/?search=${inputText}&page=${1}`)
+        .then((res) => {
+          setBooks(res.data.results);
+        });
+    } else if (context === "resource") {
+      console.log("Searching resouce");
+    } else {
+      Swal.fire({
+        title: "Error",
+        text: "You have to select book or resource",
+        icon: "error",
+        confirmButtonText: "Ok",
       });
+      reset();
+    }
   };
 
   // get searched book
@@ -54,7 +70,7 @@ export const SearchScreen = () => {
                 <td>{book.total}</td>
                 <td>{book.rateAverage}</td>
                 <td>
-                  <Link to="/book-review-detail">
+                  <Link to={`/book-review-detail/?bookId=${book.bookId}`}>
                     <div>{eye}</div>
                   </Link>
                 </td>
@@ -89,8 +105,6 @@ export const SearchScreen = () => {
       );
       setItemOffset(newOffset);
     };
-
-    console.log(pageCount)
 
     return (
       <>
@@ -141,7 +155,7 @@ export const SearchScreen = () => {
               >
                 <div className="form-group row">
                   <label className="col-sm-4 col-form-label">
-                    Search by ISBN
+                    Search by Book Name
                   </label>
                   <div className="col-sm-7">
                     <input
@@ -158,13 +172,28 @@ export const SearchScreen = () => {
                 <div className="form-group row mt-3">
                   <label className="col-sm-4 col-form-label">Context</label>
                   <div className="col-sm-7">
-                    <select className="form-control">
+                    <select
+                      className="form-control"
+                      name="context"
+                      value={context}
+                      onChange={handleFormInputChange}
+                    >
                       <option></option>
                       <option value="book">Book</option>
                       <option value="resource">Resource</option>
                     </select>
                   </div>
                 </div>
+                <div className="form-group row mt-3 justify-content-center d-flex">
+                <button
+                  type="button"
+                  className="btn btn-primary col-md-4"
+                  onClick={search}
+                >
+                  Search
+                </button>
+                </div>
+                
               </form>
             </div>
           </div>
