@@ -3,7 +3,7 @@ import { useForm } from "../../hooks/useForm";
 import { axiosInstance } from "../../plugins/axios";
 import Swal from "sweetalert2";
 
-export const AddBook = () => {
+export const AddBook = ({setHaveSearched}) => {
   const [formValues, handleFormInputChange, reset] = useForm({
     isbn: "",
     image: "",
@@ -45,6 +45,7 @@ export const AddBook = () => {
           confirmButtonText: "Ok",
         });
         reset();
+        setHaveSearched(false)
       })
       .catch((error) => {
         Swal.close();
