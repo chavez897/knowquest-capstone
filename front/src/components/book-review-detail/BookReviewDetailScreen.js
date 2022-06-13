@@ -9,8 +9,10 @@ import { getBooksData } from "../../actions/bookReviewDetail";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "../../plugins/axios";
+import { useHistory } from "react-router-dom";
 
 export const BookReviewDetailScreen = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const location = useLocation();
   const { bookId = "" } = queryString.parse(location.search);
@@ -19,26 +21,31 @@ export const BookReviewDetailScreen = () => {
   const [price, setPrice] = useState("");
 
   useEffect(() => {
-    Swal.fire({
-      title: "Loading...",
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
-    dispatch(getBooksData(bookId)).then(() => {
-      Swal.close();
-      setLoading(false);
-    });
-    axiosInstance
-      .get(`/books-ratings/comments/?book_id=${bookId}`)
-      .then((res) => {
-        setComments(res.data);
+    if (bookId.length <= 0) {
+      history.push("/search");
+    } else {
+      Swal.fire({
+        title: "Loading...",
+        didOpen: () => {
+          Swal.showLoading();
+        },
       });
-    axiosInstance
-      .get(`/books-ratings/price/?book_id=${bookId}`)
-      .then((res) => {
-        setPrice(res.data.cost);
+
+      dispatch(getBooksData(bookId)).then(() => {
+        Swal.close();
+        setLoading(false);
       });
+      axiosInstance
+        .get(`/books-ratings/comments/?book_id=${bookId}`)
+        .then((res) => {
+          setComments(res.data);
+        });
+      axiosInstance
+        .get(`/books-ratings/price/?book_id=${bookId}`)
+        .then((res) => {
+          setPrice(res.data.cost);
+        });
+    }
   }, [bookId]);
 
   const bookDetail = useSelector((state) => state.bookReviewDetail);
@@ -64,7 +71,7 @@ export const BookReviewDetailScreen = () => {
               <ReviewTabsCard comments={comments} />
             </div>
             <div className="col-12 col-md-4 mt-5 mt-md-0">
-              <BookFeaturesCard price={price}/>
+              <BookFeaturesCard price={price} />
             </div>
           </div>
         </>
