@@ -4,7 +4,7 @@ import { axiosInstance } from "../../plugins/axios";
 import ReactStars from "react-rating-stars-component";
 import Swal from "sweetalert2";
 
-export const AddReview = ({ book }) => {
+export const AddReview = ({ book, setHaveSearched}) => {
   // form value state
   const [formValues, handleFormInputChange, reset] = useForm({
     appropriateness: "",
@@ -25,6 +25,7 @@ export const AddReview = ({ book }) => {
     assigmentsUsed: false,
     useAgain: false,
     comments: "",
+    year: ""
   });
 
   const {
@@ -45,6 +46,7 @@ export const AddReview = ({ book }) => {
     assigmentsUsed,
     useAgain,
     comments,
+    year,
   } = formValues;
 
   //state for react stars
@@ -58,6 +60,7 @@ export const AddReview = ({ book }) => {
   const [costs, setCosts] = useState([]);
   const [levels, setLevels] = useState([]);
   const [semesters, setSemesters] = useState([]);
+  const [years, setYears] = useState([])
 
   useEffect(() => {
     axiosInstance.get("/study-area/").then((res) => {
@@ -75,6 +78,13 @@ export const AddReview = ({ book }) => {
     axiosInstance.get("/semester/").then((res) => {
       setSemesters(res.data.results);
     });
+    let tempYears = []
+    let currentYear = new Date().getFullYear()
+    for (let i = 0; i < 5; i++) {
+      tempYears.push(currentYear - i)
+    } 
+    setYears(tempYears)
+
   }, []);
 
   // POST operation to backend
@@ -93,11 +103,11 @@ export const AddReview = ({ book }) => {
         level: level,
         cost: cost,
         semester: semester,
-        appropriateness: appropriateness,
-        efectiveness: efectiveness,
-        value: value,
-        visual_aids: visualaids,
-        overall: overall,
+        appropriateness: appropriateness * 2,
+        efectiveness: efectiveness * 2,
+        value: value * 2,
+        visual_aids: visualaids * 2,
+        overall: overall * 2,
         recommend: recommend,
         instructor_manualProvided: instructor_manualProvided,
         teachingSlidesProvided: teachingSlidesProvided,
@@ -111,6 +121,7 @@ export const AddReview = ({ book }) => {
         assigmentsUsed: assigmentsUsed,
         useAgain: useAgain,
         comments: comments,
+        year: year
       })
       .then((res) => {
         Swal.close();
@@ -121,6 +132,7 @@ export const AddReview = ({ book }) => {
           confirmButtonText: "Ok",
         });
         reset();
+        setHaveSearched(false)
       })
       .catch((error) => {
         Swal.close();
@@ -202,8 +214,18 @@ export const AddReview = ({ book }) => {
                 <div className="form-group row mt-3">
                   <label className="col-sm-4 col-form-label">Year</label>
                   <div className="col-sm-7">
-                    <select className="form-control">
-                      <option>{book.publishDate}</option>
+                  <select
+                      className="form-control"
+                      name="year"
+                      value={year}
+                      onChange={handleFormInputChange}
+                    >
+                    <option></option>
+                      {years.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -237,7 +259,7 @@ export const AddReview = ({ book }) => {
                 <div className="form-group row mt-3">
                   <div className="col-lg-4">
                     <div>
-                      <p className="fw-bold">Appropriateness </p>
+                      <p className="fw-bold mt-0 mt-md-3">Appropriateness </p>
                     </div>
                   </div>
                   <div className="col-lg-7 pb-2">
@@ -245,7 +267,7 @@ export const AddReview = ({ book }) => {
                       <ReactStars
                         count={5}
                         onChange={(event) => setAppropriateness(event)}
-                        size={20}
+                        size={40}
                         activeColor="#ffd700"
                         edit={true}
                         isHalf={false}
@@ -256,7 +278,7 @@ export const AddReview = ({ book }) => {
                 <div className="form-group row mt-3">
                   <div className="col-lg-4">
                     <div>
-                      <p className="fw-bold">Effectiveness </p>
+                      <p className="fw-bold mt-0 mt-md-3">Effectiveness </p>
                     </div>
                   </div>
                   <div className="col-lg-7 pb-2">
@@ -264,7 +286,7 @@ export const AddReview = ({ book }) => {
                       <ReactStars
                         count={5}
                         onChange={(event) => setEfectiveness(event)}
-                        size={20}
+                        size={40}
                         activeColor="#ffd700"
                         edit={true}
                         isHalf={false}
@@ -275,7 +297,7 @@ export const AddReview = ({ book }) => {
                 <div className="form-group row mt-3">
                   <div className="col-lg-4">
                     <div>
-                      <p className="fw-bold">Value </p>
+                      <p className="fw-bold mt-0 mt-md-3">Value </p>
                     </div>
                   </div>
                   <div className="col-lg-7 pb-2">
@@ -283,7 +305,7 @@ export const AddReview = ({ book }) => {
                       <ReactStars
                         count={5}
                         onChange={(event) => setValue(event)}
-                        size={20}
+                        size={40}
                         activeColor="#ffd700"
                         edit={true}
                         isHalf={false}
@@ -294,7 +316,7 @@ export const AddReview = ({ book }) => {
                 <div className="form-group row mt-3">
                   <div className="col-lg-4">
                     <div>
-                      <p className="fw-bold">Visual Aids </p>
+                      <p className="fw-bold mt-0 mt-md-3">Visual Aids </p>
                     </div>
                   </div>
                   <div className="col-lg-7 pb-2">
@@ -302,7 +324,7 @@ export const AddReview = ({ book }) => {
                       <ReactStars
                         count={5}
                         onChange={(event) => setVisualaids(event)}
-                        size={20}
+                        size={40}
                         activeColor="#ffd700"
                         edit={true}
                         isHalf={false}
@@ -313,7 +335,7 @@ export const AddReview = ({ book }) => {
                 <div className="form-group row mt-3">
                   <div className="col-lg-4">
                     <div>
-                      <p className="fw-bold">Overall </p>
+                      <p className="fw-bold mt-0 mt-md-3">Overall </p>
                     </div>
                   </div>
                   <div className="col-lg-7 pb-2">
@@ -321,7 +343,7 @@ export const AddReview = ({ book }) => {
                       <ReactStars
                         count={5}
                         onChange={(event) => setOverall(event)}
-                        size={20}
+                        size={40}
                         activeColor="#ffd700"
                         edit={true}
                         isHalf={false}

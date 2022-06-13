@@ -58,7 +58,7 @@ class SearchBookRatingsSerializer(serializers.Serializer):
     book_title = serializers.CharField(required=True, source='book__title')
     book_description = serializers.CharField(required=True, source='book__description')
     total = serializers.IntegerField(required=True, source='id__count')
-    rate_average = serializers.FloatField(required=True, source='overall__avg')
+    rate_average = serializers.IntegerField(required=True, source='overall__avg')
 
 
 
@@ -70,11 +70,11 @@ class DetailBookRatingsSerializer(serializers.Serializer):
     book_authors = serializers.CharField(required=True, source='book__authors')
     book_publish_date = serializers.DateField(required=True, source='book__publish_date')
     total = serializers.IntegerField(required=True, source='id__count')
-    overall_average = serializers.FloatField(required=True, source='overall__avg')
-    appropriateness_average = serializers.FloatField(required=True, source='appropriateness__avg')
-    efectiveness_average = serializers.FloatField(required=True, source='efectiveness__avg')
-    value_average = serializers.FloatField(required=True, source='value__avg')
-    visual_aids_average = serializers.FloatField(required=True, source='visual_aids__avg')
+    overall_average = serializers.IntegerField(required=True, source='overall__avg')
+    appropriateness_average = serializers.IntegerField(required=True, source='appropriateness__avg')
+    efectiveness_average = serializers.IntegerField(required=True, source='efectiveness__avg')
+    value_average = serializers.IntegerField(required=True, source='value__avg')
+    visual_aids_average = serializers.IntegerField(required=True, source='visual_aids__avg')
     has_manual = serializers.BooleanField(required=True)
     has_question_bank = serializers.BooleanField(required=True)
     has_slides = serializers.BooleanField(required=True)
