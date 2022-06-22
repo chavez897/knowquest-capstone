@@ -132,7 +132,8 @@ export const RegisterScreen = () => {
                     </div>
                   )}
                   {(role === "student" || role === "faculty member") && (
-                    <div className="form-group row mt-3">
+                    <div>
+                      <div className="form-group row mt-3">
                       <label className="col-sm-4 col-form-label">
                         Select your current school
                       </label>
@@ -152,6 +153,11 @@ export const RegisterScreen = () => {
                         </select>
                       </div>
                     </div>
+                    <div>
+                      <Link to="/findschool">School not listed?</Link>
+                    </div>
+                    </div>
+                    
                   )}
 
                   <div className="form-group row mt-3">
