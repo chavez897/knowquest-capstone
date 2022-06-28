@@ -4,6 +4,7 @@ import { BooksData } from "./BooksData";
 
 export const SearchScreen = () => {
   const [inputText, setInputText] = useState("");
+  const [searchType] = useState(["Books", "Resources"]);
 
   const inputHandler = (e) => {
     const lowerCase = e.target.value.toLowerCase();
@@ -27,9 +28,21 @@ export const SearchScreen = () => {
               </p>
 
               <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
                 <div className="form-group row">
+                  <label className="col-sm-4 col-form-label">Context* </label>
+                  <div className="col-sm-7">
+                    <select className="form-control">
+                      <option></option>
+                      <option value="book">Book</option>
+                      <option value="resource">Resource</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div className="form-group row mt-3">
                   <label className="col-sm-4 col-form-label">
-                    Search by ISBN
+                    Enter URL
                   </label>
                   <div className="col-sm-7">
                     <input
@@ -43,16 +56,24 @@ export const SearchScreen = () => {
                   </div>
                 </div>
 
+                
                 <div className="form-group row mt-3">
-                  <label className="col-sm-4 col-form-label">Context</label>
+                  <label className="col-sm-4 col-form-label">
+                    Enter ISBN
+                  </label>
                   <div className="col-sm-7">
-                    <select className="form-control">
-                      <option></option>
-                      <option value="book">Book</option>
-                      <option value="resource">Resource</option>
-                    </select>
+                    <input
+                      className="form-control"
+                      type="search"
+                      placeholder="Search..."
+                      value={inputText}
+                      onChange={inputHandler}
+                      aria-label="Search"
+                    />
                   </div>
                 </div>
+
+
               </form>
             </div>
           </div>

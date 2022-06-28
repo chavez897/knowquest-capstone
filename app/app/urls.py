@@ -1,8 +1,11 @@
+from email.mime import base
 from posixpath import basename
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
+#from app.resources.models import Resources
+#from app.resources.views import ResourcesViewSet
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 from users.views.users import UserViewSet
@@ -21,6 +24,9 @@ from ratings_catalogs.views.cost import CostViewSet
 from ratings_catalogs.views.level import LevelViewSet
 from ratings_catalogs.views.semester import SemesterViewSet
 
+# imports for resources
+from resources.views import ResourcesViewSet, ResourcesRatingsViewSet
+
 
 router = routers.DefaultRouter()
 router.register("auth", UserAuthViewSet, basename="auth")
@@ -36,10 +42,14 @@ router.register("books-ratings", BooksRatingsViewSet, basename="books-ratings")
 router.register("cost", CostViewSet, basename="cost")
 router.register("level", LevelViewSet, basename="level")
 router.register("semester", SemesterViewSet, basename="semester")
+# added new for resources
+router.register("resources", ResourcesViewSet, basename="resources")
+router.register("resources-ratings", ResourcesRatingsViewSet, basename="resources-ratings")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("auth-token/", obtain_auth_token),
     path('api/', include(router.urls)),
+    #path('resources/', include('resources.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
