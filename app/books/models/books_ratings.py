@@ -132,6 +132,13 @@ class BooksRatings(models.Model):
         default=2022
     )
 
+    created = models.DateField(
+        verbose_name="creation date",
+        auto_now_add=True,
+        blank=True,
+        null=True,
+    )
+
     class Meta:
         verbose_name = "book rating"
         verbose_name_plural = "book ratings"
