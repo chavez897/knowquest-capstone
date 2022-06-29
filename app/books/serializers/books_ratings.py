@@ -48,6 +48,7 @@ class BooksRatingsModelSerializer(serializers.ModelSerializer):
             "cost_info",
             "semester_info",
             "book_info",
+            "created"
         )
     
 

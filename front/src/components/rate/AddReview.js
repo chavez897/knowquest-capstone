@@ -270,7 +270,7 @@ export const AddReview = ({ book, setHaveSearched}) => {
                         size={40}
                         activeColor="#ffd700"
                         edit={true}
-                        isHalf={false}
+                        isHalf={true}
                       />
                     </div>
                   </div>
@@ -289,7 +289,7 @@ export const AddReview = ({ book, setHaveSearched}) => {
                         size={40}
                         activeColor="#ffd700"
                         edit={true}
-                        isHalf={false}
+                        isHalf={true}
                       />
                     </div>
                   </div>
@@ -308,7 +308,7 @@ export const AddReview = ({ book, setHaveSearched}) => {
                         size={40}
                         activeColor="#ffd700"
                         edit={true}
-                        isHalf={false}
+                        isHalf={true}
                       />
                     </div>
                   </div>
@@ -327,7 +327,7 @@ export const AddReview = ({ book, setHaveSearched}) => {
                         size={40}
                         activeColor="#ffd700"
                         edit={true}
-                        isHalf={false}
+                        isHalf={true}
                       />
                     </div>
                   </div>
@@ -346,7 +346,7 @@ export const AddReview = ({ book, setHaveSearched}) => {
                         size={40}
                         activeColor="#ffd700"
                         edit={true}
-                        isHalf={false}
+                        isHalf={true}
                       />
                     </div>
                   </div>

@@ -6,7 +6,7 @@ from books.models.books_ratings import BooksRatings
 
 @admin.register(Books)
 class BooksModelAdmin(admin.ModelAdmin):
-    list_display = ("id", "isbn", "title", "description")
+    list_display = ("id", "isbn", "title", "description",)
     list_display_links = ("id", "isbn")
 
 
