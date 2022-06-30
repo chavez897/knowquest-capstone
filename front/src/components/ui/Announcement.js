@@ -21,13 +21,9 @@ export const Announcenment = () => {
             className="bg-light mb-5"
             style={{ overflow: "scroll", height: "30vh" }}
           >
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
+            {annoucements.map((annoucement) => (
+            <p>{annoucement.announcements}</p>
+        ))}
           </div>
         </div>
         <div className="col-lg-4" style={{ backgroundColor: "#f93" }}>
