@@ -6,11 +6,10 @@ from url_filter.integrations.drf import DjangoFilterBackend
 
 from users.models import User
 from users.serializers.users import UserModelSerializer
-
+from users.permissions.users import IsProfileOwner
 
 class UserViewSet(
     mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
     queryset = User.objects.all()
@@ -28,7 +27,7 @@ class UserViewSet(
     def get_permissions(self):
         """Assign permissions based on action."""
         permissions = [
-            IsAuthenticated,
+            IsAuthenticated, IsProfileOwner
         ]
         return (permission() for permission in permissions)
 

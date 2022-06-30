@@ -4,6 +4,8 @@ import { userReducer } from "../reducers/userReducer";
 import { tokensReducer } from "../reducers/tokensReducer";
 import { partnersReducer } from "../reducers/partnersReducer";
 import { contestsReducer } from "../reducers/contestsReducer";
+import { booksReducer } from "../reducers/booksReducer";
+import { bookReviewDetailReducer } from "../reducers/bookReviewDetailReducer";
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
@@ -15,6 +17,8 @@ const reducers = combineReducers({
   tokens: tokensReducer,
   partners: partnersReducer,
   contests: contestsReducer,
+  books: booksReducer,
+  bookReviewDetail: bookReviewDetailReducer,
 });
 
 export const store = createStore(

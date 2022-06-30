@@ -53,7 +53,9 @@ export const NavBar = () => {
               </div>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <div className="dropdown-item pointer">Textbook</div>
+                  <Link to="/user/ratebook">
+                    <div className="dropdown-item pointer">Textbook</div>
+                  </Link>
                 </li>
                 <li>
                   <div className="dropdown-item pointer">School</div>
@@ -62,9 +64,7 @@ export const NavBar = () => {
                   <div className="dropdown-item pointer">Class</div>
                 </li>
                 <li>
-                  <div className="dropdown-item pointer">
-                    Online Learning
-                  </div>
+                  <div className="dropdown-item pointer">Online Learning</div>
                 </li>
                 <li>
                   <div className="dropdown-item pointer">Resource</div>
@@ -75,7 +75,9 @@ export const NavBar = () => {
               </ul>
             </li>
             <li className="nav-item">
-              <div className="nav-link active pointer">Search</div>
+              <Link to="/search">
+                <div className="nav-link active pointer">Search</div>
+              </Link>
             </li>
             <li className="nav-item">
               <Link to="/partners">

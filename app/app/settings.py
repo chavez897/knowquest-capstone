@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "contests.apps.ContestsConfig",
     "books.apps.BooksConfig",
     "announcements.apps.AnnouncementsConfig",
+    "ratings_catalogs.apps.RatingsCatalogsConfig",
 ]
 
 MIGRATION_MODULES = {"sites": "contrib.sites.migrations"}
@@ -215,7 +216,7 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [
         "url_filter.integrations.drf.DjangoFilterBackend",
     ],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "DEFAULT_PAGINATION_CLASS": "app.pagination.CustomPagination",
     "PAGE_SIZE": 25,
     "EXCEPTION_HANDLER": "rest_framework_friendly_errors.handlers.friendly_exception_handler",
     "DATETIME_FORMAT": "%Y-%m-%dT%H:%M",
@@ -250,3 +251,5 @@ SIMPLE_JWT = {
 MEDIA_ROOT = str(BASE_DIR / "media")
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"
+
+GOOGLE_BOOKS_API_KEY = env("api_key_books")
