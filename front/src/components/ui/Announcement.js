@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAnnouncementsData } from "../../actions/announcements";
 
 export const Announcenment = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAnnouncementsData());
+    console.log(annoucements);
+  }, [dispatch]);
+
+  const annoucements = useSelector((state) => state.announcements);
+  // console.log(annoucements);
+
   return (
     <div className="row" style={{ backgroundColor: "#333999" }}>
       <div className="row px-5">
@@ -10,13 +21,9 @@ export const Announcenment = () => {
             className="bg-light mb-5"
             style={{ overflow: "scroll", height: "30vh" }}
           >
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
-            <p>Announcenment \n</p>
+            {annoucements.map((annoucement) => (
+            <p>{annoucement.announcements}</p>
+        ))}
           </div>
         </div>
         <div className="col-lg-4" style={{ backgroundColor: "#f93" }}>
