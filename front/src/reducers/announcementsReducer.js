@@ -1,19 +1,11 @@
 import { types } from "../types/types";
 
-export const announcementsReducer = (state = {}, action) => {
+export const announcementsReducer = (state = [], action) => {
   switch (action.type) {
     case types.saveAnnouncements:
-      return {
-        access: action.payload.access,
-        refresh: action.payload.refresh,
-      };
-    case types.refreshAnnouncements:
-      return {
-        ...state,
-        access: action.payload.access,
-      };
+      return action.payload.announcements;
     case types.deleteAnnouncements:
-      return {};
+      return [];
     default:
       return state;
   }

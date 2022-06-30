@@ -5,7 +5,7 @@ export const getAnnouncementsData = () => {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
       axiosInstance
-        .get("/Announcements/")
+        .get("/announcements/")
         .then((res) => {
           dispatch(getAnnouncementsDataAction(res.data.results));
           resolve(res);
@@ -20,6 +20,6 @@ export const getAnnouncementsData = () => {
 export const getAnnouncementsDataAction = (res) => ({
   type: types.saveAnnouncements,
   payload: {
-    partners: res
+    annoucements: res
   },
 });

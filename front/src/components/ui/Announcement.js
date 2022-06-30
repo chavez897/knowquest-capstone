@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAnnouncementsData } from "../../actions/announcements";
 
 export const Announcenment = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAnnouncementsData());
+    console.log(annoucements);
+  }, [dispatch]);
+
+  const annoucements = useSelector((state) => state.announcements);
+  // console.log(annoucements);
+
   return (
     <div className="row" style={{ backgroundColor: "#333999" }}>
       <div className="row px-5">
