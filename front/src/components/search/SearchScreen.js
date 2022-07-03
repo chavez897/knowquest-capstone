@@ -10,7 +10,8 @@ import Swal from "sweetalert2";
 
 export const SearchScreen = () => {
   const [inputText, setInputText] = useState("");
-  const [books, setBooks] = useState("");
+  const [items, setItems] = useState([]);
+  const [maxPage, setMaxPage] = useState(1);
 
   const [formValues, handleFormInputChange, reset] = useForm({ context: "" });
   const { context } = formValues;
@@ -19,16 +20,24 @@ export const SearchScreen = () => {
     setInputText(e.target.value);
   };
 
+  const handlePageClick = (event) => {
+    fetchBooks(event.selected + 1);
+  };
+
+  const fetchBooks = (page) => {
+    axiosInstance
+      .get(`/books-ratings/search/?search=${inputText}&page=${page}`)
+      .then((res) => {
+        setItems(res.data.results);
+        setMaxPage(Math.ceil(res.data.count / res.data.pageSize));
+      });
+  };
+
   const search = (e) => {
     e.preventDefault();
     if (context === "book") {
-      axiosInstance
-        .get(`/books-ratings/search/?search=${inputText}&page=${1}`)
-        .then((res) => {
-          setBooks(res.data.results);
-        });
+      fetchBooks(1);
     } else if (context === "resource") {
-      console.log("Searching resouce");
     } else {
       Swal.fire({
         title: "Error",
@@ -78,58 +87,6 @@ export const SearchScreen = () => {
             ))}
         </tbody>
       </table>
-    );
-  }
-
-  function PaginatedItems({ itemsPerPage }) {
-    // We start with an empty list of items.
-    const [currentItems, setCurrentItems] = useState(null);
-    const [pageCount, setPageCount] = useState(0);
-    // Here we use item offsets; we could also use page offsets
-    // following the API or data you're working with.
-    const [itemOffset, setItemOffset] = useState(0);
-
-    useEffect(() => {
-      // Fetch items from another resources.
-      const endOffset = itemOffset + itemsPerPage;
-      console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-      setCurrentItems(books.slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(books.length / itemsPerPage));
-    }, [itemOffset, itemsPerPage]);
-
-    // Invoke when user click to request another page.
-    const handlePageClick = (event) => {
-      const newOffset = (event.selected * itemsPerPage) % books.length;
-      console.log(
-        `User requested page number ${event.selected}, which is offset ${newOffset}`
-      );
-      setItemOffset(newOffset);
-    };
-
-    return (
-      <>
-        <Items currentItems={currentItems} />
-        <ReactPaginate
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={2}
-          pageCount={pageCount}
-          previousLabel="< previous"
-          pageClassName="page-item"
-          pageLinkClassName="page-link"
-          previousClassName="page-item"
-          previousLinkClassName="page-link"
-          nextClassName="page-item"
-          nextLinkClassName="page-link"
-          breakLabel="..."
-          breakClassName="page-item"
-          breakLinkClassName="page-link"
-          containerClassName="pagination"
-          activeClassName="active"
-          renderOnZeroPageCount={null}
-        />
-      </>
     );
   }
 
@@ -185,23 +142,41 @@ export const SearchScreen = () => {
                   </div>
                 </div>
                 <div className="form-group row mt-3 justify-content-center d-flex">
-                <button
-                  type="button"
-                  className="btn btn-primary col-md-4"
-                  onClick={search}
-                >
-                  Search
-                </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary col-md-4"
+                    onClick={search}
+                  >
+                    Search
+                  </button>
                 </div>
-                
               </form>
             </div>
           </div>
         </div>
       </div>
-      <div className="row p-5">{/* <BooksData input={inputText} /> */}</div>
-      {/* <BooksDataPagination input={searchText} /> */}
-      <PaginatedItems itemsPerPage={25} />
+      <div className="row p-5"></div>
+      <Items currentItems={items} />
+      <ReactPaginate
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={2}
+        pageCount={maxPage}
+        previousLabel="< previous"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakLabel="..."
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        containerClassName="pagination"
+        activeClassName="active"
+        renderOnZeroPageCount={null}
+      />
     </div>
   );
 };
