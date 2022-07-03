@@ -6,11 +6,9 @@ export const Announcenment = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAnnouncementsData());
-    console.log(annoucements);
   }, [dispatch]);
 
   const annoucements = useSelector((state) => state.announcements);
-  // console.log(annoucements);
 
   return (
     <div className="row" style={{ backgroundColor: "#333999" }}>
@@ -22,7 +20,7 @@ export const Announcenment = () => {
             style={{ overflow: "scroll", height: "30vh" }}
           >
             {annoucements.map((annoucement) => (
-            <p>{annoucement.announcements}</p>
+            <p key={annoucement.id}>{annoucement.announcements}</p>
         ))}
           </div>
         </div>
