@@ -1,18 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { axiosInstance } from "../../plugins/axios";
 import { AddBook } from "./AddBook";
 import { AddReview } from "./AddReview";
 import Swal from "sweetalert2";
+import { useForm } from "../../hooks/useForm";
 
 export const RateBookScreen = () => {
-  const [inputText, setInputText] = useState("");
-  const [searchText, setSearchText] = useState("");
   const [book, setBook] = useState("");
   const [haveSearched, setHaveSearched] = useState(false);
-  const [activeTab, setActiveTab] = useState("e");
 
-  useEffect(() => {
-    if (searchText !== "") {
+  const [formValues, handleInputChange] = useForm({
+    isbn: "",
+  });
+
+  const { isbn } = formValues;
+
+  const search = (e) => {
+    e.preventDefault();
+    if (isbn !== "") {
       Swal.fire({
         title: "Loading...",
         didOpen: () => {
@@ -20,31 +25,18 @@ export const RateBookScreen = () => {
         },
       });
       axiosInstance
-        .get(`/books/search/?isbn=${searchText}`)
+        .get(`/books/search/?isbn=${isbn}`)
         .then((res) => {
           setBook(res.data);
           setHaveSearched(true);
           Swal.close();
-          setInputText("");
         })
         .catch(() => {
+          setBook("");
           setHaveSearched(true);
           Swal.close();
-          setInputText("");
         });
     }
-  }, [searchText]);
-
-  const inputHandler = (e) => {
-    setInputText(e.target.value);
-  };
-
-  const search = (e) => {
-    setBook("");
-    setInputText("");
-    e.preventDefault();
-    inputHandler(e);
-    setSearchText(inputText);
   };
 
   return (
@@ -66,8 +58,9 @@ export const RateBookScreen = () => {
                       className="form-control"
                       type="search"
                       placeholder="Search..."
-                      value={inputText}
-                      onChange={inputHandler}
+                      name="isbn"
+                      value={isbn}
+                      onChange={handleInputChange}
                       aria-label="Search"
                     />
                   </div>
@@ -78,7 +71,11 @@ export const RateBookScreen = () => {
         </div>
         {haveSearched ? (
           <div className="col-12 col-md-8">
-            {book ? <AddReview book={book}  setHaveSearched={setHaveSearched}/> : <AddBook setHaveSearched={setHaveSearched}/>}
+            {book ? (
+              <AddReview book={book} setHaveSearched={setHaveSearched} />
+            ) : (
+              <AddBook setHaveSearched={setHaveSearched} />
+            )}
           </div>
         ) : null}
       </div>
