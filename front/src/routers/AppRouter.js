@@ -22,6 +22,7 @@ import { ContestsScreen } from "../components/contests/ContestsScreen";
 import { SearchScreen } from "../components/search/SearchScreen";
 import { BookReviewDetailScreen } from "../components/book-review-detail/BookReviewDetailScreen";
 import { FindSchool } from "../components/school/FindSchool";
+import { EditScreen } from "../components/edit/EditScreen";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -73,6 +74,7 @@ export const AppRouter = () => {
             <Route exact path="/contests" component={ContestsScreen} />
             <Route exact path="/book-review-detail" component={BookReviewDetailScreen} />
             <Route exact path="/findschool" component={FindSchool} />
+            <Route exact path="/editreview" component={EditScreen} />
 
             <Redirect to="/home" />
           </Switch>

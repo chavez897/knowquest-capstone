@@ -7,8 +7,11 @@ import { BookFeaturesCard } from "../book-review-detail/BookFeaturesCard";
 export const EditScreen = () => {
   // state for all responses
   const [response, setResponse] = useState("");
+  const location = useLocation();
+  const { bookId = "" } = queryString.parse(location.search);
+  
   useEffect(() => {
-    axiosInstance.get("/books-ratings/5/").then((res) => {
+    axiosInstance.get(`/books-ratings/5/`).then((res) => {
       setResponse(res.data);
     });
   }, []);
