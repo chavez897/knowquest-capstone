@@ -77,7 +77,7 @@ export const SearchScreen = () => {
                 <td>{book.bookTitle}</td>
                 <td>{book.bookDescription}</td>
                 <td>{book.total}</td>
-                <td>{book.rateAverage}</td>
+                <td>{book.rateAverage / 2}</td>
                 <td>
                   <Link to={`/book-review-detail/?bookId=${book.bookId}`}>
                     <div>{eye}</div>
