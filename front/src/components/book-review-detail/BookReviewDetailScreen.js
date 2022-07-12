@@ -62,7 +62,7 @@ export const BookReviewDetailScreen = () => {
             <div className="col-12 col-md-8">
               <BookDataCard
                 authors={bookDetail.bookAuthors}
-                reviews={bookDetail.total ? bookDetail.total.toString() : "0"}
+                reviews={bookDetail.overallAverage}
                 category="Book"
               />
               <div className="py-3">

@@ -17,6 +17,7 @@ export const RegisterScreen = () => {
   const { email, password, role, area, school, confirm } = formValues;
 
   const [schools, setSchools] = useState([]);
+  const [accept, setAccept] = useState(false);
   const [areas, setAreas] = useState([]);
   const [roles] = useState(["student", "regular", "faculty member"]);
 
@@ -134,30 +135,29 @@ export const RegisterScreen = () => {
                   {(role === "student" || role === "faculty member") && (
                     <div>
                       <div className="form-group row mt-3">
-                      <label className="col-sm-4 col-form-label">
-                        Select your current school
-                      </label>
-                      <div className="col-sm-7">
-                        <select
-                          className="form-control"
-                          name="school"
-                          value={school}
-                          onChange={handleInputChange}
-                        >
-                          <option></option>
-                          {schools.map((option) => (
-                            <option key={option.id} value={option.id}>
-                              {option.name}
-                            </option>
-                          ))}
-                        </select>
+                        <label className="col-sm-4 col-form-label">
+                          Select your current school
+                        </label>
+                        <div className="col-sm-7">
+                          <select
+                            className="form-control"
+                            name="school"
+                            value={school}
+                            onChange={handleInputChange}
+                          >
+                            <option></option>
+                            {schools.map((option) => (
+                              <option key={option.id} value={option.id}>
+                                {option.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div>
+                        <Link to="/findschool">School not listed or domain error?</Link>
                       </div>
                     </div>
-                    <div>
-                      <Link to="/findschool">School not listed?</Link>
-                    </div>
-                    </div>
-                    
                   )}
 
                   <div className="form-group row mt-3">
@@ -209,8 +209,11 @@ export const RegisterScreen = () => {
                       <input
                         className="form-check-input"
                         type="checkbox"
-                        value=""
-                        id="defaultCheck1"
+                        name="accept"
+                        value={accept}
+                        onChange={() => {
+                          setAccept(!accept);
+                        }}
                       />
                       <label
                         className="form-check-label text-left"
@@ -225,6 +228,7 @@ export const RegisterScreen = () => {
                       <button
                         className="mx-1 btn btn-primary btn-lg btn-block col-12 col-md-4"
                         type="submit"
+                        disabled={!accept}
                       >
                         Register
                       </button>

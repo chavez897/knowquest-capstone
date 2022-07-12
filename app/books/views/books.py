@@ -63,7 +63,6 @@ class BooksViewSet(
                     self.perform_create(serializer)
                     return Response(serializer.data, status=status.HTTP_200_OK)
             except Exception as ex:
-                print(ex)
                 raise Http404()
             else:
                 raise Http404()

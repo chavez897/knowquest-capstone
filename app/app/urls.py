@@ -20,6 +20,7 @@ from books.views.books_ratings import BooksRatingsViewSet
 from ratings_catalogs.views.cost import CostViewSet
 from ratings_catalogs.views.level import LevelViewSet
 from ratings_catalogs.views.semester import SemesterViewSet
+from users.views.academic_domains import AcademicDomainsViewSet
 
 
 router = routers.DefaultRouter()
@@ -36,6 +37,7 @@ router.register("books-ratings", BooksRatingsViewSet, basename="books-ratings")
 router.register("cost", CostViewSet, basename="cost")
 router.register("level", LevelViewSet, basename="level")
 router.register("semester", SemesterViewSet, basename="semester")
+router.register("academicdomains", AcademicDomainsViewSet, basename="academicdomains")
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -55,14 +55,14 @@ export const IndexSignUp = () => {
                 get extra contest entries!
               </p>
               <div className="py-5 d-flex justify-content-center">
-                <a
+                <Link
                   role="button"
                   className="btn btn-warning text-white"
                   style={{ width: "30vh" }}
-                  href="/user/referral"
+                  to="/user/referral"
                 >
                   Start Refering
-                </a>
+                </Link>
               </div>
             </div>
           ) : (
@@ -76,24 +76,24 @@ export const IndexSignUp = () => {
                 other personal information.
               </p>
               <div className="py-3 d-flex justify-content-center">
-                <a
+                <Link
                   role="button"
                   className="btn btn-warning text-white"
                   style={{ width: "30vh" }}
-                  href="/auth/login"
+                  to="/auth/login"
                 >
                   Login
-                </a>
+                </Link>
               </div>
               <div className="py-3 d-flex justify-content-center">
-                <a
+                <Link
                   role="button"
                   className="btn btn-warning text-white"
                   style={{ width: "30vh" }}
-                  href="/auth/register"
+                  to="/auth/register"
                 >
                   Register
-                </a>
+                </Link>
               </div>
             </div>
           )}
