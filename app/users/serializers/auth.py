@@ -80,7 +80,6 @@ class PasswordRecoveryEmail(serializers.Serializer):
             "token_type": "password_recovery",
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
-        print(token)
         msg = EmailMultiAlternatives(
             subject="Forgot Password",
             body="http://localhost:3000/auth/reset-password?token={}".format(token),
@@ -221,7 +220,6 @@ class UserSignUpSerializer(serializers.Serializer):
             "token_type": "email_confirmation",
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
-        print(token)
         msg = EmailMultiAlternatives(
             subject="Email Verifaction",
             body="http://localhost:3000/auth/login?token={}".format(token),

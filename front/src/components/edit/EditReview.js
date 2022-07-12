@@ -48,8 +48,6 @@ export const EditReview = ({ response, setHaveSearched}) => {
     comments,
     year,
   } = formValues;
-  console.log(year)
-  console.log(response.instructorManualProvided)
 
   //state for react stars
   const [appropriateness, setAppropriateness] = useState("");

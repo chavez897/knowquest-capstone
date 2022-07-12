@@ -17,7 +17,6 @@ export const EditScreen = () => {
       setResponse(res.data);
     });
   }, []);
-  console.log(response);
 
   return (
     <div className="container py-5">
