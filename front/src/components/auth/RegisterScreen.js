@@ -32,7 +32,6 @@ export const RegisterScreen = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(accept);
     let requestSchool = null;
     let requestArea = null;
     if (role === "student" || role === "faculty member") {
@@ -156,7 +155,7 @@ export const RegisterScreen = () => {
                         </div>
                       </div>
                       <div>
-                        <Link to="/findschool">School not listed?</Link>
+                        <Link to="/findschool">School not listed or domain error?</Link>
                       </div>
                     </div>
                   )}
