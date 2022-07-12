@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import queryString from "query-string";
 import { axiosInstance } from "../../plugins/axios";
 import { BookDataCard } from "../book-review-detail/BookDataCard";
 import { EditReview } from "./EditReview";
@@ -8,14 +10,13 @@ export const EditScreen = () => {
   // state for all responses
   const [response, setResponse] = useState("");
   const location = useLocation();
-  const { bookId = "" } = queryString.parse(location.search);
+  const { reviewId = "" } = queryString.parse(location.search);
   
   useEffect(() => {
-    axiosInstance.get(`/books-ratings/5/`).then((res) => {
+    axiosInstance.get(`/books-ratings/${reviewId}/`).then((res) => {
       setResponse(res.data);
     });
   }, []);
-  console.log(response);
 
   return (
     <div className="container py-5">

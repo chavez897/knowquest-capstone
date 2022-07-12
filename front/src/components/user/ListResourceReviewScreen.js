@@ -7,7 +7,7 @@ import { axiosInstance } from "../../plugins/axios";
 import ReactPaginate from "react-paginate";
 import { MyRatingsCard } from "./MyRatingsCard";
 
-export const ListOwnReviewsScreen = () => {
+export const ListResourceReviewScreen = () => {
   const [books, setBooks] = useState([]);
   const [maxPage, setMaxPage] = useState(1);
   const eye = <FontAwesomeIcon icon={faPencil} />;
@@ -16,6 +16,7 @@ export const ListOwnReviewsScreen = () => {
   }, []);
 
   const requestRatings = (page) => {
+    // change this filed to resource rating
     axiosInstance.get(`/books-ratings/mine/?page=${page}`).then((res) => {
       setBooks(res.data.results);
       setMaxPage(Math.ceil(res.data.count / res.data.pageSize))
@@ -28,11 +29,11 @@ export const ListOwnReviewsScreen = () => {
     <div className="mt-3">
       <Breadcrumb
         main="Profile"
-        secondary="My Textbook Ratings"
+        secondary="My Resource Ratings"
         link="/user/profile"
       />
       <div className="pb-5 pt-2">
-        <p className="fw-bold fs-2">My Rating Textbooks List </p>
+        <p className="fw-bold fs-2">My Resources Rating List </p>
       </div>
       <div className="pt-2 row">
         <div className="col-9">

@@ -67,7 +67,9 @@ export const NavBar = () => {
                   <div className="dropdown-item pointer">Online Learning</div>
                 </li>
                 <li>
-                  <div className="dropdown-item pointer">Resource</div>
+                  <Link to="/user/rateresource">
+                    <div className="dropdown-item pointer">Resource</div>
+                  </Link>
                 </li>
                 <li>
                   <div className="dropdown-item pointer">Wekipedia</div>
