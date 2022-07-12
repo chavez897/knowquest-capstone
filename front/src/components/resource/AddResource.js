@@ -62,6 +62,7 @@ export const AddResource = ({ book, setHaveSearched}) => {
   const [levels, setLevels] = useState([]);
   const [semesters, setSemesters] = useState([]);
   const [years, setYears] = useState([])
+  const [resourceTypes, setResourceTypes] = useState([])
 
   useEffect(() => {
     axiosInstance.get("/study-area/").then((res) => {
@@ -169,7 +170,7 @@ export const AddResource = ({ book, setHaveSearched}) => {
                     >
                       <option></option>
                       {/* change resources types name if different */}
-                      {resource_types.map((option) => (
+                      {resourceTypes.map((option) => (
                         <option key={option.id} value={option.id}>
                           {option.name}
                         </option>
