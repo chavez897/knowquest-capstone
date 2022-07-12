@@ -9,6 +9,25 @@ export const Announcenment = () => {
   }, [dispatch]);
 
   const annoucements = useSelector((state) => state.announcements);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const formatDate = (input) => {
+    const parts = input.split("-");
+    return months[parseInt(parts[1]) - 1] + " " + parts[2] + ", " + parts[0];
+  };
 
   return (
     <div className="row" style={{ backgroundColor: "#333999" }}>
@@ -20,12 +39,19 @@ export const Announcenment = () => {
             style={{ overflow: "scroll", height: "30vh" }}
           >
             {annoucements.map((annoucement) => (
-            <p key={annoucement.id}>{annoucement.announcements}</p>
-        ))}
+              <div key={annoucement.id} className="row mx-2">
+                <p className="fw-bold fs-5 text-warning col-12">
+                  {formatDate(annoucement.date)}
+                </p>
+                <p className="col-12 -mt-2">{annoucement.announcements}</p>
+              </div>
+            ))}
           </div>
         </div>
         <div className="col-lg-4" style={{ backgroundColor: "#f93" }}>
-          <div className="row"><h3 className="py-3 text-center">KnowQuest Explained</h3></div>
+          <div className="row">
+            <h3 className="py-3 text-center">KnowQuest Explained</h3>
+          </div>
           <div className="row embed-responsive embed-responsive-16by9 justify-content-center d-flex">
             <iframe
               title="VideoDemo"
