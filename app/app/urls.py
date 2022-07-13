@@ -21,6 +21,7 @@ from ratings_catalogs.views.cost import CostViewSet
 from ratings_catalogs.views.level import LevelViewSet
 from ratings_catalogs.views.semester import SemesterViewSet
 from users.views.academic_domains import AcademicDomainsViewSet
+from resources.views import ResourcesViewSet, ResourcesRatingsViewSet
 
 
 router = routers.DefaultRouter()
@@ -38,6 +39,8 @@ router.register("cost", CostViewSet, basename="cost")
 router.register("level", LevelViewSet, basename="level")
 router.register("semester", SemesterViewSet, basename="semester")
 router.register("academicdomains", AcademicDomainsViewSet, basename="academicdomains")
+router.register("resources", ResourcesViewSet, basename="resources")
+router.register("resources-ratings", ResourcesRatingsViewSet, basename="resources-ratings")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
