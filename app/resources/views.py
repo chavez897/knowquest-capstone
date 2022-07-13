@@ -104,10 +104,16 @@ class ResourcesRatingsViewSet(
         elif self.action in ["mine"]:
             return ResourcesRatings.objects.filter(user__id=self.request.user.id).select_related("subject", "level", "semester", "resource")
         elif self.action in ["resource"]:
-            return ResourcesRatings.objects.all().select_related("resource").values("resource__id", "resource__title", "resource__media_type",
-                                                                                    ).annotate(Count("id"), Avg("overall"), Avg("effective"), Avg("relevant"), Avg("easyUse"), Avg("value"), Avg("classHelped"))
+            return ResourcesRatings.objects.all().select_related("resource").values("resource__id", "resource__title", "resource__media_type__name",
+                                                                                    ).annotate(Count("id"), Avg("overall"), Avg("effective"), Avg("relevant"), Avg("easy_use"), Avg("value"), Avg("class_helped"))
         elif self.action in ["comments"]:
             return ResourcesRatings.objects.filter(comments__isnull=False).exclude(comments__exact="").values("comments")
+        elif self.action in ["subject"]:
+            return ResourcesRatings.objects.all().select_related("subject").values("resource", "subject__name").annotate(Count("id")).order_by("-id")
+        elif self.action in ["semester"]:
+            return ResourcesRatings.objects.all().select_related("semester").values("resource", "semester__name").annotate(Count("id")).order_by("-id")
+        elif self.action in ["year"]:
+            return ResourcesRatings.objects.all().values("resource", "year").annotate(Count("id")).order_by("-id")
         return ResourcesRatings.objects.all().select_related("subject", "level", "semester", "resource")
 
     def get_serializer_class(self):
@@ -184,3 +190,43 @@ class ResourcesRatingsViewSet(
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, methods=["GET"])
+    def subject(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        max = 0
+        subject_name = ""
+        for val in queryset:
+            if val['id__count'] > max:
+                max = val['id__count']
+                subject_name = val["subject__name"]
+        return Response({
+            "subject": subject_name
+        })
+    
+
+    @action(detail=False, methods=["GET"])
+    def semester(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        max = 0
+        name = ""
+        for val in queryset:
+            if val['id__count'] > max:
+                max = val['id__count']
+                name = val["semester__name"]
+        return Response({
+            "semester": name
+        })
+    
+    @action(detail=False, methods=["GET"])
+    def year(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        max = 0
+        name = ""
+        for val in queryset:
+            if val['id__count'] > max:
+                max = val['id__count']
+                name = val["year"]
+        return Response({
+            "year": name
+        })
