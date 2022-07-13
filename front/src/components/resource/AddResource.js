@@ -2,75 +2,59 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { axiosInstance } from "../../plugins/axios";
 import ReactStars from "react-rating-stars-component";
+import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { types } from "../../types/types";
 
-export const AddResource = ({ book, setHaveSearched}) => {
+export const AddResource = () => {
+  const user = useSelector((state) => state.user);
   // form value state
   const [formValues, handleFormInputChange, reset] = useForm({
-    appropriateness: "",
+    name: "",
+    title: "",
     efectiveness: "",
+    relevent: "",
+    easeofuser: "",
     value: "",
-    visual_aids: "",
+    helpwithclass: "",
     overall: "",
     recommend: false,
-    instructor_manualProvided: false,
-    teachingSlidesProvided: false,
-    questionBankProvided: false,
-    digitalResourceProvided: false,
-    assigmentsProvided: false,
-    instructorManualUsed: false,
-    teachingSlidesUsed: false,
-    questionBankUsed: false,
-    digitalResourceUsed: false,
-    assigmentsUsed: false,
-    useAgain: false,
     comments: "",
-    year: ""
+    year: "",
   });
 
   const {
-    area,
+    name,
+    title,
+    type,
+    subject,
     level,
     semester,
-    cost,
-    recommend,
-    instructor_manualProvided,
-    teachingSlidesProvided,
-    questionBankProvided,
-    digitalResourceProvided,
-    assigmentsProvided,
-    instructorManualUsed,
-    teachingSlidesUsed,
-    questionBankUsed,
-    digitalResourceUsed,
-    assigmentsUsed,
-    useAgain,
-    comments,
     year,
+    recommend,
+    comments,
   } = formValues;
 
   //state for react stars
-  const [appropriateness, setAppropriateness] = useState("");
+  const [relevent, setRelevent] = useState("");
   const [efectiveness, setEfectiveness] = useState("");
   const [value, setValue] = useState("");
-  const [visualaids, setVisualaids] = useState("");
+  const [ease, setEase] = useState("");
+  const [helped, setHelped] = useState("");
   const [overall, setOverall] = useState("");
-  //state for books
-  const [areas, setAreas] = useState([]);
-  const [costs, setCosts] = useState([]);
+  //state for resources
+  const [resourceTypes, setResourceTypes] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [levels, setLevels] = useState([]);
   const [semesters, setSemesters] = useState([]);
-  const [years, setYears] = useState([])
-  const [resourceTypes, setResourceTypes] = useState([])
+  const [years, setYears] = useState([]);
 
   useEffect(() => {
-    axiosInstance.get("/study-area/").then((res) => {
-      setAreas(res.data.results);
+    axiosInstance.get("/media-type/").then((res) => {
+      setResourceTypes(res.data.results);
     });
 
-    axiosInstance.get("/cost/").then((res) => {
-      setCosts(res.data.results);
+    axiosInstance.get("/study-area/").then((res) => {
+      setSubjects(res.data.results);
     });
 
     axiosInstance.get("/level/").then((res) => {
@@ -80,13 +64,13 @@ export const AddResource = ({ book, setHaveSearched}) => {
     axiosInstance.get("/semester/").then((res) => {
       setSemesters(res.data.results);
     });
-    let tempYears = []
-    let currentYear = new Date().getFullYear()
-    for (let i = 0; i < 5; i++) {
-      tempYears.push(currentYear - i)
-    } 
-    setYears(tempYears)
 
+    let tempYears = [];
+    let currentYear = new Date().getFullYear();
+    for (let i = 0; i < 5; i++) {
+      tempYears.push(currentYear - i);
+    }
+    setYears(tempYears);
   }, []);
 
   // POST operation to backend
@@ -99,42 +83,52 @@ export const AddResource = ({ book, setHaveSearched}) => {
       },
     });
     axiosInstance
-      .post("/books-ratings/", {
-        book: book.id,
-        subject: area,
-        level: level,
-        cost: cost,
-        semester: semester,
-        appropriateness: appropriateness * 2,
-        efectiveness: efectiveness * 2,
-        value: value * 2,
-        visual_aids: visualaids * 2,
-        overall: overall * 2,
-        recommend: recommend,
-        instructor_manualProvided: instructor_manualProvided,
-        teachingSlidesProvided: teachingSlidesProvided,
-        questionBankProvided: questionBankProvided,
-        digitalResourceProvided: digitalResourceProvided,
-        assigmentsProvided: assigmentsProvided,
-        instructorManualUsed: instructorManualUsed,
-        teachingSlidesUsed: teachingSlidesUsed,
-        questionBankUsed: questionBankUsed,
-        digitalResourceUsed: digitalResourceUsed,
-        assigmentsUsed: assigmentsUsed,
-        useAgain: useAgain,
-        comments: comments,
-        year: year
+      .post("/resources/", {
+        resourceName: name,
+        title: title,
+        mediaType: type,
       })
       .then((res) => {
-        Swal.close();
-        Swal.fire({
-          title: "Succesful",
-          text: "You have submitted your review!",
-          icon: "success",
-          confirmButtonText: "Ok",
-        });
-        reset();
-        setHaveSearched(false)
+        console.log(res);
+        axiosInstance
+          .post("/resources-ratings/", {
+            effective: efectiveness * 2,
+            relevant: relevent * 2,
+            easyUse: ease * 2,
+            value: value * 2,
+            classHelped: helped * 2,
+            overall: overall * 2,
+            recommend: recommend,
+            comments: comments,
+            year: year,
+            resource: res.data.id,
+            user: user.id,
+            subject: subject,
+            level: level,
+            semester: semester,
+          })
+          .then((res) => {
+            Swal.close();
+            Swal.fire({
+              title: "Succesful",
+              text: "You have submitted your review!",
+              icon: "success",
+              confirmButtonText: "Ok",
+            });
+            reset();
+          })
+          .catch((error) => {
+            Swal.close();
+            Swal.fire({
+              title: "Error",
+              text:
+                error.response.data.errors[0].field +
+                ": " +
+                error.response.data.errors[0].message,
+              icon: "error",
+              confirmButtonText: "Ok",
+            });
+          });
       })
       .catch((error) => {
         Swal.close();
@@ -153,19 +147,55 @@ export const AddResource = ({ book, setHaveSearched}) => {
   return (
     <div>
       <div>
-        <div className="py-3">Book Title: {book.title}</div>
         {/* first rating block */}
         <div className="row-12 row-md-8 py-3">
           <div className="card shadow-2-strong bg-light">
             <div className="card-body p-5">
+              <p>
+                Whether it is a YouTube video, a LinkedIn Learning Course, Khan
+                Academy Course, Online Website or other Digital Resource, you
+                can rate it here! Just copy and paste the URL below:
+              </p>
               <form className="shadow-md rounded px-8 pt-6 pb-8 mb-4">
-              <div className="form-group row mt-3">
-                  <label className="col-sm-4 col-form-label">Resource Type</label>
+                <div className="form-group row mt-3">
+                  <label className="col-sm-4 col-form-label">
+                    Resource Name
+                  </label>
+                  <div className="col-sm-7">
+                    <input
+                      className="form-control"
+                      type="text"
+                      placeholder="Enter a text entry, URL, name or others..."
+                      name="name"
+                      value={name}
+                      onChange={handleFormInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="form-group row mt-3">
+                  <label className="col-sm-4 col-form-label">
+                    Resource Title
+                  </label>
+                  <div className="col-sm-7">
+                    <input
+                      className="form-control"
+                      type="text"
+                      placeholder="Enter Resource Title..."
+                      name="title"
+                      value={title}
+                      onChange={handleFormInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="form-group row mt-3">
+                  <label className="col-sm-4 col-form-label">
+                    Resource Type
+                  </label>
                   <div className="col-sm-7">
                     <select
                       className="form-control"
                       name="area"
-                      value={area}
+                      value={type}
                       onChange={handleFormInputChange}
                     >
                       <option></option>
@@ -184,11 +214,11 @@ export const AddResource = ({ book, setHaveSearched}) => {
                     <select
                       className="form-control"
                       name="area"
-                      value={area}
+                      value={subject}
                       onChange={handleFormInputChange}
                     >
                       <option></option>
-                      {areas.map((option) => (
+                      {subjects.map((option) => (
                         <option key={option.id} value={option.id}>
                           {option.name}
                         </option>
@@ -235,13 +265,13 @@ export const AddResource = ({ book, setHaveSearched}) => {
                 <div className="form-group row mt-3">
                   <label className="col-sm-4 col-form-label">Year</label>
                   <div className="col-sm-7">
-                  <select
+                    <select
                       className="form-control"
                       name="year"
                       value={year}
                       onChange={handleFormInputChange}
                     >
-                    <option></option>
+                      <option></option>
                       {years.map((option) => (
                         <option key={option} value={option}>
                           {option}
@@ -269,7 +299,7 @@ export const AddResource = ({ book, setHaveSearched}) => {
                     <div>
                       <ReactStars
                         count={5}
-                        onChange={(event) => setAppropriateness(event)}
+                        onChange={(event) => setEfectiveness(event)}
                         size={40}
                         activeColor="#ffd700"
                         edit={true}
@@ -288,7 +318,7 @@ export const AddResource = ({ book, setHaveSearched}) => {
                     <div>
                       <ReactStars
                         count={5}
-                        onChange={(event) => setEfectiveness(event)}
+                        onChange={(event) => setRelevent(event)}
                         size={40}
                         activeColor="#ffd700"
                         edit={true}
@@ -307,7 +337,7 @@ export const AddResource = ({ book, setHaveSearched}) => {
                     <div>
                       <ReactStars
                         count={5}
-                        onChange={(event) => setValue(event)}
+                        onChange={(event) => setEase(event)}
                         size={40}
                         activeColor="#ffd700"
                         edit={true}
@@ -326,7 +356,7 @@ export const AddResource = ({ book, setHaveSearched}) => {
                     <div>
                       <ReactStars
                         count={5}
-                        onChange={(event) => setVisualaids(event)}
+                        onChange={(event) => setValue(event)}
                         size={40}
                         activeColor="#ffd700"
                         edit={true}
@@ -345,7 +375,7 @@ export const AddResource = ({ book, setHaveSearched}) => {
                     <div>
                       <ReactStars
                         count={5}
-                        onChange={(event) => setOverall(event)}
+                        onChange={(event) => setHelped(event)}
                         size={40}
                         activeColor="#ffd700"
                         edit={true}
