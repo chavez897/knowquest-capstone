@@ -6,8 +6,8 @@ from django.http import HttpResponse
 
 from django.http import Http404
 
-from .models import Resources, ResourcesRatings
-from .serializers import ResourcesModelSerializer, ResourcesRatingsModelSerializer, SearchResourceRatingsSerializer, DetailResourceRatingsSerializer, CommentsResourceRatingsSerializer
+from .models import Resources, ResourcesRatings, MediaType
+from .serializers import ResourcesModelSerializer, ResourcesRatingsModelSerializer, SearchResourceRatingsSerializer, DetailResourceRatingsSerializer, CommentsResourceRatingsSerializer, MediaTypeModelSerializer
 
 from re import A
 from rest_framework import mixins, status, viewsets, filters
@@ -19,6 +19,19 @@ from rest_framework.decorators import action
 from django.db.models import Count, Avg, Case, When
 
 from users.permissions.users import IsStudent, IsFacultyMember, IsAccountOwner, IsAdmin
+
+
+class MediaTypeViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = MediaType.objects.all()
+    serializer_class = MediaTypeModelSerializer
+
+    def get_permissions(self):
+        permissions = []
+        return (permission() for permission in permissions)
 
 
 class ResourcesViewSet(
