@@ -14,4 +14,10 @@ export const types = {
 
   saveBooks: "[Books] Save",
   deleteBooks: "[Books] Delete",
+
+  saveAnnouncements: "[Announcements] Save",
+  deleteAnnouncements: "[Announcements] Delete",
+
+  getBookDeatil: "[Book Detail] Get",
+  deleteBookDetail: "[Book Detail] Delete",
 };

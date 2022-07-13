@@ -4,13 +4,14 @@ import { Card } from "../ui/Card";
 import { Announcenment } from "../ui/Announcement";
 import { IndexSignUp } from "../ui/IndexSignUp";
 import { Importance } from "../ui/Importance";
+import { Link } from "react-router-dom";
 
 export const HomeScreen = () => {
   const cardsInfo = [
     {
       id: 1,
       src: "https://knowquest.net/images/books-stack-of-three.png",
-      href:"#",
+      href:"/user/ratebook",
       title: "Rate your textbook",
       description:
         "Use your Textbook’s ISBN number to Anonymously Rate Your Textbook! Your ratings will help improve textbooks.",
@@ -56,7 +57,8 @@ export const HomeScreen = () => {
         <div className="row">
           {cardsInfo.map((card) => (
             <div key={card.id} className="col-lg-4 py-2">
-              <Card src={card.src} href={card.href} title={card.title} description={card.description} />
+              <Link to={card.href}><Card src={card.src} title={card.title} description={card.description} /></Link>
+              
             </div>
           ))}
         </div>

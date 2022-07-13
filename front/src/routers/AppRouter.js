@@ -21,6 +21,8 @@ import { PartnersScreen } from "../components/partners/PartnersScreen";
 import { ContestsScreen } from "../components/contests/ContestsScreen";
 import { SearchScreen } from "../components/search/SearchScreen";
 import { BookReviewDetailScreen } from "../components/book-review-detail/BookReviewDetailScreen";
+import { FindSchool } from "../components/school/FindSchool";
+import { EditScreen } from "../components/edit/EditScreen";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -36,7 +38,6 @@ export const AppRouter = () => {
           setChecking(false);
         })
         .catch(() => {
-          console.log("catch");
           setChecking(false);
         });
     } else {
@@ -71,6 +72,8 @@ export const AppRouter = () => {
             <Route exact path="/partners" component={PartnersScreen} />
             <Route exact path="/contests" component={ContestsScreen} />
             <Route exact path="/book-review-detail" component={BookReviewDetailScreen} />
+            <Route exact path="/findschool" component={FindSchool} />
+            <Route exact path="/editreview" component={EditScreen} />
 
             <Redirect to="/home" />
           </Switch>

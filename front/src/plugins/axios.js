@@ -58,6 +58,7 @@ axiosInstance.interceptors.response.use(
     ) {
       dispatch(logout());
       isAlreadyFetchingAccessToken = false;
+      window.location.reload(false);
       return Promise.reject(error);
     } else if (
       response &&

@@ -13,8 +13,8 @@ export const Breadcrumb = ({ main, secondary, link }) => {
               </Link>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              <Link to={link}>
-                <div>{main}</div>
+              <Link to={link} className="mt-0 pt-0">
+                <div className="mx-3">{main}</div>
               </Link>
             </li>
             <li className="breadcrumb-item active" aria-current="page">

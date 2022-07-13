@@ -23,6 +23,7 @@ from books.views.books_ratings import BooksRatingsViewSet
 from ratings_catalogs.views.cost import CostViewSet
 from ratings_catalogs.views.level import LevelViewSet
 from ratings_catalogs.views.semester import SemesterViewSet
+from users.views.academic_domains import AcademicDomainsViewSet
 
 # imports for resources
 from resources.views import ResourcesViewSet, ResourcesRatingsViewSet
@@ -45,6 +46,7 @@ router.register("semester", SemesterViewSet, basename="semester")
 # added new for resources
 router.register("resources", ResourcesViewSet, basename="resources")
 router.register("resources-ratings", ResourcesRatingsViewSet, basename="resources-ratings")
+router.register("academicdomains", AcademicDomainsViewSet, basename="academicdomains")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
