@@ -47,7 +47,7 @@ class DetailResourceRatingsSerializer(serializers.Serializer):
     resource_title = serializers.CharField(
         required=True, source='resource__title')
     resource_media_type = serializers.CharField(
-        required=True, source='resource__media_type')
+        required=True, source='resource__media_type__name')
     total = serializers.IntegerField(required=True, source='id__count')
     overall_average = serializers.FloatField(
         required=True, source='overall__avg')
@@ -56,13 +56,10 @@ class DetailResourceRatingsSerializer(serializers.Serializer):
     relevant_average = serializers.FloatField(
         required=True, source='relevant__avg')
     easyUse_average = serializers.FloatField(
-        required=True, source='easyUse__avg')
+        required=True, source='easy_use__avg')
     value_average = serializers.FloatField(required=True, source='value__avg')
     classHelped = serializers.FloatField(
-        required=True, source='classHelped__avg')
-    # subject_name = serializers.CharField(required=True, source='subject')
-    # semester_name = serializers.CharField(required=True, source='semester')
-    # year_value = serializers.IntegerField(required=True, source='year')
+        required=True, source='class_helped__avg')
 
 
 class CommentsResourceRatingsSerializer(serializers.Serializer):
