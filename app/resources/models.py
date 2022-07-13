@@ -4,6 +4,20 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
+class MediaType(models.Model):
+
+    name = models.CharField(
+        verbose_name="title",
+        max_length=250
+    )
+
+    class Meta:
+        verbose_name = "media type"
+        verbose_name_plural = "media types"
+
+    def __str__(self):
+        return self.name
+
 class Resources(models.Model):
 
     resource_name = models.URLField(
@@ -16,9 +30,12 @@ class Resources(models.Model):
         max_length=250
     )
 
-    media_type = models.CharField(
-        verbose_name="media_type",
-        max_length=500
+    media_type = models.ForeignKey(
+        verbose_name="media type",
+        on_delete=models.CASCADE,
+        to="resources.MediaType",
+        blank=True,
+        null=True,
     )
 
     class Meta:
@@ -37,7 +54,6 @@ class ResourcesRatings(models.Model):
         on_delete=models.CASCADE, 
         to='Resources'
     )
-    # DONE!!!!!
 
     effective = models.IntegerField(
         verbose_name="effective",
@@ -84,13 +100,6 @@ class ResourcesRatings(models.Model):
         to="users.User",
         on_delete=models.CASCADE,
     )
-    #########################################################
-
-    resource_type = models.CharField(
-        verbose_name="resource_type",
-        unique=True,
-        max_length=250
-    )
 
     subject = models.ForeignKey(
         verbose_name="subject",
@@ -119,6 +128,13 @@ class ResourcesRatings(models.Model):
     year = models.IntegerField(
         verbose_name="year",
         default=2022
+    )
+
+    created = models.DateField(
+        verbose_name="creation date",
+        auto_now_add=True,
+        blank=True,
+        null=True,
     )
 
     class Meta:
