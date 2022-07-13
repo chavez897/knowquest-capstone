@@ -49,7 +49,7 @@ class ResourcesRatings(models.Model):
         validators=[MaxValueValidator(10), MinValueValidator(0)],
     )
 
-    easyUse = models.IntegerField(
+    easy_use = models.IntegerField(
         verbose_name="easyUse",
         validators=[MaxValueValidator(10), MinValueValidator(0)],
     )
@@ -59,7 +59,7 @@ class ResourcesRatings(models.Model):
         validators=[MaxValueValidator(10), MinValueValidator(0)],
     )
 
-    classHelped = models.IntegerField(
+    class_helped = models.IntegerField(
         verbose_name="classHelped",
         validators=[MaxValueValidator(10), MinValueValidator(0)],
     )

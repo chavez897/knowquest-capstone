@@ -73,11 +73,11 @@ class ResourcesRatingsViewSet(
 
     def get_queryset(self):
         if self.action in ["search"]:
-            return ResourcesRatings.objects.all().select_related("resource").values("resource__id", "resource__title", "resource__mediaType").annotate(Count("id"), Avg("overall"))
+            return ResourcesRatings.objects.all().select_related("resource").values("resource__id", "resource__title", "resource__media_type").annotate(Count("id"), Avg("overall"))
         elif self.action in ["mine"]:
             return ResourcesRatings.objects.filter(user__id=self.request.user.id).select_related("subject", "level", "semester", "resource")
         elif self.action in ["resource"]:
-            return ResourcesRatings.objects.all().select_related("resource").values("resource__id", "resource__title", "resource__mediaType"
+            return ResourcesRatings.objects.all().select_related("resource").values("resource__id", "resource__title", "resource__media_type",
                                                                             ).annotate(Count("id"), Avg("overall"), Avg("effective"), Avg("relevant"), Avg("easyUse"), Avg("value"), Avg("classHelped"))
         elif self.action in ["comments"]:
             return ResourcesRatings.objects.filter(comments__isnull=False).exclude(comments__exact="").values("comments")
