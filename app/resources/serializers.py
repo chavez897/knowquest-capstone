@@ -36,7 +36,7 @@ class SearchResourceRatingsSerializer(serializers.Serializer):
     resource_title = serializers.CharField(
         required=True, source='resource__title')
     resource_media_type = serializers.CharField(
-        required=True, source='resource__mediaType')
+        required=True, source='resource__media_type')
     total = serializers.IntegerField(required=True, source='id__count')
     rate_average = serializers.FloatField(required=True, source='overall__avg')
 
