@@ -54,7 +54,7 @@ export const ListOwnReviewsScreen = () => {
                   <td>{book.bookInfo.title}</td>
                   <td>{book.created}</td>
                   <td>
-                    <Link to={`/editreview/?reviewId=${book.id}`}>
+                    <Link to={`/editbookreview/?reviewId=${book.id}`}>
                       <div>{eye}</div>
                     </Link>
                   </td>

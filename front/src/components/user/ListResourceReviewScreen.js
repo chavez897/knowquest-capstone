@@ -8,7 +8,7 @@ import ReactPaginate from "react-paginate";
 import { MyRatingsCard } from "./MyRatingsCard";
 
 export const ListResourceReviewScreen = () => {
-  const [books, setBooks] = useState([]);
+  const [resources, setResources] = useState([]);
   const [maxPage, setMaxPage] = useState(1);
   const eye = <FontAwesomeIcon icon={faPencil} />;
   useEffect(() => {
@@ -17,8 +17,8 @@ export const ListResourceReviewScreen = () => {
 
   const requestRatings = (page) => {
     // change this filed to resource rating
-    axiosInstance.get(`/books-ratings/mine/?page=${page}`).then((res) => {
-      setBooks(res.data.results);
+    axiosInstance.get(`/resources-ratings/mine/?page=${page}`).then((res) => {
+      setResources(res.data.results);
       setMaxPage(Math.ceil(res.data.count / res.data.pageSize))
     });
   }
@@ -48,14 +48,14 @@ export const ListResourceReviewScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {books.map((book) => (
-                <tr key={book.id}>
-                  <th scope="row">{book.id}</th>
-                  <td>Book</td>
-                  <td>{book.bookInfo.title}</td>
-                  <td>{book.created}</td>
+              {resources.map((resource) => (
+                <tr key={resource.id}>
+                  <th scope="row">{resource.id}</th>
+                  <td>Resource</td>
+                  <td>{resource.resourceInfo.title}</td>
+                  <td>{resource.created}</td>
                   <td>
-                    <Link to={`/editreview/?reviewId=${book.id}`}>
+                    <Link to={`/editresourcereview/?reviewId=${resource.id}`}>
                       <div>{eye}</div>
                     </Link>
                   </td>

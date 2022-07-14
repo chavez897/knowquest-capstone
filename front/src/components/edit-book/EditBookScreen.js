@@ -3,10 +3,10 @@ import { useLocation } from "react-router-dom";
 import queryString from "query-string";
 import { axiosInstance } from "../../plugins/axios";
 import { BookDataCard } from "../book-review-detail/BookDataCard";
-import { EditReview } from "./EditReview";
+import { EditBookReview } from "./EditBookReview";
 import { BookFeaturesCard } from "../book-review-detail/BookFeaturesCard";
 
-export const EditScreen = () => {
+export const EditBookScreen = () => {
   // state for all responses
   const [response, setResponse] = useState("");
   const location = useLocation();
@@ -33,7 +33,7 @@ export const EditScreen = () => {
             <img src={""} alt="" />
           </div>
           {response !== "" ? (
-            <EditReview response={response} />
+            <EditBookReview response={response} />
           ) : (
             <>
               <div className="w-full row">

@@ -4,7 +4,7 @@ import { axiosInstance } from "../../plugins/axios";
 import ReactStars from "react-rating-stars-component";
 import Swal from "sweetalert2";
 
-export const EditReview = ({ response, setHaveSearched }) => {
+export const EditBookReview = ({ response, setHaveSearched }) => {
   // form value state
   const [formValues, handleFormInputChange, reset] = useForm({
     appropriateness: response.appropriateness / 2,
