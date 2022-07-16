@@ -20,4 +20,7 @@ export const types = {
 
   getBookDeatil: "[Book Detail] Get",
   deleteBookDetail: "[Book Detail] Delete",
+
+  getResourceDeatil: "[Resource Detail] Get",
+  deleteResourceDetail: "[Resource Detail] Delete",
 };

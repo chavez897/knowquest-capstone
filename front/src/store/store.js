@@ -7,6 +7,7 @@ import { contestsReducer } from "../reducers/contestsReducer";
 import { booksReducer } from "../reducers/booksReducer";
 import { bookReviewDetailReducer } from "../reducers/bookReviewDetailReducer";
 import { announcementsReducer } from "../reducers/announcementsReducer";
+import { resourceReviewDetailReducer } from "../reducers/resourceReviewDetailReducer";
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
@@ -20,6 +21,7 @@ const reducers = combineReducers({
   contests: contestsReducer,
   books: booksReducer,
   bookReviewDetail: bookReviewDetailReducer,
+  resourceReviewDetail: resourceReviewDetailReducer,
   announcements: announcementsReducer
 });
 

@@ -4,7 +4,7 @@ import queryString from "query-string";
 import { axiosInstance } from "../../plugins/axios";
 import { BookDataCard } from "../book-review-detail/BookDataCard";
 import { EditResourceReview } from "./EditResourceReview";
-import { BookFeaturesCard } from "../book-review-detail/BookFeaturesCard";
+import { ResourceFeaturesCard } from "../resource-review-detail/ResourceFeaturesCard";
 
 export const EditResourceScreen = () => {
   // state for all responses
@@ -49,7 +49,7 @@ export const EditResourceScreen = () => {
           )}
         </div>
         <div className="col-12 col-md-4 mt-5 mt-md-0">
-          <BookFeaturesCard price={""} />
+          <ResourceFeaturesCard />
         </div>
       </div>
     </div>

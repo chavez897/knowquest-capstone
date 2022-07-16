@@ -8,9 +8,9 @@ export const EditBookReview = ({ response, setHaveSearched }) => {
   // form value state
   const [formValues, handleFormInputChange, reset] = useForm({
     appropriateness: response.appropriateness / 2,
-    efectiveness: response.effectiveness / 2,
+    efectiveness: response.efectiveness / 2,
     value: response.value / 2,
-    visual_aids: response.visual_aids / 2,
+    visual_aids: response.visualAids / 2,
     overall: response.overall / 2,
     recommend: response.recommend,
     instructor_manualProvided: response.instructorManualProvided,
@@ -50,11 +50,11 @@ export const EditBookReview = ({ response, setHaveSearched }) => {
   } = formValues;
 
   //state for react stars
-  const [appropriateness, setAppropriateness] = useState("");
-  const [efectiveness, setEfectiveness] = useState("");
-  const [value, setValue] = useState("");
-  const [visualaids, setVisualaids] = useState("");
-  const [overall, setOverall] = useState("");
+  const [appropriateness, setAppropriateness] = useState(response.appropriateness / 2);
+  const [efectiveness, setEfectiveness] = useState(response.efectiveness / 2);
+  const [value, setValue] = useState(response.value / 2);
+  const [visualaids, setVisualaids] = useState(response.visualAids / 2);
+  const [overall, setOverall] = useState(response.overall / 2);
   //state for books
   const [areas, setAreas] = useState([]);
   const [costs, setCosts] = useState([]);
@@ -96,7 +96,7 @@ export const EditBookReview = ({ response, setHaveSearched }) => {
       },
     });
     axiosInstance
-      .put("/books-ratings/5/", {
+      .put(`/books-ratings/${response.id}/`, {
         book: response.bookInfo.id,
         subject: area,
         level: level,

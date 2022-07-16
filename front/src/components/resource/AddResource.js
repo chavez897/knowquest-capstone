@@ -194,7 +194,7 @@ export const AddResource = () => {
                   <div className="col-sm-7">
                     <select
                       className="form-control"
-                      name="area"
+                      name="type"
                       value={type}
                       onChange={handleFormInputChange}
                     >
@@ -213,7 +213,7 @@ export const AddResource = () => {
                   <div className="col-sm-7">
                     <select
                       className="form-control"
-                      name="area"
+                      name="subject"
                       value={subject}
                       onChange={handleFormInputChange}
                     >

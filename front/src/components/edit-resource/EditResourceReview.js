@@ -36,12 +36,12 @@ export const EditResourceReview = ({ response, setHaveSearched }) => {
   } = formValues;
 
   //state for react stars
-  const [relevent, setRelevent] = useState("");
-  const [efectiveness, setEfectiveness] = useState("");
-  const [value, setValue] = useState("");
-  const [ease, setEase] = useState("");
-  const [helped, setHelped] = useState("");
-  const [overall, setOverall] = useState("");
+  const [relevent, setRelevent] = useState(response.relevant / 2);
+  const [efectiveness, setEfectiveness] = useState(response.effective / 2);
+  const [value, setValue] = useState(response.value / 2);
+  const [ease, setEase] = useState(response.easyUse / 2);
+  const [helped, setHelped] = useState(response.classHelped / 2);
+  const [overall, setOverall] = useState(response.overall / 2);
   //state for resources
   const [resourceTypes, setResourceTypes] = useState([]);
   const [subjects, setSubjects] = useState([]);
@@ -84,7 +84,7 @@ export const EditResourceReview = ({ response, setHaveSearched }) => {
       },
     });
     axiosInstance
-      .put("/resources-ratings/", {
+      .put(`/resources-ratings/${response.id}/`, {
         effective: efectiveness * 2,
         relevant: relevent * 2,
         easyUse: ease * 2,
@@ -172,7 +172,7 @@ export const EditResourceReview = ({ response, setHaveSearched }) => {
                     <div className="col-sm-7">
                       <select
                         className="form-control"
-                        name="area"
+                        name="type"
                         value={response.resourceInfo.mediaType}
                         onChange={handleFormInputChange}
                         disabled={true}
@@ -194,7 +194,7 @@ export const EditResourceReview = ({ response, setHaveSearched }) => {
                     <div className="col-sm-7">
                       <select
                         className="form-control"
-                        name="area"
+                        name="subject"
                         value={response.subject}
                         onChange={handleFormInputChange}
                       >

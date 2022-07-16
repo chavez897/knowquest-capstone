@@ -21,6 +21,7 @@ import { PartnersScreen } from "../components/partners/PartnersScreen";
 import { ContestsScreen } from "../components/contests/ContestsScreen";
 import { SearchScreen } from "../components/search/SearchScreen";
 import { BookReviewDetailScreen } from "../components/book-review-detail/BookReviewDetailScreen";
+import { ResourceReviewDetailScreen } from "../components/resource-review-detail/ResourceReviewDetailScreen";
 import { FindSchool } from "../components/school/FindSchool";
 import { EditBookScreen } from "../components/edit-book/EditBookScreen";
 import { EditResourceScreen } from "../components/edit-resource/EditResourceScreen";
@@ -73,6 +74,7 @@ export const AppRouter = () => {
             <Route exact path="/partners" component={PartnersScreen} />
             <Route exact path="/contests" component={ContestsScreen} />
             <Route exact path="/book-review-detail" component={BookReviewDetailScreen} />
+            <Route exact path="/resource-review-detail" component={ResourceReviewDetailScreen} />
             <Route exact path="/findschool" component={FindSchool} />
             <Route exact path="/editbookreview" component={EditBookScreen} />
             <Route exact path="/editresourcereview" component={EditResourceScreen} />
