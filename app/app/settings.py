@@ -115,7 +115,7 @@ DATABASES = {
         'NAME': 'knowquest',
         'USER': 'root',
         'PASSWORD': 'admin12345',
-        'HOST': 'db',
+        'HOST': env("db_host"),
         'PORT': '5432'
     }
 }

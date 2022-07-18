@@ -9,8 +9,11 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const SearchScreen = () => {
+  const eye = <FontAwesomeIcon icon={faEye} />;
+
   const [inputText, setInputText] = useState("");
-  const [items, setItems] = useState([]);
+  const [books, setBooks] = useState([]);
+  const [resources, setResources] = useState([]);
   const [maxPage, setMaxPage] = useState(1);
 
   const [formValues, handleFormInputChange, reset] = useForm({ context: "" });
@@ -28,7 +31,17 @@ export const SearchScreen = () => {
     axiosInstance
       .get(`/books-ratings/search/?search=${inputText}&page=${page}`)
       .then((res) => {
-        setItems(res.data.results);
+        setBooks(res.data.results);
+        setMaxPage(Math.ceil(res.data.count / res.data.pageSize));
+      });
+  };
+
+  const fetchResources = (page) => {
+    axiosInstance
+      .get(`/resources-ratings/search/?search=${inputText}&page=${page}`)
+      .then((res) => {
+        console.log(res.data.results)
+        setResources(res.data.results);
         setMaxPage(Math.ceil(res.data.count / res.data.pageSize));
       });
   };
@@ -38,6 +51,7 @@ export const SearchScreen = () => {
     if (context === "book") {
       fetchBooks(1);
     } else if (context === "resource") {
+      fetchResources(1);
     } else {
       Swal.fire({
         title: "Error",
@@ -49,10 +63,8 @@ export const SearchScreen = () => {
     }
   };
 
-  // get searched book
-  const eye = <FontAwesomeIcon icon={faEye} />;
-
-  function Items({ currentItems }) {
+  // render searched book
+  function Books({ currentItems }) {
     return (
       <table className="table table-striped">
         <thead>
@@ -80,6 +92,41 @@ export const SearchScreen = () => {
                 <td>{book.rateAverage / 2}</td>
                 <td>
                   <Link to={`/book-review-detail/?bookId=${book.bookId}`}>
+                    <div>{eye}</div>
+                  </Link>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    );
+  }
+
+  // render searched resource
+  function Resources({ currentItems }) {
+    return (
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Type</th>
+            <th scope="col">Total</th>
+            <th scope="col">Average</th>
+            <th scope="col">Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentItems &&
+            currentItems.map((resource) => (
+              <tr key={resource.resourceId}>
+                <th scope="row">{resource.resourceId}</th>
+                <td>{resource.resourceTitle}</td>
+                <td>{resource.resourceMediaType}</td>
+                <td>{resource.total}</td>
+                <td>{resource.rateAverage / 2}</td>
+                <td>
+                  <Link to={`/resource-review-detail/?resourceId=${resource.resourceId}`}>
                     <div>{eye}</div>
                   </Link>
                 </td>
@@ -156,7 +203,7 @@ export const SearchScreen = () => {
         </div>
       </div>
       <div className="row p-5"></div>
-      <Items currentItems={items} />
+      {context === "book" ? <Books currentItems={books} />: <Resources currentItems={resources} />}
       <ReactPaginate
         nextLabel="next >"
         onPageChange={handlePageClick}

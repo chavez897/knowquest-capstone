@@ -4,13 +4,13 @@ import { axiosInstance } from "../../plugins/axios";
 import ReactStars from "react-rating-stars-component";
 import Swal from "sweetalert2";
 
-export const EditReview = ({ response, setHaveSearched}) => {
-    // form value state
+export const EditBookReview = ({ response, setHaveSearched }) => {
+  // form value state
   const [formValues, handleFormInputChange, reset] = useForm({
     appropriateness: response.appropriateness / 2,
-    efectiveness: response.effectiveness / 2,
+    efectiveness: response.efectiveness / 2,
     value: response.value / 2,
-    visual_aids: response.visual_aids / 2,
+    visual_aids: response.visualAids / 2,
     overall: response.overall / 2,
     recommend: response.recommend,
     instructor_manualProvided: response.instructorManualProvided,
@@ -25,7 +25,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
     assigmentsUsed: response.assigmentsUsed,
     useAgain: response.useAgain,
     comments: response.comments,
-    year: response.year
+    year: response.year,
   });
 
   const {
@@ -50,17 +50,17 @@ export const EditReview = ({ response, setHaveSearched}) => {
   } = formValues;
 
   //state for react stars
-  const [appropriateness, setAppropriateness] = useState("");
-  const [efectiveness, setEfectiveness] = useState("");
-  const [value, setValue] = useState("");
-  const [visualaids, setVisualaids] = useState("");
-  const [overall, setOverall] = useState("");
+  const [appropriateness, setAppropriateness] = useState(response.appropriateness / 2);
+  const [efectiveness, setEfectiveness] = useState(response.efectiveness / 2);
+  const [value, setValue] = useState(response.value / 2);
+  const [visualaids, setVisualaids] = useState(response.visualAids / 2);
+  const [overall, setOverall] = useState(response.overall / 2);
   //state for books
   const [areas, setAreas] = useState([]);
   const [costs, setCosts] = useState([]);
   const [levels, setLevels] = useState([]);
   const [semesters, setSemesters] = useState([]);
-  const [years, setYears] = useState([])
+  const [years, setYears] = useState([]);
 
   useEffect(() => {
     axiosInstance.get("/study-area/").then((res) => {
@@ -78,13 +78,12 @@ export const EditReview = ({ response, setHaveSearched}) => {
     axiosInstance.get("/semester/").then((res) => {
       setSemesters(res.data.results);
     });
-    let tempYears = []
-    let currentYear = new Date().getFullYear()
+    let tempYears = [];
+    let currentYear = new Date().getFullYear();
     for (let i = 0; i < 5; i++) {
-      tempYears.push(currentYear - i)
-    } 
-    setYears(tempYears)
-
+      tempYears.push(currentYear - i);
+    }
+    setYears(tempYears);
   }, []);
 
   // POST operation to backend
@@ -97,7 +96,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
       },
     });
     axiosInstance
-      .put("/books-ratings/5/", {
+      .put(`/books-ratings/${response.id}/`, {
         book: response.bookInfo.id,
         subject: area,
         level: level,
@@ -121,7 +120,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
         assigmentsUsed: assigmentsUsed,
         useAgain: useAgain,
         comments: comments,
-        year: year
+        year: year,
       })
       .then((res) => {
         Swal.close();
@@ -132,7 +131,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
           confirmButtonText: "Ok",
         });
         reset();
-        setHaveSearched(false)
+        setHaveSearched(false);
       })
       .catch((error) => {
         Swal.close();
@@ -157,71 +156,78 @@ export const EditReview = ({ response, setHaveSearched}) => {
           <div className="card shadow-2-strong bg-light">
             <div className="card-body p-5">
               <form className="shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                <div className="form-group row mt-3">
-                  <label className="col-sm-4 col-form-label">Subject</label>
-                  <div className="col-sm-7">
-                    <select
-                      className="form-control"
-                      name="area"
-                      value={area}
-                      defaultValue = {response.subject}
-                      onChange={handleFormInputChange}
-                    >
-                      <option></option>
-                      {areas.map((option) => (
-                        <option key={option.id} value={option.id}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </select>
+                {areas.length > 0 ? (
+                  <div className="form-group row mt-3">
+                    <label className="col-sm-4 col-form-label">Subject</label>
+
+                    <div className="col-sm-7">
+                      <select
+                        className="form-control"
+                        name="area"
+                        value={area}
+                        defaultValue={response.subject}
+                        onChange={handleFormInputChange}
+                      >
+                        <option></option>
+                        {areas.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div className="form-group row mt-3">
-                  <label className="col-sm-4 col-form-label">Level</label>
-                  <div className="col-sm-7">
-                    <select
-                      className="form-control"
-                      name="level"
-                      value={level}
-                      onChange={handleFormInputChange}
-                    >
-                      <option></option>
-                      {levels.map((option) => (
-                        <option key={option.id} value={option.id}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </select>
+                ) : null}
+                {levels.length > 0 ? (
+                  <div className="form-group row mt-3">
+                    <label className="col-sm-4 col-form-label">Level</label>
+                    <div className="col-sm-7">
+                      <select
+                        className="form-control"
+                        name="level"
+                        value={response.level}
+                        onChange={handleFormInputChange}
+                      >
+                        <option></option>
+                        {levels.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div className="form-group row mt-3">
-                  <label className="col-sm-4 col-form-label">Semester</label>
-                  <div className="col-sm-7">
-                    <select
-                      className="form-control"
-                      name="semester"
-                      value={semester}
-                      onChange={handleFormInputChange}
-                    >
-                      <option></option>
-                      {semesters.map((option) => (
-                        <option key={option.id} value={option.id}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </select>
+                ) : null}
+                {semesters.length > 0 ? (
+                  <div className="form-group row mt-3">
+                    <label className="col-sm-4 col-form-label">Semester</label>
+                    <div className="col-sm-7">
+                      <select
+                        className="form-control"
+                        name="semester"
+                        value={response.semester}
+                        onChange={handleFormInputChange}
+                      >
+                        <option></option>
+                        {semesters.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
+                ) : null}
                 <div className="form-group row mt-3">
                   <label className="col-sm-4 col-form-label">Year</label>
                   <div className="col-sm-7">
-                  <select
+                    <select
                       className="form-control"
                       name="year"
                       value={year}
                       onChange={handleFormInputChange}
                     >
-                    <option></option>
+                      <option></option>
                       {years.map((option) => (
                         <option key={option} value={option}>
                           {option}
@@ -230,24 +236,26 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     </select>
                   </div>
                 </div>
-                <div className="form-group row mt-3">
-                  <label className="col-sm-4 col-form-label">Cost</label>
-                  <div className="col-sm-7">
-                    <select
-                      className="form-control"
-                      name="cost"
-                      value={cost}
-                      onChange={handleFormInputChange}
-                    >
-                      <option></option>
-                      {costs.map((option) => (
-                        <option key={option.id} value={option.id}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </select>
+                {costs.length > 0 ? (
+                  <div className="form-group row mt-3">
+                    <label className="col-sm-4 col-form-label">Cost</label>
+                    <div className="col-sm-7">
+                      <select
+                        className="form-control"
+                        name="cost"
+                        value={response.cost}
+                        onChange={handleFormInputChange}
+                      >
+                        <option></option>
+                        {costs.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
+                ) : null}
               </form>
             </div>
           </div>
@@ -292,7 +300,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                         activeColor="#ffd700"
                         edit={true}
                         isHalf={false}
-                        value={response.effectiveness / 2}
+                        value={response.efectiveness / 2}
                       />
                     </div>
                   </div>
@@ -374,7 +382,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="recommend"
-                      defaultChecked = {response.recommend}
+                      defaultChecked={response.recommend}
                       value={!recommend}
                       onChange={handleFormInputChange}
                     />
@@ -401,7 +409,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="instructor_manualProvided"
-                      defaultChecked = {response.instructorManualProvided}
+                      defaultChecked={response.instructorManualProvided}
                       value={!instructor_manualProvided}
                       onChange={handleFormInputChange}
                     />
@@ -410,7 +418,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="instructorManualUsed"
-                      defaultChecked = {response.instructorManualUsed}
+                      defaultChecked={response.instructorManualUsed}
                       value={!instructorManualUsed}
                       onChange={handleFormInputChange}
                     />
@@ -424,7 +432,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="teachingSlidesProvided"
-                      defaultChecked = {response.teachingSlidesProvided}
+                      defaultChecked={response.teachingSlidesProvided}
                       value={!teachingSlidesProvided}
                       onChange={handleFormInputChange}
                     />
@@ -433,7 +441,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="teachingSlidesUsed"
-                      defaultChecked = {response.teachingSlidesUsed}
+                      defaultChecked={response.teachingSlidesUsed}
                       value={!teachingSlidesUsed}
                       onChange={handleFormInputChange}
                     />
@@ -447,7 +455,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="questionBankProvided"
-                      defaultChecked = {response.questionBankProvided}
+                      defaultChecked={response.questionBankProvided}
                       value={!questionBankProvided}
                       onChange={handleFormInputChange}
                     />
@@ -456,7 +464,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="questionBankUsed"
-                      defaultChecked = {response.questionBankUsed}
+                      defaultChecked={response.questionBankUsed}
                       value={!questionBankUsed}
                       onChange={handleFormInputChange}
                     />
@@ -468,7 +476,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="assigmentsProvided"
-                      defaultChecked = {response.assigmentsProvided}
+                      defaultChecked={response.assigmentsProvided}
                       value={!assigmentsProvided}
                       onChange={handleFormInputChange}
                     />
@@ -477,7 +485,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="assigmentsUsed"
-                      defaultChecked = {response.assigmentsUsed}
+                      defaultChecked={response.assigmentsUsed}
                       value={!assigmentsUsed}
                       onChange={handleFormInputChange}
                     />
@@ -491,7 +499,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="digitalResourceProvided"
-                      defaultChecked = {response.digitalResourceProvided}
+                      defaultChecked={response.digitalResourceProvided}
                       value={!digitalResourceProvided}
                       onChange={handleFormInputChange}
                     />
@@ -500,7 +508,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="digitalResourceUsed"
-                      defaultChecked = {response.digitalResourceUsed}
+                      defaultChecked={response.digitalResourceUsed}
                       value={!digitalResourceUsed}
                       onChange={handleFormInputChange}
                     />
@@ -523,7 +531,7 @@ export const EditReview = ({ response, setHaveSearched}) => {
                     <input
                       type="checkbox"
                       name="useAgain"
-                      defaultChecked = {response.useAgain}
+                      defaultChecked={response.useAgain}
                       value={!useAgain}
                       onChange={handleFormInputChange}
                     />

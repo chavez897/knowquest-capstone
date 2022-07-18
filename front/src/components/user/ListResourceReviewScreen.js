@@ -7,8 +7,8 @@ import { axiosInstance } from "../../plugins/axios";
 import ReactPaginate from "react-paginate";
 import { MyRatingsCard } from "./MyRatingsCard";
 
-export const ListOwnReviewsScreen = () => {
-  const [books, setBooks] = useState([]);
+export const ListResourceReviewScreen = () => {
+  const [resources, setResources] = useState([]);
   const [maxPage, setMaxPage] = useState(1);
   const eye = <FontAwesomeIcon icon={faPencil} />;
   useEffect(() => {
@@ -16,8 +16,9 @@ export const ListOwnReviewsScreen = () => {
   }, []);
 
   const requestRatings = (page) => {
-    axiosInstance.get(`/books-ratings/mine/?page=${page}`).then((res) => {
-      setBooks(res.data.results);
+    // change this filed to resource rating
+    axiosInstance.get(`/resources-ratings/mine/?page=${page}`).then((res) => {
+      setResources(res.data.results);
       setMaxPage(Math.ceil(res.data.count / res.data.pageSize))
     });
   }
@@ -28,11 +29,11 @@ export const ListOwnReviewsScreen = () => {
     <div className="mt-3">
       <Breadcrumb
         main="Profile"
-        secondary="My Textbook Ratings"
+        secondary="My Resource Ratings"
         link="/user/profile"
       />
       <div className="pb-5 pt-2">
-        <p className="fw-bold fs-2">My Rating Textbooks List </p>
+        <p className="fw-bold fs-2">My Resources Rating List </p>
       </div>
       <div className="pt-2 row">
         <div className="col-9">
@@ -47,14 +48,14 @@ export const ListOwnReviewsScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {books.map((book) => (
-                <tr key={book.id}>
-                  <th scope="row">{book.id}</th>
-                  <td>Book</td>
-                  <td>{book.bookInfo.title}</td>
-                  <td>{book.created}</td>
+              {resources.map((resource) => (
+                <tr key={resource.id}>
+                  <th scope="row">{resource.id}</th>
+                  <td>Resource</td>
+                  <td>{resource.resourceInfo.title}</td>
+                  <td>{resource.created}</td>
                   <td>
-                    <Link to={`/editbookreview/?reviewId=${book.id}`}>
+                    <Link to={`/editresourcereview/?reviewId=${resource.id}`}>
                       <div>{eye}</div>
                     </Link>
                   </td>

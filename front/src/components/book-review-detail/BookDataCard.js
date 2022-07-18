@@ -8,7 +8,7 @@ export const BookDataCard = ({ authors, reviews, category }) => {
           <div className="col-12 col-md-4 text-dark">
             <div className="row">
               <div>
-                <p className="fw-bold">Author: </p>
+                {category === "book" ? <p className="fw-bold">Author: </p> : <p className="fw-bold">Resource: </p>}
               </div>
             </div>
             <div className="row pb-2">
