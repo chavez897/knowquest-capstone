@@ -1,0 +1,39 @@
+version: '3'
+
+
+networks:
+  knowquest_network:
+    name: knowquest
+    driver: bridge
+    ipam:
+      driver: default
+
+
+services:
+  app:
+    container_name: django-knowquest-prod
+    build:
+      context: .
+      dockerfile: Django-Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.envs/.django
+    command: >
+      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    networks:
+      knowquest_network:
+        aliases:
+          - app
+
+  react:
+    container_name: react-knowquest-prod
+    build:
+      context: .
+      dockerfile: React-Prod-Dockerfile
+    ports:
+      - 80:80
+    networks:
+      knowquest_network:
+        aliases:
+          - react
