@@ -63,7 +63,7 @@ export const ResourceReviewDetailScreen = () => {
               <ResourceTabsCard comments={comments} />
             </div>
             <div className="col-12 col-md-4 mt-5 mt-md-0">
-              <ResourceFeaturesCard />
+              <ResourceFeaturesCard resourceId={resourceId} />
             </div>
           </div>
         </>

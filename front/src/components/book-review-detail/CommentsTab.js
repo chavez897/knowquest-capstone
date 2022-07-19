@@ -7,8 +7,8 @@ export const CommentsTab = ({ comments = [] }) => {
             <p className="fw-bold fs-4">Comments </p>
           </div>
           <div style={{ overflowY: "scroll", height: "20vh" }}>
-            {comments.map((val) => (
-              <li key={val.id} className="pb-3 pt-2">{val.comments}</li>
+            {comments.map((val, index) => (
+              <li key={index} className="pb-3 pt-2">{val.comments}</li>
             ))}
           </div>
         </div>
