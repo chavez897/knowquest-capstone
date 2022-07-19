@@ -9,6 +9,7 @@ from django.contrib.auth import (
 )
 from django.db import transaction
 from django.utils import timezone
+from django.template.loader import render_to_string
 from users.models.academic_domains import AcademicDomains
 from users.models.study_area import StudyArea
 from users.models.roles import UserRole
@@ -80,12 +81,19 @@ class PasswordRecoveryEmail(serializers.Serializer):
             "token_type": "password_recovery",
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+        content = render_to_string(
+            "account_verification.html",
+            {
+                "url": "http://localhost:3000/auth/reset-password?token={}".format(token),
+            },
+        )
         msg = EmailMultiAlternatives(
-            subject="Forgot Password",
-            body="http://localhost:3000/auth/reset-password?token={}".format(token),
+           subject="Forgot Password",
+            body=content,
             from_email="Knowquest <knowquest@gmail.com>",
             to=[email],
         )
+        msg.attach_alternative(content, "text/html")
         msg.send()
         return data
 
@@ -145,10 +153,6 @@ class PasswordRecovery(serializers.Serializer):
 
 
 class UserSignUpSerializer(serializers.Serializer):
-    """User signup serializer.
-    Clase para controlar el registro de usuaruos del admin de Cohua shop.
-    """
-
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=User.objects.all())], required=True
     )
@@ -167,7 +171,6 @@ class UserSignUpSerializer(serializers.Serializer):
     study_area = serializers.IntegerField(allow_null=True)
 
     def validate(self, data):
-        """Validación de contraseña."""
         password = data["password"]
         password_confirmation = data["password_confirmation"]
 
@@ -220,12 +223,19 @@ class UserSignUpSerializer(serializers.Serializer):
             "token_type": "email_confirmation",
         }
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+        content = render_to_string(
+            "account_verification.html",
+            {
+                "url": "http://localhost:3000/auth/login?token={}".format(token),
+            },
+        )
         msg = EmailMultiAlternatives(
             subject="Email Verifaction",
-            body="http://localhost:3000/auth/login?token={}".format(token),
+            body=content, 
             from_email="Knowquest <knowquest@gmail.com>",
             to=[user.email],
         )
+        msg.attach_alternative(content, "text/html")
         msg.send()
 
         return user
