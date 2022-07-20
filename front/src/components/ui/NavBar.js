@@ -12,8 +12,15 @@ export const NavBar = () => {
     dispatch(logout());
   };
 
+  function navbarIsCollapsible() {
+    return (
+      window.getComputedStyle(navbarToggler.current).display !== "none" &&
+      navbarToggler.current.getAttribute("aria-expanded") === "true"
+    );
+  }
+
   const handleCollapse = () => {
-    if (window.getComputedStyle(navbarToggler.current).display !== 'none') {
+    if (navbarIsCollapsible()) {
       navbarToggler.current.click();
     }
   };
