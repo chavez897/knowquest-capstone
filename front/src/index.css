@@ -12,6 +12,55 @@ code {
     monospace;
 }
 
+@font-face {
+  font-family: 'Montserrat-Black';
+  src: url('./assets/fonts/Montserrat/Montserrat-Black.ttf');
+  font-weight: bolder;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'Montserrat-VariableFont_wght';
+  src: url('./assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Palatino-Linotype';
+  src: url('./assets/fonts/Palatino-Linotype/Palatino\ Linotype.ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Montserrat-Black';
+  font-weight: bolder;
+}
+
+div, p {
+  font-family: 'Montserrat-VariableFont_wght';
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.navbar {
+  box-shadow: 0 1px 10px 0 rgba(0,0,0,.2);
+}
+
+.logo-font {
+  font-family: 'Palatino-Linotype';
+  font-weight: 400;
+}
+
+.btn-gold {
+  background-color: #ff9933;
+  box-shadow: 0 10px 20px -14px rgba(0, 0, 0,.7);
+}
+.btn-gold:hover {
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0,.7);
+}
+
 a,
 a:hover,
 a:focus {

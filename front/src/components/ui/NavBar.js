@@ -11,11 +11,11 @@ export const NavBar = () => {
   };
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light px-3">
-      <div className="container-fluid">
+      <div className="container-fluid offset-lg-1">
         <Link to="/home">
-          <div className="navbar-brand">
-            <b style={{ color: "#333999" }}>
-              Know<span style={{ color: "#f93" }}>Quest</span>
+          <div className="navbar-brand py-1 pt-2 logo-font">
+              <b style={{ color: "#333999", fontSize: '34px' }}>
+                Know<span style={{ color: "#f93" }}>Quest</span>
             </b>
           </div>
         </Link>
