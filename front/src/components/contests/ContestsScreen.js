@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getContestsData } from "../../actions/contests";
 import { Breadcrumb } from "../ui/Breadcrumb";
 import { Card } from "../ui/Card";
+import { ContestCard } from "./ContestCard";
 import { ContestIntro } from "./ContestsIntro";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -43,12 +44,7 @@ export const ContestsScreen = () => {
       <Carousel responsive={responsive} showDots={true} className="py-5">
         {contests.map((contest) => (
           <div key={contest.id} className="px-2">
-            <Card
-              src={contest.logo}
-              title={contest.name}
-              description={contest.description}
-              href="#"
-            />
+						<ContestCard src={contest.logo} />
           </div>
         ))}
       </Carousel>

@@ -30,8 +30,8 @@ export const Announcenment = () => {
   };
 
   return (
-    <div className="row" style={{ backgroundColor: "#333999" }}>
-      <div className="row px-5">
+    <div className="row justify-content-center" style={{ backgroundColor: "#333999" }}>
+      <div className="row px-5 w-75">
         <div className="col-lg-8">
           <h3 className="text-white py-3">Announcement</h3>
           <div
@@ -52,7 +52,7 @@ export const Announcenment = () => {
           <div className="row">
             <h3 className="py-3 text-center">KnowQuest Explained</h3>
           </div>
-          <div className="row embed-responsive embed-responsive-16by9 justify-content-center d-flex">
+          <div className="row embed-responsive embed-responsive-16by9 justify-content-center d-flex m-0">
             <iframe
               title="VideoDemo"
               className="embed-responsive-item"
