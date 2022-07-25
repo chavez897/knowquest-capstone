@@ -31,7 +31,7 @@ export const Footer = () => {
         <div className="row">
           <div className="col-lg-6">
             <div className="row">
-              <h2 className="pointer">
+              <h2 className="pointer logo-font">
                 <b style={{ color: "white" }}>
                   Know<span style={{ color: "#f93" }}>Quest</span>
                 </b>
