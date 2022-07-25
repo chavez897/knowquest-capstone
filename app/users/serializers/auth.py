@@ -10,6 +10,7 @@ from django.contrib.auth import (
 from django.db import transaction
 from django.utils import timezone
 from django.template.loader import render_to_string
+from django.contrib.sites.models import Site
 from users.models.academic_domains import AcademicDomains
 from users.models.study_area import StudyArea
 from users.models.roles import UserRole
@@ -80,11 +81,12 @@ class PasswordRecoveryEmail(serializers.Serializer):
             "exp": int(exp_date.timestamp()),
             "token_type": "password_recovery",
         }
+        host = Site.objects.get(id=1)
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
         content = render_to_string(
-            "account_verification.html",
+            "recover_password.html",
             {
-                "url": "http://localhost:3000/auth/reset-password?token={}".format(token),
+                "url": "{}/auth/reset-password?token={}".format(host, token),
             },
         )
         msg = EmailMultiAlternatives(
@@ -222,11 +224,12 @@ class UserSignUpSerializer(serializers.Serializer):
             "exp": int(exp_date.timestamp()),
             "token_type": "email_confirmation",
         }
+        host = Site.objects.get(id=1)
         token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
         content = render_to_string(
             "account_verification.html",
             {
-                "url": "http://localhost:3000/auth/login?token={}".format(token),
+                "url": "{}/auth/login?token={}".format(host, token),
             },
         )
         msg = EmailMultiAlternatives(

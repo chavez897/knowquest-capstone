@@ -28,8 +28,8 @@ export const ContestCard = ({src}) => {
           src={src} 
           alt="Contest Image"
         />
-        <div class="card-footer download-btn">
-            <i class="fa fa-download"></i> 
+        <div className="card-footer download-btn">
+            <i className="fa fa-download"></i> 
             Download Image
         </div>
       </a>
