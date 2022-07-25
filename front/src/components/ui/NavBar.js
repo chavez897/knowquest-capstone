@@ -1,14 +1,30 @@
-import React from "react";
+import React, {useRef} from "react";
 import { Link } from "react-router-dom";
 import { logout } from "../../actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 
 export const NavBar = () => {
   const dispatch = useDispatch();
+  const navbarToggler = useRef();
   const user = useSelector((state) => state.user);
+
   const handleLogout = () => {
     dispatch(logout());
   };
+
+  function navbarIsCollapsible() {
+    return (
+      window.getComputedStyle(navbarToggler.current).display !== "none" &&
+      navbarToggler.current.getAttribute("aria-expanded") === "true"
+    );
+  }
+
+  const handleCollapse = () => {
+    if (navbarIsCollapsible()) {
+      navbarToggler.current.click();
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light px-3">
       <div className="container-fluid offset-lg-1">
@@ -29,13 +45,14 @@ export const NavBar = () => {
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          ref={navbarToggler}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link to="/home">
+              <Link to="/home" onClick={handleCollapse}>
                 <div className="nav-link active" aria-current="page">
                   Home
                 </div>
@@ -53,57 +70,67 @@ export const NavBar = () => {
               </div>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <Link to="/user/ratebook">
+                  <Link to="/user/ratebook" onClick={handleCollapse}>
                     <div className="dropdown-item pointer">Textbook</div>
                   </Link>
                 </li>
                 <li>
-                  <div className="dropdown-item pointer">School</div>
+                  <Link to="/user/ratebook" onClick={handleCollapse}>
+                    <div className="dropdown-item pointer">School</div>
+                  </Link>
                 </li>
                 <li>
-                  <div className="dropdown-item pointer">Class</div>
+                  <Link to="/user/ratebook" onClick={handleCollapse}>
+                    <div className="dropdown-item pointer">Class</div>
+                  </Link>
                 </li>
                 <li>
-                  <div className="dropdown-item pointer">Online Learning</div>
+                  <Link to="/user/ratebook" onClick={handleCollapse}>
+                    <div className="dropdown-item pointer">Online Learning</div>
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/user/rateresource">
+                  <Link to="/user/rateresource" onClick={handleCollapse}>
                     <div className="dropdown-item pointer">Resource</div>
                   </Link>
                 </li>
                 <li>
-                  <div className="dropdown-item pointer">Wekipedia</div>
+                  <Link to="/user/ratebook" onClick={handleCollapse}>
+                    <div className="dropdown-item pointer">Wikipedia</div>
+                  </Link>
                 </li>
               </ul>
             </li>
             <li className="nav-item">
-              <Link to="/search">
-                <div className="nav-link active pointer">Search</div>
+              <Link to="/search" onClick={handleCollapse}>
+                <div 
+                  className="nav-link active pointer"
+                >Search</div>
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/partners">
+              <Link to="/partners" onClick={handleCollapse}>
                 <div className="nav-link active">Partners</div>
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/contests">
+              <Link to="/contests" onClick={handleCollapse}>
                 <div className="nav-link active pointer">Contests</div>
               </Link>
             </li>
             {user.email ? (
               <>
                 <li className="nav-item">
-                  <Link to="/user/profile">
+                  <Link to="/user/profile" onClick={handleCollapse}>
                     <div className="nav-link active pointer">{user.email}</div>
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/user/referral">
+                  <Link to="/user/referral" onClick={handleCollapse}>
                     <div className="nav-link active pointer">Referral</div>
                   </Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item" onClick={handleCollapse}>
                   <div
                     className="nav-link active pointer"
                     onClick={handleLogout}
@@ -114,7 +141,7 @@ export const NavBar = () => {
               </>
             ) : (
               <li className="nav-item">
-                <Link to="/auth/login">
+                <Link to="/auth/login" onClick={handleCollapse}>
                   <div className="nav-link active">Login</div>
                 </Link>
               </li>
