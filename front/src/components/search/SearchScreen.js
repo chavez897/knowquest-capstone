@@ -15,9 +15,25 @@ export const SearchScreen = () => {
   const [books, setBooks] = useState([]);
   const [resources, setResources] = useState([]);
   const [maxPage, setMaxPage] = useState(1);
+  const [subjects, setSubjects] = useState([]);
+  const [levels, setLevels] = useState([]);
 
-  const [formValues, handleFormInputChange, reset] = useForm({ context: "" });
-  const { context } = formValues;
+  const [formValues, handleFormInputChange, reset] = useForm({
+    context: "",
+    level: "",
+    subject: "",
+  });
+  const { context, level, subject } = formValues;
+
+  useEffect(() => {
+    axiosInstance.get("/study-area/").then((res) => {
+      setSubjects(res.data.results);
+    });
+
+    axiosInstance.get("/level/").then((res) => {
+      setLevels(res.data.results);
+    });
+  }, []);
 
   const inputHandler = (e) => {
     setInputText(e.target.value);
@@ -28,8 +44,15 @@ export const SearchScreen = () => {
   };
 
   const fetchBooks = (page) => {
+    let url = `/books-ratings/search/?search=${inputText}&page=${page}`
+    if (level !== ""){
+      url += `&level=${level}`
+    }
+    if (subject !== ""){
+      url += `&subject=${subject}`
+    }
     axiosInstance
-      .get(`/books-ratings/search/?search=${inputText}&page=${page}`)
+      .get(url)
       .then((res) => {
         setBooks(res.data.results);
         setMaxPage(Math.ceil(res.data.count / res.data.pageSize));
@@ -37,10 +60,16 @@ export const SearchScreen = () => {
   };
 
   const fetchResources = (page) => {
+    let url = `/resources-ratings/search/?search=${inputText}&page=${page}`
+    if (level !== ""){
+      url += `&level=${level}`
+    }
+    if (subject !== ""){
+      url += `&subject=${subject}`
+    }
     axiosInstance
-      .get(`/resources-ratings/search/?search=${inputText}&page=${page}`)
+      .get(url)
       .then((res) => {
-        console.log(res.data.results)
         setResources(res.data.results);
         setMaxPage(Math.ceil(res.data.count / res.data.pageSize));
       });
@@ -126,7 +155,9 @@ export const SearchScreen = () => {
                 <td>{resource.total}</td>
                 <td>{resource.rateAverage / 2}</td>
                 <td>
-                  <Link to={`/resource-review-detail/?resourceId=${resource.resourceId}`}>
+                  <Link
+                    to={`/resource-review-detail/?resourceId=${resource.resourceId}`}
+                  >
                     <div>{eye}</div>
                   </Link>
                 </td>
@@ -188,6 +219,42 @@ export const SearchScreen = () => {
                     </select>
                   </div>
                 </div>
+                <div className="form-group row mt-3">
+                  <label className="col-sm-4 col-form-label">Level</label>
+                  <div className="col-sm-7">
+                    <select
+                      className="form-control"
+                      name="level"
+                      value={level}
+                      onChange={handleFormInputChange}
+                    >
+                      <option></option>
+                      {levels.map((option) => (
+                        <option key={option.id} value={option.id}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="form-group row mt-3">
+                  <label className="col-sm-4 col-form-label">Subject</label>
+                  <div className="col-sm-7">
+                    <select
+                      className="form-control"
+                      name="subject"
+                      value={subject}
+                      onChange={handleFormInputChange}
+                    >
+                      <option></option>
+                      {subjects.map((option) => (
+                        <option key={option.id} value={option.id}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
                 <div className="form-group row mt-3 justify-content-center d-flex">
                   <button
                     type="button"
@@ -203,7 +270,11 @@ export const SearchScreen = () => {
         </div>
       </div>
       <div className="row p-5"></div>
-      {context === "book" ? <Books currentItems={books} />: <Resources currentItems={resources} />}
+      {context === "book" ? (
+        <Books currentItems={books} />
+      ) : (
+        <Resources currentItems={resources} />
+      )}
       <ReactPaginate
         nextLabel="next >"
         onPageChange={handlePageClick}

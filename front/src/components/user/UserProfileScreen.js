@@ -78,7 +78,7 @@ export const UserProfileScreen = () => {
         <Breadcrumb main="Profile" />
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="row">
-            <div className="col-9 col-md-8">
+            <div className="col-12 col-md-8">
               <div className="card shadow-2-strong">
                 <div className="card-body p-5">
                   <form
@@ -212,7 +212,7 @@ export const UserProfileScreen = () => {
                 </div>
               </div>
             </div>
-            <div className="col-3">
+            <div className="col-12 col-md-3 mt-3 mt-md-0">
               <MyRatingsCard />
             </div>
           </div>

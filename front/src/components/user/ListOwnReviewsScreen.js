@@ -35,7 +35,7 @@ export const ListOwnReviewsScreen = () => {
         <p className="fw-bold fs-2">My Rating Textbooks List </p>
       </div>
       <div className="pt-2 row">
-        <div className="col-9">
+        <div className="col-12 col-md-9">
           <table className="table table-striped">
             <thead>
               <tr>
@@ -83,7 +83,7 @@ export const ListOwnReviewsScreen = () => {
             renderOnZeroPageCount={null}
           />
         </div>
-        <div className="col-3">
+        <div className="col-12 col-md-3 mt-3 mt-md-0">
           <MyRatingsCard />
         </div>
       </div>

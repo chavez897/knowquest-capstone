@@ -89,7 +89,6 @@ export const AddResource = () => {
         mediaType: type,
       })
       .then((res) => {
-        console.log(res);
         axiosInstance
           .post("/resources-ratings/", {
             effective: efectiveness * 2,

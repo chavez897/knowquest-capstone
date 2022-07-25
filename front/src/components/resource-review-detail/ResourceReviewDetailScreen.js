@@ -43,7 +43,6 @@ export const ResourceReviewDetailScreen = () => {
   }, [resourceId]);
 
   const resourceDetail = useSelector((state) => state.resourceReviewDetail);
-  console.log(resourceDetail)
 
   return (
     <div className="container py-5">
@@ -63,7 +62,7 @@ export const ResourceReviewDetailScreen = () => {
               <ResourceTabsCard comments={comments} />
             </div>
             <div className="col-12 col-md-4 mt-5 mt-md-0">
-              <ResourceFeaturesCard />
+              <ResourceFeaturesCard resourceId={resourceId} />
             </div>
           </div>
         </>

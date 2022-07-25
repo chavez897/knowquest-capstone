@@ -19,9 +19,6 @@ export const ResourceReviewTab = () => {
             <div className="col-6 col-md-9">
               <div className="fw-bold fs-3">Resource Review</div>
             </div>
-            <div type="div" className="btn btn-primary col-6 col-md-3">
-              Add a resource Review
-            </div>
           </div>
           <div className="row mt-5">
             <div className="col-12 col-md-3 mt-4">

@@ -17,7 +17,6 @@ export const EditResourceScreen = () => {
       setResponse(res.data);
     });
   }, []);
-  console.log(response);
 
   return (
     <div className="container py-5">
@@ -49,7 +48,7 @@ export const EditResourceScreen = () => {
           )}
         </div>
         <div className="col-12 col-md-4 mt-5 mt-md-0">
-          <ResourceFeaturesCard />
+          <ResourceFeaturesCard resourceId={reviewId} />
         </div>
       </div>
     </div>

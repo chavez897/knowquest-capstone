@@ -68,7 +68,7 @@ export const IndexSignUp = () => {
               </div>
             </div>
           ) : (
-            <div classNam="row">
+            <div className="row">
               <h3 className="py-3 text-center">Sign up Today</h3>
               <div className="py-3 d-flex justify-content-center">
                 <p style={{width: "35vh"}}>
