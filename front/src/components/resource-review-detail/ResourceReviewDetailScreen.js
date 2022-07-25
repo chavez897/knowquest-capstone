@@ -43,7 +43,6 @@ export const ResourceReviewDetailScreen = () => {
   }, [resourceId]);
 
   const resourceDetail = useSelector((state) => state.resourceReviewDetail);
-  console.log(resourceDetail)
 
   return (
     <div className="container py-5">
