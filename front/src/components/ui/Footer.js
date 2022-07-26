@@ -5,6 +5,7 @@ import {
   faLinkedin,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
+import { Link } from "react-router-dom";
 
 const getCurrentYear = () => {
   return new Date().getFullYear();
@@ -104,7 +105,9 @@ export const Footer = () => {
             <div style={{ color: "white" }}>Copyrights</div>
           </div>
           <div className="col-lg-2 pointer">
-            <div style={{ color: "white" }}>Term of use</div>
+            <Link to="/terms">
+              <div style={{ color: "white" }}>Term of use</div>
+            </Link>
           </div>
           <div className="col-lg-2 pointer">
             <div style={{ color: "white" }}>Privacy policy</div>
